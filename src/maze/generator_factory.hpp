@@ -9,8 +9,8 @@ namespace maze {
 
 enum class GeneratorType {
   KRUSKALS,
-  PRIMS,
   GROWING_TREE,
+  PRIMS,
   RECURSIVE_BACKGTRACKING,
 };
 

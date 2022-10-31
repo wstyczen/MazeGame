@@ -2,7 +2,10 @@
 #define MAZE_UTILITY_HPP_
 
 #include <stdint.h>
+#include <deque>
+#include <functional>
 #include <optional>
+#include <set>
 #include <tuple>
 #include <vector>
 
@@ -32,6 +35,18 @@ struct Edge {
 };
 
 using Path = std::vector<Position>;
+
+using ValidityCheck = std::function<bool(const Direction& direction)>;
+
+std::deque<Direction> GetValidMoveDirections(
+    ValidityCheck validity_check = nullptr
+);
+
+std::deque<Direction> GetRandomizedMoveDirections(
+    ValidityCheck validity_check = nullptr
+);
+
+Direction GetAsDirection(const int16_t& dy, const int16_t& dx);
 
 }  // namespace maze
 

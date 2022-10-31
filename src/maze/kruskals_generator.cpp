@@ -1,7 +1,5 @@
 #include "kruskals_generator.hpp"
 
-#include "boost/graph/adjacency_list.hpp"
-
 #include <algorithm>
 #include <cassert>
 #include <iostream>
@@ -24,18 +22,18 @@ std::unique_ptr<Layout> KruskalsGenerator::Get(
   while (!edges_.empty()) {
     const Edge& edge = edges_.front();
     auto tree_containing_edge_start = std::find_if(
-        Cell_trees_.begin(), Cell_trees_.end(),
+        cell_trees_.begin(), cell_trees_.end(),
         [this, &edge](const std::set<Position>& tree) {
           return tree.contains(edge.from);
         }
     );
-    assert(tree_containing_edge_start != Cell_trees_.end());
+    assert(tree_containing_edge_start != cell_trees_.end());
     const std::optional<Position> edge_end = edge.To();
     assert(edge_end && "Invalid Direction enum passed to Edge instance.");
 
     if (!tree_containing_edge_start->contains(*edge_end)) {
       auto tree_containg_edge_end = std::find_if(
-          Cell_trees_.begin(), Cell_trees_.end(),
+          cell_trees_.begin(), cell_trees_.end(),
           [this, &edge_end](const std::set<Position>& tree) {
             return tree.contains(*edge_end);
           }
@@ -43,7 +41,7 @@ std::unique_ptr<Layout> KruskalsGenerator::Get(
       tree_containing_edge_start->insert(
           tree_containg_edge_end->begin(), tree_containg_edge_end->end()
       );
-      Cell_trees_.erase(tree_containg_edge_end);
+      cell_trees_.erase(tree_containg_edge_end);
       maze_layout->Unblock(edge);
     }
 
@@ -56,11 +54,11 @@ void KruskalsGenerator::InitializeCellTrees(
     const uint16_t& layout_rows,
     const uint16_t& layout_cols
 ) {
-  Cell_trees_.clear();
-  Cell_trees_.reserve(layout_rows * layout_cols);
+  cell_trees_.clear();
+  cell_trees_.reserve(layout_rows * layout_cols);
   for (size_t i = kFirstCellIndex; i < layout_rows; i += kStep)
     for (size_t j = kFirstCellIndex; j < layout_cols; j += kStep)
-      Cell_trees_.push_back({Position(i, j)});
+      cell_trees_.push_back({Position(i, j)});
 }
 
 void KruskalsGenerator::InitializeEdges(

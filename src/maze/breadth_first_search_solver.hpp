@@ -3,8 +3,8 @@
 
 #include <optional>
 
-#include "layout.hpp"
 #include "solver.hpp"
+#include "layout.hpp"
 #include "utility.hpp"
 
 namespace maze {

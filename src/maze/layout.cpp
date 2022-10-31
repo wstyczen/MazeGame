@@ -66,8 +66,7 @@ bool Layout::IsBlocked(const Position& position) const {
 }
 
 bool Layout::CanMove(const Edge& edge) const {
-  std::optional<Position> at_half_step = edge.To(kHalfStep);
-  return (IsWithin(*at_half_step) && !IsBlocked(*at_half_step));
+  return IsWithin(*edge.To()) && !IsBlocked(*edge.To(kHalfStep));
 }
 
 void Layout::Unblock(const Edge& edge) {

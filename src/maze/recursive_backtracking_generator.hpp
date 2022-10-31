@@ -6,27 +6,21 @@
 
 #include "generator.hpp"
 #include "layout.hpp"
+#include "unvisited.hpp"
 #include "utility.hpp"
 
 namespace maze {
 
-class RecursiveBacktrackingGenerator : public Generator {
+class RecursiveBacktrackingGenerator : public Generator, public Unvisited {
  public:
-  virtual std::unique_ptr<Layout> Get(
-      const uint16_t& cells_vertical,
-      const uint16_t& cells_horizontal
-  ) override;
+  virtual std::unique_ptr<Layout>
+  Get(const uint16_t& cells_vertical, const uint16_t& cells_horizontal) final;
   ~RecursiveBacktrackingGenerator();
 
  private:
   RecursiveBacktrackingGenerator();
 
-  void
-  InitializeCells(const uint16_t& layout_rows, const uint16_t& layout_cols);
-
   void Move(Layout* const layout, const Position& position);
-
-  std::set<Position> unvisited_cells_;
 
   friend class GeneratorFactory;
 };

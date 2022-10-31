@@ -9,9 +9,9 @@ namespace maze {
 
 class Generator {
  public:
+  virtual ~Generator(){};
   virtual std::unique_ptr<Layout>
   Get(const uint16_t& cells_vertical, const uint16_t& cells_horizontal) = 0;
-  virtual ~Generator(){};
 };
 
 }  // namespace maze

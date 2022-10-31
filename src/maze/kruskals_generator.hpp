@@ -5,7 +5,7 @@
 #include <set>
 #include <vector>
 
-#include "boost/graph/adjacency_list.hpp"
+// #include "boost/graph/adjacency_list.hpp"
 
 #include "generator.hpp"
 #include "generator_factory.hpp"
@@ -17,10 +17,8 @@ class KruskalsGenerator : public Generator {
  public:
   ~KruskalsGenerator();
 
-  std::unique_ptr<Layout> Get(
-      const uint16_t& cells_vertical,
-      const uint16_t& cells_horizontal
-  ) override;
+  std::unique_ptr<Layout>
+  Get(const uint16_t& cells_vertical, const uint16_t& cells_horizontal) final;
 
  private:
   KruskalsGenerator();
@@ -34,7 +32,7 @@ class KruskalsGenerator : public Generator {
       const uint16_t& cells_horizontal
   );
 
-  std::vector<std::set<Position>> Cell_trees_;
+  std::vector<std::set<Position>> cell_trees_;
   std::deque<Edge> edges_;
 
   friend class GeneratorFactory;
