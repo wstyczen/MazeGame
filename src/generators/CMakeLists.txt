@@ -8,6 +8,14 @@ add_library(maze_generators
   kruskals_generator.hpp
   layout.cpp
   layout.hpp
+  solver.hpp
+  solver.cpp
+  breadth_first_search_solver.hpp
+  breadth_first_search_solver.cpp
+  solver_factory.cpp
+  solver_factory.hpp
+  utility.hpp
+  utility.cpp
 )
 
 target_link_libraries(maze_generators

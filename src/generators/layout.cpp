@@ -1,44 +1,86 @@
 #include "layout.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 
 #include "utility.hpp"
 
+namespace maze {
+
 namespace {
 
-inline size_t GetExpandedSize(const size_t& original) {
-  return 2 * original + 1;
-}
-
-inline Position GetExpandedPosition(const Position& position) {
-  return Position(GetExpandedSize(position.y), GetExpandedSize(position.x));
+uint16_t GetLayoutSizeFromTiles(const uint16_t& tiles) {
+  return tiles * kStep + kFirstTileIndex;
 }
 
 }  // namespace
 
-namespace maze {
-
-Layout::Layout(const uint16_t& N, const uint16_t& M) {
-  const uint16_t rows = GetExpandedSize(N), cols = GetExpandedSize(M);
-  layout_.reserve(rows);
-  for (size_t i = 0; i != rows; i += 1) {
-    if (i % 2 == 0)
-      layout_.push_back(std::vector<char>(cols, kBlocked));
+Layout::Layout(const uint16_t& vertical_tiles, const uint16_t& horizontal_tiles)
+    : rows_(GetLayoutSizeFromTiles(vertical_tiles)),
+      cols_(GetLayoutSizeFromTiles(horizontal_tiles)) {
+  assert(
+      (vertical_tiles % kStep != 0 && horizontal_tiles % kStep != 0) &&
+      "Even tile size provided."
+  );
+  layout_.reserve(rows_);
+  for (size_t i = 0; i != rows_; i += 1) {
+    if (i % kStep == 0)
+      layout_.push_back(std::vector<char>(cols_, kBlocked));
     else {
-      std::vector<char> row = std::vector<char>(cols, kBlocked);
-      for (size_t j = 1; j <= cols; j += 2)
+      std::vector<char> row = std::vector<char>(cols_, kBlocked);
+      for (size_t j = kFirstTileIndex; j <= cols_; j += kStep)
         row[j] = kEmpty;
       layout_.push_back(std::move(row));
     }
   }
 }
 
+uint16_t Layout::rows() const {
+  return rows_;
+}
+uint16_t Layout::cols() const {
+  return cols_;
+}
+uint16_t Layout::middle_row() const {
+  return rows_ / kStep;
+}
+uint16_t Layout::bottom_row() const {
+  return rows_ - 2;
+}
+uint16_t Layout::middle_col() const {
+  return cols_ / kStep;
+}
+uint16_t Layout::rightmost_col() const {
+  return cols_ - 2;
+}
+
+bool Layout::IsWithin(const Position& position) const {
+  return position.y > 0 && position.y < rows_ && position.x > 0 &&
+         position.x < cols_;
+}
+
+bool Layout::IsBlocked(const Position& position) const {
+  assert(IsWithin(position) && "Trying to access a tile out of range.");
+  return layout_.at(position.y).at(position.x) == kBlocked;
+}
+
+bool Layout::CanMove(const Edge& edge) const {
+  std::optional<Position> at_half_step = edge.To(kHalfStep);
+  return (IsWithin(*at_half_step) && !IsBlocked(*at_half_step));
+}
+
 void Layout::Unblock(const Edge& edge) {
-  const std::optional<Position> to_unblock =
-      Edge(GetExpandedPosition(edge.from_), edge.direction_).To();
-  assert(to_unblock && "Invalid enum value passed.");
-  layout_.at(to_unblock->y).at(to_unblock->x) = kUnblocked;
+  const std::optional<Position> to = edge.To();
+  assert(to && "Invalid Direction enum passed to Edge instance.");
+  const Position to_unblock = {
+      (edge.from.y + to->y) / uint16_t{2}, (edge.from.x + to->x) / uint16_t{2}};
+  layout_.at(to_unblock.y).at(to_unblock.x) = kUnblocked;
+}
+
+void Layout::AddPath(const Path& path) {
+  for (const Position& position : path)
+    layout_.at(position.y).at(position.x) = kPath;
 }
 
 void Layout::Show() const {
@@ -46,14 +88,15 @@ void Layout::Show() const {
     for (const char& c : row) {
       switch (c) {
         case kBlocked:
-          std::cout << "\u2587";
+          std::cout << "\u2588";
           continue;
-        case kUnblocked: {
+        case kUnblocked:
+        case kEmpty: {
           std::cout << " ";
           continue;
         }
-        case kEmpty: {
-          std::cout << " ";
+        case kPath: {
+          std::cout << "\u26CC";
           continue;
         }
       }

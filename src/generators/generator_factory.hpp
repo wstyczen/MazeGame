@@ -7,6 +7,13 @@
 
 namespace maze {
 
+enum class GeneratorType {
+  KRUSKALS,
+  PRIMS,
+  GROWING_TREE,
+  RECURSIVE_BACKGTRACKING,
+};
+
 class GeneratorFactory {
  public:
   ~GeneratorFactory();
