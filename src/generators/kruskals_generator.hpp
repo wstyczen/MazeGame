@@ -18,23 +18,23 @@ class KruskalsGenerator : public Generator {
   ~KruskalsGenerator();
 
   std::unique_ptr<Layout> Get(
-      const uint16_t& tiles_vertical,
-      const uint16_t& tiles_horizontal
+      const uint16_t& cells_vertical,
+      const uint16_t& cells_horizontal
   ) override;
 
  private:
   KruskalsGenerator();
 
   void InitializeCellTrees(
-      const uint16_t& tiles_vertical,
-      const uint16_t& tiles_horizontal
+      const uint16_t& cells_vertical,
+      const uint16_t& cells_horizontal
   );
   void InitializeEdges(
-      const uint16_t& tiles_vertical,
-      const uint16_t& tiles_horizontal
+      const uint16_t& cells_vertical,
+      const uint16_t& cells_horizontal
   );
 
-  std::vector<std::set<Position>> tile_trees_;
+  std::vector<std::set<Position>> Cell_trees_;
   std::deque<Edge> edges_;
 
   friend class GeneratorFactory;

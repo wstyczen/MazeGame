@@ -10,7 +10,7 @@ namespace maze {
 
 constexpr uint16_t kHalfStep = 1;
 constexpr uint16_t kStep = 2;
-constexpr uint16_t kFirstTileIndex = 1;
+constexpr uint16_t kFirstCellIndex = 1;
 
 enum class Direction {
   UP,

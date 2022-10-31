@@ -4,6 +4,7 @@
 
 #include "generator.hpp"
 #include "kruskals_generator.hpp"
+#include "recursive_backtracking_generator.hpp"
 
 namespace maze {
 
@@ -25,6 +26,8 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
   switch (generator_type) {
     case GeneratorType::KRUSKALS:
       return std::unique_ptr<Generator>(new KruskalsGenerator);
+    case GeneratorType::RECURSIVE_BACKGTRACKING:
+      return std::unique_ptr<Generator>(new RecursiveBacktrackingGenerator);
   }
   return nullptr;
 }

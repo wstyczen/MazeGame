@@ -10,18 +10,18 @@ namespace maze {
 
 namespace {
 
-uint16_t GetLayoutSizeFromTiles(const uint16_t& tiles) {
-  return tiles * kStep + kFirstTileIndex;
+uint16_t GetLayoutSizeFromCells(const uint16_t& cell_count) {
+  return cell_count * kStep + kFirstCellIndex;
 }
 
 }  // namespace
 
-Layout::Layout(const uint16_t& vertical_tiles, const uint16_t& horizontal_tiles)
-    : rows_(GetLayoutSizeFromTiles(vertical_tiles)),
-      cols_(GetLayoutSizeFromTiles(horizontal_tiles)) {
+Layout::Layout(const uint16_t& vertical_cells, const uint16_t& horizontal_cells)
+    : rows_(GetLayoutSizeFromCells(vertical_cells)),
+      cols_(GetLayoutSizeFromCells(horizontal_cells)) {
   assert(
-      (vertical_tiles % kStep != 0 && horizontal_tiles % kStep != 0) &&
-      "Even tile size provided."
+      (vertical_cells % kStep != 0 && horizontal_cells % kStep != 0) &&
+      "Even Cell size provided."
   );
   layout_.reserve(rows_);
   for (size_t i = 0; i != rows_; i += 1) {
@@ -29,7 +29,7 @@ Layout::Layout(const uint16_t& vertical_tiles, const uint16_t& horizontal_tiles)
       layout_.push_back(std::vector<char>(cols_, kBlocked));
     else {
       std::vector<char> row = std::vector<char>(cols_, kBlocked);
-      for (size_t j = kFirstTileIndex; j <= cols_; j += kStep)
+      for (size_t j = kFirstCellIndex; j <= cols_; j += kStep)
         row[j] = kEmpty;
       layout_.push_back(std::move(row));
     }
@@ -61,7 +61,7 @@ bool Layout::IsWithin(const Position& position) const {
 }
 
 bool Layout::IsBlocked(const Position& position) const {
-  assert(IsWithin(position) && "Trying to access a tile out of range.");
+  assert(IsWithin(position) && "Trying to access a Cell out of range.");
   return layout_.at(position.y).at(position.x) == kBlocked;
 }
 

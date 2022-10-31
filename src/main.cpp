@@ -11,13 +11,14 @@
 #include <memory>
 
 int main() {
-  std::srand(std::time(0));  // use current time as seed for random generator
+  std::srand(std::time(0));  // use current time as seed for random generators
 
-  std::unique_ptr<maze::Generator> kruskals =
+  std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(
-          maze::GeneratorType::KRUSKALS
+          maze::GeneratorType::RECURSIVE_BACKGTRACKING
       );
-  const std::unique_ptr<maze::Layout> maze_layout = kruskals->Get(17, 33);
+  // const std::unique_ptr<maz e::Layout> maze_layout = generator->Get(17, 33);
+  const std::unique_ptr<maze::Layout> maze_layout = generator->Get(11, 11);
 
   std::unique_ptr<maze::Solver> bfs =
       maze::SolverFactory::GetInstance()->GetSolver(

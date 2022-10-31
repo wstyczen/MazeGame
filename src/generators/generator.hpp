@@ -10,7 +10,7 @@ namespace maze {
 class Generator {
  public:
   virtual std::unique_ptr<Layout>
-  Get(const uint16_t& tiles_vertical, const uint16_t& tiles_horizontal) = 0;
+  Get(const uint16_t& cells_vertical, const uint16_t& cells_horizontal) = 0;
   virtual ~Generator(){};
 };
 

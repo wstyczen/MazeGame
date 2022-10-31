@@ -16,6 +16,8 @@ add_library(maze_generators
   solver_factory.hpp
   utility.hpp
   utility.cpp
+  recursive_backtracking_generator.cpp
+  recursive_backtracking_generator.hpp
 )
 
 target_link_libraries(maze_generators

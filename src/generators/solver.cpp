@@ -15,34 +15,34 @@ Solver::Solve(const Layout* const layout, const PathType path_type) {
     case PathType::BOTTOM_TO_TOP: {
       return Solve(
           layout, {layout->bottom_row(), layout->middle_col()},
-          {kFirstTileIndex, layout->middle_col()}
+          {kFirstCellIndex, layout->middle_col()}
       );
       break;
     }
     case PathType::BOTTOM_LEFT_TO_TOP_RIGHT: {
       return Solve(
-          layout, {layout->bottom_row(), kFirstTileIndex},
-          {kFirstTileIndex, layout->rightmost_col()}
+          layout, {layout->bottom_row(), kFirstCellIndex},
+          {kFirstCellIndex, layout->rightmost_col()}
       );
       break;
     }
     case PathType::LEFT_TO_RIGHT: {
       return Solve(
-          layout, {layout->middle_row(), kFirstTileIndex},
+          layout, {layout->middle_row(), kFirstCellIndex},
           {layout->middle_row(), layout->rightmost_col()}
       );
       break;
     }
     case PathType::TOP_LEFT_TO_BOTTOM_RIGHT: {
       return Solve(
-          layout, {kFirstTileIndex, kFirstTileIndex},
+          layout, {kFirstCellIndex, kFirstCellIndex},
           {layout->bottom_row(), layout->rightmost_col()}
       );
       break;
     }
     case PathType::TOP_TO_BOTTOM: {
       return Solve(
-          layout, {kFirstTileIndex, layout->middle_col()},
+          layout, {kFirstCellIndex, layout->middle_col()},
           {layout->bottom_row(), layout->middle_col()}
       );
       break;
