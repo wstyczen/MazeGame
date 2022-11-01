@@ -1,5 +1,6 @@
 #include "generator_factory.hpp"
 
+#include <cassert>
 #include <memory>
 
 #include "aldous_broder_generator.hpp"
@@ -24,9 +25,30 @@ GeneratorFactory* GeneratorFactory::GetInstance() {
   return instance_;
 }
 
+std::string GeneratorFactory::GetGeneratorName(
+    const GeneratorType& generator_type
+) const {
+  switch (generator_type) {
+    case GeneratorType::ALDOUS_BRODER:
+      return "Aldous-Broder";
+    case GeneratorType::GROWING_TREE:
+      return "Growing Tree";
+    case GeneratorType::KRUSKALS:
+      return "Kruskal's";
+    case GeneratorType::PRIMS:
+      return "Prim's";
+    case GeneratorType::RECURSIVE_BACKGTRACKING:
+      return "Recursive Backtracking";
+    case GeneratorType::WILSONS_GENERATOR:
+      return "Wilson's";
+  }
+  assert(0 && "No such generator type.");
+  return "";
+}
+
 std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
     const GeneratorType& generator_type
-) {
+) const {
   switch (generator_type) {
     case GeneratorType::ALDOUS_BRODER:
       return std::unique_ptr<Generator>(new AldousBroderGenerator);
@@ -41,6 +63,7 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
     case GeneratorType::WILSONS_GENERATOR:
       return std::unique_ptr<Generator>(new WilsonsGenerator);
   }
+  assert(0 && "No such generator type.");
   return nullptr;
 }
 

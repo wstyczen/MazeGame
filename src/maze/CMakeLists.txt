@@ -14,6 +14,7 @@ add_executable(maze
   growing_tree_generator.cpp
   aldous_broder_generator.cpp
   wilsons_generator.cpp
+  generator_test_run.cpp
 )
 
 # target_link_libraries(launch

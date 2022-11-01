@@ -8,12 +8,14 @@
 namespace maze {
 
 enum class GeneratorType {
-  ALDOUS_BRODER,
+  FIRST,
+  ALDOUS_BRODER = FIRST,
   KRUSKALS,
   GROWING_TREE,
   PRIMS,
   RECURSIVE_BACKGTRACKING,
   WILSONS_GENERATOR,
+  LAST = WILSONS_GENERATOR,
 };
 
 class GeneratorFactory {
@@ -21,7 +23,9 @@ class GeneratorFactory {
   ~GeneratorFactory();
   static GeneratorFactory* GetInstance();
 
-  std::unique_ptr<Generator> GetGenerator(const GeneratorType& generator_type);
+  std::string GetGeneratorName(const GeneratorType& generator_type) const;
+  std::unique_ptr<Generator> GetGenerator(const GeneratorType& generator_type
+  ) const;
 
  private:
   GeneratorFactory();
