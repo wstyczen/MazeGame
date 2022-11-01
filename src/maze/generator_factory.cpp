@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "generator.hpp"
+#include "growing_tree_generator.hpp"
 #include "kruskals_generator.hpp"
 #include "prims_generator.hpp"
 #include "recursive_backtracking_generator.hpp"
@@ -31,6 +32,8 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
       return std::unique_ptr<Generator>(new PrimsGenerator);
     case GeneratorType::RECURSIVE_BACKGTRACKING:
       return std::unique_ptr<Generator>(new RecursiveBacktrackingGenerator);
+    case GeneratorType::GROWING_TREE:
+      return std::unique_ptr<Generator>(new GrowingTreeGenerator);
   }
   return nullptr;
 }

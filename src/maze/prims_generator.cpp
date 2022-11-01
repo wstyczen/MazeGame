@@ -12,11 +12,9 @@ Edge PickRandomEdgeFromFrontier(Frontier& frontier) {
   // Pick origin
   std::vector<Position>& origins = frontier_iter->second;
   auto origin_iter = origins.begin();
+  std::advance(origin_iter, std::rand() % origins.size());
   Position origin = *origin_iter;
-  if (origins.size() > 1) {
-    std::advance(origin_iter, std::rand() % origins.size());
-  }
-  // Move as an edge
+
   const Edge edge(
       origin, GetAsDirection(
                   static_cast<int16_t>(destination.y) - origin.y,
@@ -40,9 +38,8 @@ std::unique_ptr<Layout> PrimsGenerator::Get(
   auto maze_layout = std::make_unique<Layout>(cells_vertical, cells_horizontal);
 
   std::function<bool(const Position&, const Direction&)> validity_check =
-      [this,
-       &maze_layout](const Position& position, const Direction& direction) {
-        const Position destination = *Edge(position, direction).To();
+      [this, &maze_layout](const Position& origin, const Direction& direction) {
+        const Position destination = *Edge(origin, direction).To();
         return maze_layout->IsWithin(destination) &&
                unvisited_.contains(destination);
       };

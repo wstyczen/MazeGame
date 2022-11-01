@@ -32,7 +32,7 @@ std::optional<Position> Edge::To(const uint16_t& step) const {
   return std::nullopt;
 }
 
-std::deque<Direction> GetValidMoveDirections(ValidityCheck validity_check) {
+std::deque<Direction> GetValidMoveDirections(MoveValidityCheck validity_check) {
   static const std::deque<Direction> directions = {
       Direction::UP,
       Direction::RIGHT,
@@ -49,7 +49,8 @@ std::deque<Direction> GetValidMoveDirections(ValidityCheck validity_check) {
   return valid_directions;
 }
 
-std::deque<Direction> GetRandomizedMoveDirections(ValidityCheck validity_check
+std::deque<Direction> GetRandomizedMoveDirections(
+    MoveValidityCheck validity_check
 ) {
   std::deque<Direction> randomized_directions =
       GetValidMoveDirections(validity_check);
@@ -57,6 +58,18 @@ std::deque<Direction> GetRandomizedMoveDirections(ValidityCheck validity_check
       randomized_directions.begin(), randomized_directions.end()
   );
   return randomized_directions;
+}
+
+std::optional<Direction> GetRandomMoveDirection(MoveValidityCheck validity_check
+) {
+  auto valid_move_directions = GetValidMoveDirections(validity_check);
+
+  if (valid_move_directions.empty())
+    return std::nullopt;
+
+  auto direction_iter = valid_move_directions.begin();
+  std::advance(direction_iter, std::rand() % valid_move_directions.size());
+  return *direction_iter;
 }
 
 Direction GetAsDirection(const int16_t& dy, const int16_t& dx) {

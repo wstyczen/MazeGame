@@ -13,10 +13,10 @@ int main() {
 
   std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(
-          maze::GeneratorType::PRIMS
+          maze::GeneratorType::GROWING_TREE
       );
-  const std::unique_ptr<maze::Layout> maze_layout = generator->Get(17, 33);
-  // const std::unique_ptr<maze::Layout> maze_layout = generator->Get(11, 11);
+  // const std::unique_ptr<maze::Layout> maze_layout = generator->Get(17, 33);
+  const std::unique_ptr<maze::Layout> maze_layout = generator->Get(11, 11);
 
   std::unique_ptr<maze::Solver> bfs =
       maze::SolverFactory::GetInstance()->GetSolver(

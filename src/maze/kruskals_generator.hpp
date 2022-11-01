@@ -8,7 +8,6 @@
 // #include "boost/graph/adjacency_list.hpp"
 
 #include "generator.hpp"
-#include "generator_factory.hpp"
 #include "utility.hpp"
 
 namespace maze {

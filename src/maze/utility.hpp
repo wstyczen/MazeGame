@@ -36,14 +36,18 @@ struct Edge {
 
 using Path = std::vector<Position>;
 
-using ValidityCheck = std::function<bool(const Direction& direction)>;
+using MoveValidityCheck = std::function<bool(const Direction& direction)>;
 
 std::deque<Direction> GetValidMoveDirections(
-    ValidityCheck validity_check = nullptr
+    MoveValidityCheck validity_check = nullptr
 );
 
 std::deque<Direction> GetRandomizedMoveDirections(
-    ValidityCheck validity_check = nullptr
+    MoveValidityCheck validity_check = nullptr
+);
+
+std::optional<Direction> GetRandomMoveDirection(
+    MoveValidityCheck validity_check = nullptr
 );
 
 Direction GetAsDirection(const int16_t& dy, const int16_t& dx);

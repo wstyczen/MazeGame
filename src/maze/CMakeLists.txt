@@ -11,6 +11,7 @@ add_executable(maze
   solver_factory.cpp
   solver.cpp
   unvisited.cpp
+  growing_tree_generator.cpp
 )
 
 # target_link_libraries(launch

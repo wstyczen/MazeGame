@@ -8,6 +8,7 @@
 namespace maze {
 
 enum class GeneratorType {
+  ALDOUS_BRODER,
   KRUSKALS,
   GROWING_TREE,
   PRIMS,
