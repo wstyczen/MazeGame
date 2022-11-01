@@ -21,16 +21,21 @@ class Layout {
 
   bool IsWithin(const Position& position) const;
   bool IsBlocked(const Position& position) const;
+  bool IsACell(const Position& position) const;
   bool CanMove(const Edge& edge) const;
 
+  void ClearCells();
   void Unblock(const Edge& edge);
   void AddPath(const Path& path);
+  void SetLocation(const Position& position);
+
   void Show() const;
 
-  constexpr static char kBlocked = 'B';
-  constexpr static char kUnblocked = 'U';
-  constexpr static char kEmpty = 'E';
+  constexpr static char kCell = 'C';
+  constexpr static char kWall = 'W';
+  constexpr static char kDoor = 'D';
   constexpr static char kPath = 'P';
+  constexpr static char kLocation = 'X';
 
  private:
   const uint16_t rows_, cols_;

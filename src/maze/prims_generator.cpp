@@ -37,8 +37,10 @@ std::unique_ptr<Layout> PrimsGenerator::Get(
 ) {
   auto maze_layout = std::make_unique<Layout>(cells_vertical, cells_horizontal);
 
-  std::function<bool(const Position&, const Direction&)> validity_check =
-      [this, &maze_layout](const Position& origin, const Direction& direction) {
+  static const std::function<bool(const Position&, const Direction&)>
+      validity_check = [this, &maze_layout](
+                           const Position& origin, const Direction& direction
+                       ) {
         const Position destination = *Edge(origin, direction).To();
         return maze_layout->IsWithin(destination) &&
                unvisited_.contains(destination);

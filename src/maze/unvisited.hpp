@@ -9,6 +9,8 @@ namespace maze {
 
 class Unvisited {
  protected:
+  Unvisited();
+  virtual ~Unvisited();
   Position PickRandom();
   void
   InitializeUnvisited(const uint16_t& layout_rows, const uint16_t& layout_cols);

@@ -13,7 +13,7 @@ int main() {
 
   std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(
-          maze::GeneratorType::GROWING_TREE
+          maze::GeneratorType::ALDOUS_BRODER
       );
   // const std::unique_ptr<maze::Layout> maze_layout = generator->Get(17, 33);
   const std::unique_ptr<maze::Layout> maze_layout = generator->Get(11, 11);

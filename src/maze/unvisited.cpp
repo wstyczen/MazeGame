@@ -4,6 +4,9 @@
 
 namespace maze {
 
+Unvisited::Unvisited() = default;
+Unvisited::~Unvisited() = default;
+
 void Unvisited::InitializeUnvisited(
     const uint16_t& layout_rows,
     const uint16_t& layout_cols

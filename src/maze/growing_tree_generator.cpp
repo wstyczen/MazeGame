@@ -17,8 +17,10 @@ std::unique_ptr<Layout> GrowingTreeGenerator::Get(
 
   InitializeUnvisited(maze_layout->rows(), maze_layout->cols());
 
-  std::function<bool(const Position&, const Direction&)> validity_check =
-      [this, &maze_layout](const Position& origin, const Direction& direction) {
+  static const std::function<bool(const Position&, const Direction&)>
+      validity_check = [this, &maze_layout](
+                           const Position& origin, const Direction& direction
+                       ) {
         const Position destination = *Edge(origin, direction).To();
         return unvisited_.contains(destination) &&
                maze_layout->IsWithin(destination);

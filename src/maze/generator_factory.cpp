@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "aldous_broder_generator.hpp"
 #include "generator.hpp"
 #include "growing_tree_generator.hpp"
 #include "kruskals_generator.hpp"
@@ -26,14 +27,16 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
     const GeneratorType& generator_type
 ) {
   switch (generator_type) {
+    case GeneratorType::ALDOUS_BRODER:
+      return std::unique_ptr<Generator>(new AldousBroderGenerator);
+    case GeneratorType::GROWING_TREE:
+      return std::unique_ptr<Generator>(new GrowingTreeGenerator);
     case GeneratorType::KRUSKALS:
       return std::unique_ptr<Generator>(new KruskalsGenerator);
     case GeneratorType::PRIMS:
       return std::unique_ptr<Generator>(new PrimsGenerator);
     case GeneratorType::RECURSIVE_BACKGTRACKING:
       return std::unique_ptr<Generator>(new RecursiveBacktrackingGenerator);
-    case GeneratorType::GROWING_TREE:
-      return std::unique_ptr<Generator>(new GrowingTreeGenerator);
   }
   return nullptr;
 }
