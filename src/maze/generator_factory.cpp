@@ -8,6 +8,7 @@
 #include "kruskals_generator.hpp"
 #include "prims_generator.hpp"
 #include "recursive_backtracking_generator.hpp"
+#include "wilsons_generator.hpp"
 
 namespace maze {
 
@@ -37,6 +38,8 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
       return std::unique_ptr<Generator>(new PrimsGenerator);
     case GeneratorType::RECURSIVE_BACKGTRACKING:
       return std::unique_ptr<Generator>(new RecursiveBacktrackingGenerator);
+    case GeneratorType::WILSONS_GENERATOR:
+      return std::unique_ptr<Generator>(new WilsonsGenerator);
   }
   return nullptr;
 }

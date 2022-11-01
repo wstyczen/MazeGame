@@ -13,6 +13,7 @@ add_executable(maze
   unvisited.cpp
   growing_tree_generator.cpp
   aldous_broder_generator.cpp
+  wilsons_generator.cpp
 )
 
 # target_link_libraries(launch

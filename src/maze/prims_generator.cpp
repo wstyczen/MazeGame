@@ -47,7 +47,7 @@ std::unique_ptr<Layout> PrimsGenerator::Get(
       };
 
   InitializeUnvisited(maze_layout->rows(), maze_layout->cols());
-  Position position = PickRandom();
+  Position position = PickRandomUnvisited();
 
   while (!unvisited_.empty()) {
     for (const Direction& direction : GetValidMoveDirections(

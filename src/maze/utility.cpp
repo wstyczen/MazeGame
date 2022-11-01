@@ -3,15 +3,12 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <tuple>
 
 namespace maze {
 
 bool Position::operator<(const Position& other) const {
-  if (y < other.y)
-    return true;
-  else if (y > other.y)
-    return false;
-  return x < other.x;
+  return std::tie(y, x) < std::tie(other.y, other.x);
 }
 
 bool Position::operator==(const Position& other) const {

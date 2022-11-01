@@ -13,6 +13,7 @@ enum class GeneratorType {
   GROWING_TREE,
   PRIMS,
   RECURSIVE_BACKGTRACKING,
+  WILSONS_GENERATOR,
 };
 
 class GeneratorFactory {

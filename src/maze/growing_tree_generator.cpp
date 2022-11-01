@@ -26,7 +26,7 @@ std::unique_ptr<Layout> GrowingTreeGenerator::Get(
                maze_layout->IsWithin(destination);
       };
 
-  path_.push_back(PickRandom());
+  path_.push_back(PickRandomUnvisited());
 
   Position position;
   while (!unvisited_.empty()) {

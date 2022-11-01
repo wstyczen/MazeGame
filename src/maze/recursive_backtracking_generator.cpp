@@ -19,7 +19,7 @@ std::unique_ptr<Layout> RecursiveBacktrackingGenerator::Get(
   auto maze_layout = std::make_unique<Layout>(cells_vertical, cells_horizontal);
   InitializeUnvisited(maze_layout->rows(), maze_layout->cols());
 
-  Move(maze_layout.get(), PickRandom());
+  Move(maze_layout.get(), PickRandomUnvisited());
 
   return std::move(maze_layout);
 }

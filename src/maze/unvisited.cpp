@@ -17,12 +17,13 @@ void Unvisited::InitializeUnvisited(
       unvisited_.emplace(i, j);
 }
 
-Position Unvisited::PickRandom() {
+Position Unvisited::PickRandomUnvisited(bool erase) {
   auto iter = unvisited_.begin();
   std::advance(iter, std::rand() % unvisited_.size());
 
   const Position picked = *iter;
-  unvisited_.erase(iter);
+  if (erase)
+    unvisited_.erase(iter);
 
   return picked;
 }

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <set>
 
 #include "utility.hpp"
 
@@ -71,7 +72,9 @@ bool Layout::IsACell(const Position& position) const {
   assert(
       IsWithin(position) && "Trying to access a cell outside of the layout."
   );
-  return layout_.at(position.y).at(position.x) == kCell;
+  return std::set<char>{kCell, kLocation, kPath}.contains(
+      layout_.at(position.y).at(position.x)
+  );
 }
 
 bool Layout::CanMove(const Edge& edge) const {

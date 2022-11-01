@@ -21,7 +21,7 @@ std::unique_ptr<Layout> AldousBroderGenerator::Get(
               const Position& origin, const Direction& direction
           ) { return maze_layout->IsWithin(*Edge(origin, direction).To()); };
 
-  Position position = PickRandom();
+  Position position = PickRandomUnvisited();
   // Choose any cell - visited or not - and travel through until all cells have
   // been visited
   while (!unvisited_.empty()) {
