@@ -17,5 +17,13 @@ add_executable(maze
   generator_test_run.cpp
 )
 
+find_package(Boost 1.80 REQUIRED COMPONENTS system json regex)
+target_link_libraries(maze
+  Boost::system
+  Boost::regex
+  Boost::json)
+
+
+
 # target_link_libraries(launch
 #   maze_generators)

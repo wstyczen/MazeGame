@@ -37,7 +37,7 @@ std::string GeneratorFactory::GetGeneratorName(
       return "Kruskal's";
     case GeneratorType::PRIMS:
       return "Prim's";
-    case GeneratorType::RECURSIVE_BACKGTRACKING:
+    case GeneratorType::RECURSIVE_BACKTRACKING:
       return "Recursive Backtracking";
     case GeneratorType::WILSONS_GENERATOR:
       return "Wilson's";
@@ -58,7 +58,7 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
       return std::unique_ptr<Generator>(new KruskalsGenerator);
     case GeneratorType::PRIMS:
       return std::unique_ptr<Generator>(new PrimsGenerator);
-    case GeneratorType::RECURSIVE_BACKGTRACKING:
+    case GeneratorType::RECURSIVE_BACKTRACKING:
       return std::unique_ptr<Generator>(new RecursiveBacktrackingGenerator);
     case GeneratorType::WILSONS_GENERATOR:
       return std::unique_ptr<Generator>(new WilsonsGenerator);

@@ -5,6 +5,7 @@
 #include <optional>
 #include <queue>
 #include <set>
+#include <unordered_set>
 #include <vector>
 
 #include "utility.hpp"
@@ -28,7 +29,7 @@ std::optional<Path> BreadthFirstSearchSolver::Solve(
   SetParameters(layout, start, goal);
 
   std::queue<Position> to_visit;
-  std::set<Position> visited;
+  std::unordered_set<Position> visited;
   std::map<Position, Position> predecessors;
 
   visited.insert(start);

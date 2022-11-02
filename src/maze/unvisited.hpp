@@ -1,7 +1,7 @@
 #ifndef MAZE_UNVISITED_HPP_
 #define MAZE_UNVISITED_HPP_
 
-#include <set>
+#include <unordered_set>
 
 #include "utility.hpp"
 
@@ -14,7 +14,7 @@ class Unvisited {
   Position PickRandomUnvisited(bool erase = true);
   void
   InitializeUnvisited(const uint16_t& layout_rows, const uint16_t& layout_cols);
-  std::set<Position> unvisited_;
+  std::unordered_set<Position> unvisited_;
 };
 
 }  // namespace maze

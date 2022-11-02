@@ -39,7 +39,8 @@ int main() {
 
   // Generate a maze and print it to the terminal
   // GenerateToTerminal(
-  //     maze::GeneratorType::KRUSKALS, maze::SolverType::BREADTH_FIRST_SEARCH,
+  //     maze::GeneratorType::RECURSIVE_BACKTRACKING,
+  //     maze::SolverType::BREADTH_FIRST_SEARCH,
   //     maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, 11, 17
   // );
 

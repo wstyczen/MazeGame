@@ -2,7 +2,7 @@
 #define MAZE_KRUSKALS_GENERATOR_HPP_
 
 #include <deque>
-#include <set>
+#include <unordered_set>
 #include <vector>
 
 // #include "boost/graph/adjacency_list.hpp"
@@ -31,7 +31,7 @@ class KruskalsGenerator : public Generator {
       const uint16_t& cells_horizontal
   );
 
-  std::vector<std::set<Position>> cell_trees_;
+  std::vector<std::unordered_set<Position>> cell_trees_;
   std::deque<Edge> edges_;
 
   friend class GeneratorFactory;

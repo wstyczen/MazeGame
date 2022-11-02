@@ -23,7 +23,7 @@ std::unique_ptr<Layout> KruskalsGenerator::Get(
     const Edge& edge = edges_.front();
     auto tree_containing_edge_start = std::find_if(
         cell_trees_.begin(), cell_trees_.end(),
-        [this, &edge](const std::set<Position>& tree) {
+        [this, &edge](const std::unordered_set<Position>& tree) {
           return tree.contains(edge.from);
         }
     );
@@ -34,7 +34,7 @@ std::unique_ptr<Layout> KruskalsGenerator::Get(
     if (!tree_containing_edge_start->contains(*edge_end)) {
       auto tree_containg_edge_end = std::find_if(
           cell_trees_.begin(), cell_trees_.end(),
-          [this, &edge_end](const std::set<Position>& tree) {
+          [this, &edge_end](const std::unordered_set<Position>& tree) {
             return tree.contains(*edge_end);
           }
       );

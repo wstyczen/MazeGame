@@ -53,4 +53,12 @@ Direction GetAsDirection(const int16_t& dy, const int16_t& dx);
 
 }  // namespace maze
 
+template <>
+struct std::hash<maze::Position> {
+  std::size_t operator()(maze::Position const& position) const noexcept {
+    auto [y, x] = position;
+    return (y << 8) ^ x;
+  }
+};
+
 #endif  // MAZE_UTILITY_HPP_
