@@ -9,14 +9,10 @@
 
 namespace maze {
 
-class Position;
-enum class Direction;
-
 class WilsonsGenerator : public Generator, public Unvisited {
  public:
   ~WilsonsGenerator();
-  std::unique_ptr<Layout>
-  Get(const uint16_t& vertical_cells, const uint16_t& horizontal_cells);
+  std::unique_ptr<Layout> Get(const CellSize& cell_size);
 
  private:
   WilsonsGenerator();

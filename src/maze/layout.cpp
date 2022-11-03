@@ -11,69 +11,74 @@ namespace maze {
 
 namespace {
 
-uint16_t GetLayoutSizeFromCells(const uint16_t& cell_count) {
-  return cell_count * kStep + kFirstCellIndex;
+uint16_t GetMazeDimensionFromCells(const uint16_t& cells) {
+  return cells * kStep + kFirstCellIndex;
 }
 
+LayoutSize GetLayoutSizeFromCellSize(const CellSize& cell_size) {
+  return {
+      GetMazeDimensionFromCells(cell_size.rows),
+      GetMazeDimensionFromCells(cell_size.cols)};
+}
 }  // namespace
 
-Layout::Layout(const uint16_t& vertical_cells, const uint16_t& horizontal_cells)
-    : rows_(GetLayoutSizeFromCells(vertical_cells)),
-      cols_(GetLayoutSizeFromCells(horizontal_cells)) {
+Layout::Layout(const CellSize& cell_size)
+    : size_(GetLayoutSizeFromCellSize(cell_size)) {
   assert(
-      (vertical_cells % kStep != 0 && horizontal_cells % kStep != 0) &&
-      "Even Cell size provided."
+      (cell_size.rows % kStep != 0 && cell_size.cols % kStep != 0) &&
+      "Even Cell size provided - only odd accepted."
   );
-  layout_.reserve(rows_);
-  for (size_t i = 0; i != rows_; i += 1) {
+
+  const auto& [rows, cols] = size_;
+
+  layout_.reserve(rows);
+  for (size_t i = 0; i != rows; i += 1) {
     if (i % kStep == 0)
-      layout_.push_back(std::vector<char>(cols_, kWall));
+      layout_.push_back(std::vector<char>(cols, kWall));
     else {
-      std::vector<char> row = std::vector<char>(cols_, kWall);
-      for (size_t j = kFirstCellIndex; j <= cols_; j += kStep)
+      auto row = std::vector<char>(cols, kWall);
+      for (size_t j = kFirstCellIndex; j <= cols; j += kStep)
         row[j] = kCell;
       layout_.push_back(std::move(row));
     }
   }
 }
 
-uint16_t Layout::rows() const {
-  return rows_;
+LayoutSize Layout::size() const {
+  return size_;
 }
-uint16_t Layout::cols() const {
-  return cols_;
-}
+
 uint16_t Layout::middle_row() const {
-  return rows_ / kStep;
+  return size_.rows / kStep;
 }
 uint16_t Layout::bottom_row() const {
-  return rows_ - 2;
+  return size_.rows - 2;
 }
 uint16_t Layout::middle_col() const {
-  return cols_ / kStep;
+  return size_.cols / kStep;
 }
 uint16_t Layout::rightmost_col() const {
-  return cols_ - 2;
+  return size_.cols - 2;
 }
 
 bool Layout::IsWithin(const Position& position) const {
-  return position.y > 0 && position.y < rows_ && position.x > 0 &&
-         position.x < cols_;
+  return position.row > 0 && position.row < size_.rows && position.col > 0 &&
+         position.col < size_.cols;
 }
 
 bool Layout::IsBlocked(const Position& position) const {
   assert(
       IsWithin(position) && "Trying to access a cell outside of the layout."
   );
-  return layout_.at(position.y).at(position.x) == kWall;
+  return layout_.at(position.row).at(position.col) == kWall;
 }
 
 bool Layout::IsACell(const Position& position) const {
   assert(
       IsWithin(position) && "Trying to access a cell outside of the layout."
   );
-  return std::set<char>{kCell, kLocation, kPath}.contains(
-      layout_.at(position.y).at(position.x)
+  return std::unordered_set<char>{kCell, kLocation, kPath}.contains(
+      layout_.at(position.row).at(position.col)
   );
 }
 
@@ -85,8 +90,9 @@ void Layout::Unblock(const Edge& edge) {
   const std::optional<Position> to = edge.To();
   assert(to && "Invalid Direction enum passed to Edge instance.");
   const Position to_unblock = {
-      (edge.from.y + to->y) / uint16_t{2}, (edge.from.x + to->x) / uint16_t{2}};
-  layout_.at(to_unblock.y).at(to_unblock.x) = kDoor;
+      (edge.from.row + to->row) / uint16_t{2},
+      (edge.from.col + to->col) / uint16_t{2}};
+  layout_.at(to_unblock.row).at(to_unblock.col) = kDoor;
 }
 
 void Layout::Show() const {
@@ -116,18 +122,18 @@ void Layout::Show() const {
 }
 
 void Layout::AddPath(const Path& path) {
-  for (const Position& position : path)
-    layout_.at(position.y).at(position.x) = kPath;
+  for (const Cell& position : path)
+    layout_.at(position.row).at(position.col) = kPath;
 }
 
-void Layout::SetLocation(const Position& position) {
-  assert(IsACell(position) && "Trying to set a location that is not a cell.");
-  layout_.at(position.y).at(position.x) = kLocation;
+void Layout::SetLocation(const Cell& cell) {
+  assert(IsACell(cell) && "Trying to set a location that is not a cell.");
+  layout_.at(cell.row).at(cell.col) = kLocation;
 }
 
 void Layout::ClearCells() {
-  for (size_t i = kFirstCellIndex; i < rows_; i += kStep)
-    for (size_t j = kFirstCellIndex; j < cols_; j += kStep)
+  for (size_t i = kFirstCellIndex; i < size_.rows; i += kStep)
+    for (size_t j = kFirstCellIndex; j < size_.cols; j += kStep)
       layout_.at(i).at(j) = kCell;
 }
 

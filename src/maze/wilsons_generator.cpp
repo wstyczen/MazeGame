@@ -8,50 +8,47 @@ namespace maze {
 WilsonsGenerator::WilsonsGenerator() = default;
 WilsonsGenerator::~WilsonsGenerator() = default;
 
-std::unique_ptr<Layout> WilsonsGenerator::Get(
-    const uint16_t& vertical_cells,
-    const uint16_t& horizontal_cells
-) {
-  auto maze_layout = std::make_unique<Layout>(vertical_cells, horizontal_cells);
-  InitializeUnvisited(maze_layout->rows(), maze_layout->rows());
+std::unique_ptr<Layout> WilsonsGenerator::Get(const CellSize& cell_size) {
+  auto layout = std::make_unique<Layout>(cell_size);
+  InitializeUnvisited(layout->size());
 
-  static const std::function<bool(const Position&, const Direction&)>
+  static const std::function<bool(const Cell&, const Direction&)>
       validity_check =
-          [this, &maze_layout](
-              const Position& origin, const Direction& direction
-          ) { return maze_layout->IsWithin(*Edge(origin, direction).To()); };
+          [this, &layout](const Cell& origin, const Direction& direction) {
+            return layout->IsWithin(*Edge(origin, direction).To());
+          };
 
-  std::map<Position, Direction> walk;
+  std::map<Cell, Direction> walk;
 
   PickRandomUnvisited();  // first cell in the tree
   while (!unvisited_.empty()) {
     // Pick a random cell.
-    const Position starting_cell = PickRandomUnvisited(false);
+    const Cell starting_cell = PickRandomUnvisited(false);
     // Walk until you encounter a cell already in the tree, saving the most
     // recent move direction for each cell in walk_.
-    Position cell = starting_cell;
-    while (unvisited_.contains(cell)) {
+    Cell current_cell = starting_cell;
+    while (unvisited_.contains(current_cell)) {
       const Direction random_direction = *GetRandomMoveDirection(
-          std::bind(validity_check, cell, std::placeholders::_1)
+          std::bind(validity_check, current_cell, std::placeholders::_1)
       );
-      walk[cell] = random_direction;
-      cell = *Edge(cell, random_direction).To();
+      walk[current_cell] = random_direction;
+      current_cell = *Edge(current_cell, random_direction).To();
     }
-    const Position end_cell = cell;
+    const Cell end_cell = current_cell;
     // Recreate the path from walk_ - relying on the saved move
     // directions - and add those cells the maze.
-    cell = starting_cell;
-    while (cell != end_cell) {
-      unvisited_.erase(cell);
-      const Edge move(cell, walk.at(cell));
-      maze_layout->Unblock(move);
-      cell = *move.To();
+    current_cell = starting_cell;
+    while (current_cell != end_cell) {
+      unvisited_.erase(current_cell);
+      const Edge move(current_cell, walk.at(current_cell));
+      layout->Unblock(move);
+      current_cell = *move.To();
     }
     // Clear the path and do it again until all the cells have been visited.
     walk.clear();
   }
 
-  return std::move(maze_layout);
+  return std::move(layout);
 }
 
 }  // namespace maze

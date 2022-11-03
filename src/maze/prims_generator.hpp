@@ -12,13 +12,12 @@
 
 namespace maze {
 
-using Frontier = std::map<Position, std::vector<Position>>;
+using Frontier = std::map<Cell, std::vector<Cell>>;
 
 class PrimsGenerator : public Generator, public Unvisited {
  public:
   ~PrimsGenerator();
-  std::unique_ptr<Layout>
-  Get(const uint16_t& cells_vertical, const uint16_t& cells_horizontal) final;
+  std::unique_ptr<Layout> Get(const CellSize& cell_size) final;
 
  private:
   PrimsGenerator();

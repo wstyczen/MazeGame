@@ -56,8 +56,8 @@ Solver::Solve(const Layout* const layout, const PathType path_type) {
 
 void Solver::SetParameters(
     const Layout* const layout,
-    const Position& start,
-    const Position& goal
+    const Cell& start,
+    const Cell& goal
 ) {
   layout_ = layout;
   start_ = start;

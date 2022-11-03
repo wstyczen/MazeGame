@@ -13,14 +13,13 @@ namespace maze {
 
 class RecursiveBacktrackingGenerator : public Generator, public Unvisited {
  public:
-  virtual std::unique_ptr<Layout>
-  Get(const uint16_t& cells_vertical, const uint16_t& cells_horizontal) final;
+  virtual std::unique_ptr<Layout> Get(const CellSize& cell_size) final;
   ~RecursiveBacktrackingGenerator();
 
  private:
   RecursiveBacktrackingGenerator();
 
-  void Move(Layout* const layout, const Position& position);
+  void Move(Layout* const layout, const Cell& origin);
 
   friend class GeneratorFactory;
 };

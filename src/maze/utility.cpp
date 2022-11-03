@@ -7,24 +7,23 @@
 
 namespace maze {
 
-bool Position::operator<(const Position& other) const {
-  return std::tie(y, x) < std::tie(other.y, other.x);
+bool Size::operator==(const Size& other) const {
+  return std::tie(rows, cols) == std::tie(other.rows, other.cols);
 }
-
-bool Position::operator==(const Position& other) const {
-  return std::tie(x, y) == std::tie(other.x, other.y);
+bool Size::operator<(const Size& other) const {
+  return std::tie(rows, cols) < std::tie(other.rows, other.cols);
 }
 
 std::optional<Position> Edge::To(const uint16_t& step) const {
   switch (direction) {
     case Direction::UP:
-      return Position(from.y - step, from.x);
+      return Position(from.row - step, from.col);
     case Direction::RIGHT:
-      return Position(from.y, from.x + step);
+      return Position(from.row, from.col + step);
     case Direction::DOWN:
-      return Position(from.y + step, from.x);
+      return Position(from.row + step, from.col);
     case Direction::LEFT:
-      return Position(from.y, from.x - step);
+      return Position(from.row, from.col - step);
   }
   return std::nullopt;
 }
@@ -69,13 +68,16 @@ std::optional<Direction> GetRandomMoveDirection(MoveValidityCheck validity_check
   return *direction_iter;
 }
 
-Direction GetAsDirection(const int16_t& dy, const int16_t& dx) {
-  assert((abs(dy) == kStep || abs(dx) == kStep) && "A move is a single step.");
-  if (dy > 0)
+Direction GetAsDirection(const Move& move) {
+  assert(
+      (abs(move.row) == kStep || abs(move.col) == kStep) &&
+      "A move is a single step."
+  );
+  if (move.row > 0)
     return Direction::DOWN;
-  if (dy < 0)
+  if (move.row < 0)
     return Direction::UP;
-  if (dx > 0)
+  if (move.col > 0)
     return Direction::RIGHT;
   return Direction::LEFT;
 }

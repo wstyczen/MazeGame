@@ -15,13 +15,12 @@ class GeneratorFactory;
 class GrowingTreeGenerator : public Generator, public Unvisited {
  public:
   ~GrowingTreeGenerator();
-  std::unique_ptr<Layout>
-  Get(const uint16_t& vertical_cells, const uint16_t& horizontal_cells) final;
+  std::unique_ptr<Layout> Get(const CellSize& cell_size) final;
 
  private:
   GrowingTreeGenerator();
 
-  std::vector<Position> path_;
+  Path path_;
 
   friend class GeneratorFactory;
 };

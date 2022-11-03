@@ -10,10 +10,9 @@ namespace maze {
 
 class Layout {
  public:
-  Layout(const uint16_t& N, const uint16_t& M);
+  Layout(const CellSize& cell_size);
 
-  uint16_t rows() const;
-  uint16_t cols() const;
+  LayoutSize size() const;
   uint16_t middle_row() const;
   uint16_t bottom_row() const;
   uint16_t middle_col() const;
@@ -38,7 +37,7 @@ class Layout {
   constexpr static char kLocation = 'X';
 
  private:
-  const uint16_t rows_, cols_;
+  const LayoutSize size_;
   std::vector<std::vector<char>> layout_;
 };
 

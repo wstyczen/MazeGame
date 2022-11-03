@@ -3,8 +3,8 @@
 
 #include <optional>
 
-#include "solver.hpp"
 #include "layout.hpp"
+#include "solver.hpp"
 #include "utility.hpp"
 
 namespace maze {
@@ -15,8 +15,8 @@ class BreadthFirstSearchSolver : public Solver {
 
   std::optional<Path> Solve(
       const Layout* const layout,
-      const Position& start,
-      const Position& goal
+      const Cell& start,
+      const Cell& goal
   ) override;
 
  private:

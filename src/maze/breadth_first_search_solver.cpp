@@ -17,32 +17,28 @@ BreadthFirstSearchSolver::~BreadthFirstSearchSolver() = default;
 
 std::optional<Path> BreadthFirstSearchSolver::Solve(
     const Layout* const layout,
-    const Position& start,
-    const Position& goal
+    const Cell& start,
+    const Cell& goal
 ) {
-  static const std::vector<Direction> directions = {
-      Direction::UP,
-      Direction::RIGHT,
-      Direction::DOWN,
-      Direction::LEFT,
-  };
+  static const auto directions = GetValidMoveDirections();
+
   SetParameters(layout, start, goal);
 
-  std::queue<Position> to_visit;
-  std::unordered_set<Position> visited;
-  std::map<Position, Position> predecessors;
+  std::queue<Cell> to_visit;
+  std::unordered_set<Cell> visited;
+  std::map<Cell, Cell> predecessors;
 
   visited.insert(start);
   to_visit.push(start);
 
   while (!to_visit.empty()) {
-    const Position& position = to_visit.front();
+    const Cell& position = to_visit.front();
     visited.insert(position);
     for (const Direction& direction : directions) {
       const Edge edge(position, direction);
       if (!layout->CanMove(edge))
         continue;
-      const Position adjacent_position = *edge.To();
+      const Cell adjacent_position = *edge.To();
       if (visited.contains(adjacent_position))
         continue;
       predecessors[adjacent_position] = position;
@@ -57,7 +53,7 @@ std::optional<Path> BreadthFirstSearchSolver::Solve(
     return std::nullopt;
 
   Path path{goal};
-  Position predecessor = goal;
+  Cell predecessor = goal;
   while (predecessors.contains(predecessor)) {
     predecessor = predecessors.at(predecessor);
     path.push_back(predecessor);

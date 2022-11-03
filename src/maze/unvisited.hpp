@@ -11,10 +11,9 @@ class Unvisited {
  protected:
   Unvisited();
   virtual ~Unvisited();
-  Position PickRandomUnvisited(bool erase = true);
-  void
-  InitializeUnvisited(const uint16_t& layout_rows, const uint16_t& layout_cols);
-  std::unordered_set<Position> unvisited_;
+  Cell PickRandomUnvisited(bool erase = true);
+  void InitializeUnvisited(const LayoutSize& layout_size);
+  std::unordered_set<Cell> unvisited_;
 };
 
 }  // namespace maze

@@ -5,33 +5,26 @@
 #include <unordered_set>
 #include <vector>
 
-// #include "boost/graph/adjacency_list.hpp"
-
 #include "generator.hpp"
 #include "utility.hpp"
 
 namespace maze {
 
+class Layout;
+
 class KruskalsGenerator : public Generator {
  public:
   ~KruskalsGenerator();
 
-  std::unique_ptr<Layout>
-  Get(const uint16_t& cells_vertical, const uint16_t& cells_horizontal) final;
+  std::unique_ptr<Layout> Get(const CellSize& cell_size) final;
 
  private:
   KruskalsGenerator();
 
-  void InitializeCellTrees(
-      const uint16_t& cells_vertical,
-      const uint16_t& cells_horizontal
-  );
-  void InitializeEdges(
-      const uint16_t& cells_vertical,
-      const uint16_t& cells_horizontal
-  );
+  void InitializeCellTrees(const LayoutSize& layout_size);
+  void InitializeEdges(const LayoutSize& layout_size);
 
-  std::vector<std::unordered_set<Position>> cell_trees_;
+  std::vector<CellTree> cell_trees_;
   std::deque<Edge> edges_;
 
   friend class GeneratorFactory;

@@ -6,9 +6,13 @@
 #include <functional>
 #include <optional>
 #include <set>
+#include <tuple>
+#include <unordered_set>
 #include <vector>
 
 namespace maze {
+
+namespace {}  // namespace
 
 constexpr uint16_t kHalfStep = 1;
 constexpr uint16_t kStep = 2;
@@ -21,21 +25,42 @@ enum class Direction {
   LEFT,
 };
 
-struct Position {
-  uint16_t y, x;
-  bool operator<(const Position& other) const;
-  bool operator==(const Position& other) const;
+template <typename T>
+struct Pair {
+  T row, col;
+  bool operator<(const Pair& other) const {
+    return std::tie(row, col) < std::tie(other.row, other.col);
+  }
+  bool operator==(const Pair& other) const {
+    return std::tie(row, col) == std::tie(other.row, other.col);
+  }
 };
+
+using Move = Pair<int16_t>;
+using Position = Pair<uint16_t>;
+using Cell = Pair<uint16_t>;
 
 struct Edge {
-  Position from;
+  Cell from;
   Direction direction;
-  std::optional<Position> To(const uint16_t& step = kStep) const;
+  std::optional<Cell> To(const uint16_t& step = kStep) const;
 };
 
-using Path = std::vector<Position>;
+using CellTree = std::unordered_set<Cell>;
+using Path = std::vector<Cell>;
+
+struct Size {
+  const uint16_t rows, cols;
+  bool operator==(const Size& other) const;
+  bool operator<(const Size& other) const;
+};
+
+using CellSize = Size;
+using LayoutSize = Size;
 
 using MoveValidityCheck = std::function<bool(const Direction& direction)>;
+
+std::deque<Direction> GetMoveDirections();
 
 std::deque<Direction> GetValidMoveDirections(
     MoveValidityCheck validity_check = nullptr
@@ -49,7 +74,7 @@ std::optional<Direction> GetRandomMoveDirection(
     MoveValidityCheck validity_check = nullptr
 );
 
-Direction GetAsDirection(const int16_t& dy, const int16_t& dx);
+Direction GetAsDirection(const Move& move);
 
 }  // namespace maze
 

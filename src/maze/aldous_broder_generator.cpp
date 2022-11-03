@@ -8,37 +8,35 @@ AldousBroderGenerator::AldousBroderGenerator() = default;
 
 AldousBroderGenerator::~AldousBroderGenerator() = default;
 
-std::unique_ptr<Layout> AldousBroderGenerator::Get(
-    const uint16_t& cells_vertical,
-    const uint16_t& cells_horizontal
-) {
-  auto maze_layout = std::make_unique<Layout>(cells_vertical, cells_horizontal);
-  InitializeUnvisited(maze_layout->rows(), maze_layout->rows());
+std::unique_ptr<Layout> AldousBroderGenerator::Get(const CellSize& cell_size) {
+  auto layout = std::make_unique<Layout>(cell_size);
 
-  static const std::function<bool(const Position&, const Direction&)>
+  InitializeUnvisited(layout->size());
+
+  static const std::function<bool(const Cell&, const Direction&)>
       validity_check =
-          [this, &maze_layout](
-              const Position& origin, const Direction& direction
-          ) { return maze_layout->IsWithin(*Edge(origin, direction).To()); };
+          [this, &layout](const Cell& origin, const Direction& direction) {
+            return layout->IsWithin(*Edge(origin, direction).To());
+          };
 
-  Position position = PickRandomUnvisited();
+  Cell cell = PickRandomUnvisited();
   // Choose any cell - visited or not - and travel through until all cells have
   // been visited
   while (!unvisited_.empty()) {
     const Edge move(
-        position, *GetRandomMoveDirection(
-                      std::bind(validity_check, position, std::placeholders::_1)
-                  )
+        cell, *GetRandomMoveDirection(
+                  std::bind(validity_check, cell, std::placeholders::_1)
+              )
     );
     const Position destination = *move.To();
     if (unvisited_.contains(destination)) {
-      maze_layout->Unblock(move);
+      layout->Unblock(move);
       unvisited_.erase(destination);
     }
-    position = destination;
+    cell = destination;
   }
 
-  return std::move(maze_layout);
+  return std::move(layout);
 }
 
 }  // namespace maze

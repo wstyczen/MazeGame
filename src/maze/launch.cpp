@@ -15,13 +15,11 @@ void GenerateToTerminal(
     const maze::GeneratorType& generator_type,
     const maze::SolverType& solver_type,
     const maze::PathType& path_type,
-    const uint16_t& vertical_cells,
-    const uint16_t& horizontal_cells
+    const maze::CellSize& cell_size
 ) {
   std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(generator_type);
-  const std::unique_ptr<maze::Layout> maze_layout =
-      generator->Get(vertical_cells, horizontal_cells);
+  const std::unique_ptr<maze::Layout> maze_layout = generator->Get(cell_size);
 
   std::unique_ptr<maze::Solver> solver =
       maze::SolverFactory::GetInstance()->GetSolver(solver_type);

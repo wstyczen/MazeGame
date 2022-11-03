@@ -7,21 +7,18 @@ namespace maze {
 Unvisited::Unvisited() = default;
 Unvisited::~Unvisited() = default;
 
-void Unvisited::InitializeUnvisited(
-    const uint16_t& layout_rows,
-    const uint16_t& layout_cols
-) {
+void Unvisited::InitializeUnvisited(const LayoutSize& layout_size) {
   unvisited_.clear();
-  for (size_t i = kFirstCellIndex; i < layout_rows; i += kStep)
-    for (size_t j = kFirstCellIndex; j < layout_cols; j += kStep)
+  for (size_t i = kFirstCellIndex; i < layout_size.rows; i += kStep)
+    for (size_t j = kFirstCellIndex; j < layout_size.cols; j += kStep)
       unvisited_.emplace(i, j);
 }
 
-Position Unvisited::PickRandomUnvisited(bool erase) {
+Cell Unvisited::PickRandomUnvisited(bool erase) {
   auto iter = unvisited_.begin();
   std::advance(iter, std::rand() % unvisited_.size());
 
-  const Position picked = *iter;
+  const Cell picked = *iter;
   if (erase)
     unvisited_.erase(iter);
 

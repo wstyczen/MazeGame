@@ -13,27 +13,26 @@ RecursiveBacktrackingGenerator::RecursiveBacktrackingGenerator() = default;
 RecursiveBacktrackingGenerator::~RecursiveBacktrackingGenerator() = default;
 
 std::unique_ptr<Layout> RecursiveBacktrackingGenerator::Get(
-    const uint16_t& cells_vertical,
-    const uint16_t& cells_horizontal
+    const CellSize& cell_size
 ) {
-  auto maze_layout = std::make_unique<Layout>(cells_vertical, cells_horizontal);
-  InitializeUnvisited(maze_layout->rows(), maze_layout->cols());
+  auto layout = std::make_unique<Layout>(cell_size);
+  InitializeUnvisited(layout->size());
 
-  Move(maze_layout.get(), PickRandomUnvisited());
+  Move(layout.get(), PickRandomUnvisited());
 
-  return std::move(maze_layout);
+  return std::move(layout);
 }
 
 void RecursiveBacktrackingGenerator::Move(
     Layout* const layout,
-    const Position& starting_position
+    const Cell& origin
 ) {
   std::deque<Direction> randomized_directions = GetRandomizedMoveDirections();
 
   while (!randomized_directions.empty()) {
-    const Edge edge = Edge(starting_position, randomized_directions.front());
-    const Position destination = *edge.To();
-    if (unvisited_.contains(destination) && layout->IsWithin(destination)) {
+    const Edge edge(origin, randomized_directions.front());
+    const Cell destination = *edge.To();
+    if (layout->IsWithin(destination) && unvisited_.contains(destination)) {
       unvisited_.erase(destination);
       layout->Unblock(edge);
       Move(layout, *edge.To());

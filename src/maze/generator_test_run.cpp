@@ -27,7 +27,8 @@ void Run(
     const uint16_t& size
 ) {
   auto before_generating = std::chrono::high_resolution_clock::now();
-  const std::unique_ptr<maze::Layout> maze_layout = generator->Get(size, size);
+  const std::unique_ptr<maze::Layout> maze_layout =
+      generator->Get({size, size});
   auto after_generating = std::chrono::high_resolution_clock::now();
   const auto generation_duration = std::chrono::duration<double, std::milli>(
       after_generating - before_generating

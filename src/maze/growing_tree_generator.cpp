@@ -9,43 +9,39 @@ namespace maze {
 GrowingTreeGenerator::GrowingTreeGenerator() = default;
 GrowingTreeGenerator::~GrowingTreeGenerator() = default;
 
-std::unique_ptr<Layout> GrowingTreeGenerator::Get(
-    const uint16_t& vertical_cells,
-    const uint16_t& horizontal_cells
-) {
-  auto maze_layout = std::make_unique<Layout>(vertical_cells, horizontal_cells);
+std::unique_ptr<Layout> GrowingTreeGenerator::Get(const CellSize& cell_size) {
+  auto layout = std::make_unique<Layout>(cell_size);
 
-  InitializeUnvisited(maze_layout->rows(), maze_layout->cols());
+  InitializeUnvisited(layout->size());
 
-  static const std::function<bool(const Position&, const Direction&)>
-      validity_check = [this, &maze_layout](
-                           const Position& origin, const Direction& direction
-                       ) {
-        const Position destination = *Edge(origin, direction).To();
-        return unvisited_.contains(destination) &&
-               maze_layout->IsWithin(destination);
-      };
+  static const std::function<bool(const Cell&, const Direction&)>
+      validity_check =
+          [this, &layout](const Position& origin, const Direction& direction) {
+            const Position destination = *Edge(origin, direction).To();
+            return unvisited_.contains(destination) &&
+                   layout->IsWithin(destination);
+          };
 
   path_.push_back(PickRandomUnvisited());
 
-  Position position;
+  Cell cell;
   while (!unvisited_.empty()) {
-    position = path_.back();
+    cell = path_.back();
     std::optional<Direction> move_direction = GetRandomMoveDirection(
-        std::bind(validity_check, position, std::placeholders::_1)
+        std::bind(validity_check, cell, std::placeholders::_1)
     );
     if (!move_direction) {
       path_.pop_back();
       continue;
     }
-    const Edge move(position, *move_direction);
-    maze_layout->Unblock(move);
+    const Edge move(cell, *move_direction);
+    layout->Unblock(move);
     const Position destination = *move.To();
     unvisited_.erase(destination);
     path_.push_back(destination);
   }
 
-  return std::move(maze_layout);
+  return std::move(layout);
 }
 
 }  // namespace maze
