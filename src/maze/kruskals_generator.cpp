@@ -52,19 +52,19 @@ void KruskalsGenerator::InitializeCellTrees(const LayoutSize& layout_size) {
   const auto& [layout_rows, layout_cols] = layout_size;
   cell_trees_.clear();
   cell_trees_.reserve(layout_rows * layout_cols);
-  for (size_t i = kFirstCellIndex; i < layout_rows; i += kStep)
-    for (size_t j = kFirstCellIndex; j < layout_cols; j += kStep)
+  for (size_t i = kLayoutFirstCellIndex; i < layout_rows; i += kStep)
+    for (size_t j = kLayoutFirstCellIndex; j < layout_cols; j += kStep)
       cell_trees_.push_back({Cell(i, j)});
 }
 
 void KruskalsGenerator::InitializeEdges(const LayoutSize& layout_size) {
   edges_.clear();
   const auto& [layout_rows, layout_cols] = layout_size;
-  for (size_t i = kFirstCellIndex; i < layout_rows; i += kStep)
-    for (size_t j = kFirstCellIndex; j < layout_cols; j += kStep) {
-      if (i > kFirstCellIndex)
+  for (size_t i = kLayoutFirstCellIndex; i < layout_rows; i += kStep)
+    for (size_t j = kLayoutFirstCellIndex; j < layout_cols; j += kStep) {
+      if (i > kLayoutFirstCellIndex)
         edges_.emplace_back(Cell(i, j), Direction::UP);
-      if (j > kFirstCellIndex)
+      if (j > kLayoutFirstCellIndex)
         edges_.emplace_back(Cell(i, j), Direction::LEFT);
     }
   std::random_shuffle(edges_.begin(), edges_.end());

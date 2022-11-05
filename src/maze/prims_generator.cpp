@@ -18,11 +18,7 @@ Edge PickRandomEdgeFromFrontier(Frontier& frontier) {
   std::advance(origin_iter, std::rand() % valid_origins.size());
   Cell origin = *origin_iter;
 
-  const Edge edge(
-      origin, GetAsDirection(
-                  {destination.row - origin.row, destination.col - origin.col}
-              )
-  );
+  const Edge edge = Edge::FromTwoCells(origin, destination);
   frontier.erase(frontier_iter);
   return edge;
 }

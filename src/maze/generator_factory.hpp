@@ -10,8 +10,9 @@ namespace maze {
 enum class GeneratorType {
   FIRST,
   ALDOUS_BRODER = FIRST,
-  KRUSKALS,
   GROWING_TREE,
+  ELLERS,
+  KRUSKALS,
   PRIMS,
   RECURSIVE_BACKTRACKING,
   WILSONS_GENERATOR,

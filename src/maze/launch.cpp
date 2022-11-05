@@ -37,9 +37,8 @@ int main() {
 
   // Generate a maze and print it to the terminal
   // GenerateToTerminal(
-  //     maze::GeneratorType::RECURSIVE_BACKTRACKING,
-  //     maze::SolverType::BREADTH_FIRST_SEARCH,
-  //     maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, 11, 17
+  //     maze::GeneratorType::ELLERS, maze::SolverType::BREADTH_FIRST_SEARCH,
+  //     maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, {33, 33}
   // );
 
   // Run a generation test for a particular generator

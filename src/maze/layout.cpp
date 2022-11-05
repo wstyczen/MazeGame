@@ -12,7 +12,7 @@ namespace maze {
 namespace {
 
 uint16_t GetMazeDimensionFromCells(const uint16_t& cells) {
-  return cells * kStep + kFirstCellIndex;
+  return cells * kStep + kLayoutFirstCellIndex;
 }
 
 LayoutSize GetLayoutSizeFromCellSize(const CellSize& cell_size) {
@@ -37,7 +37,7 @@ Layout::Layout(const CellSize& cell_size)
       layout_.push_back(std::vector<char>(cols, kWall));
     else {
       auto row = std::vector<char>(cols, kWall);
-      for (size_t j = kFirstCellIndex; j <= cols; j += kStep)
+      for (size_t j = kLayoutFirstCellIndex; j <= cols; j += kStep)
         row[j] = kCell;
       layout_.push_back(std::move(row));
     }
@@ -87,11 +87,11 @@ bool Layout::CanMove(const Edge& edge) const {
 }
 
 void Layout::Unblock(const Edge& edge) {
-  const std::optional<Position> to = edge.To();
+  const std::optional<Cell> to = edge.To();
   assert(to && "Invalid Direction enum passed to Edge instance.");
-  const Position to_unblock = {
-      (edge.from.row + to->row) / uint16_t{2},
-      (edge.from.col + to->col) / uint16_t{2}};
+  const Cell to_unblock(
+      (edge.from.row + to->row) / 2, (edge.from.col + to->col) / 2
+  );
   layout_.at(to_unblock.row).at(to_unblock.col) = kDoor;
 }
 
@@ -132,8 +132,8 @@ void Layout::SetLocation(const Cell& cell) {
 }
 
 void Layout::ClearCells() {
-  for (size_t i = kFirstCellIndex; i < size_.rows; i += kStep)
-    for (size_t j = kFirstCellIndex; j < size_.cols; j += kStep)
+  for (size_t i = kLayoutFirstCellIndex; i < size_.rows; i += kStep)
+    for (size_t j = kLayoutFirstCellIndex; j < size_.cols; j += kStep)
       layout_.at(i).at(j) = kCell;
 }
 

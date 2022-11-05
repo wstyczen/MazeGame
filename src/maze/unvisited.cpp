@@ -9,8 +9,8 @@ Unvisited::~Unvisited() = default;
 
 void Unvisited::InitializeUnvisited(const LayoutSize& layout_size) {
   unvisited_.clear();
-  for (size_t i = kFirstCellIndex; i < layout_size.rows; i += kStep)
-    for (size_t j = kFirstCellIndex; j < layout_size.cols; j += kStep)
+  for (size_t i = kLayoutFirstCellIndex; i < layout_size.rows; i += kStep)
+    for (size_t j = kLayoutFirstCellIndex; j < layout_size.cols; j += kStep)
       unvisited_.emplace(i, j);
 }
 

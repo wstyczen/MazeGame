@@ -7,6 +7,24 @@
 
 namespace maze {
 
+namespace {
+
+Direction GetAsDirection(const Move& move) {
+  assert(
+      (abs(move.row) == kStep || abs(move.col) == kStep) &&
+      "A move is a single step."
+  );
+  if (move.row > 0)
+    return Direction::DOWN;
+  if (move.row < 0)
+    return Direction::UP;
+  if (move.col > 0)
+    return Direction::RIGHT;
+  return Direction::LEFT;
+}
+
+}  // namespace
+
 bool Size::operator==(const Size& other) const {
   return std::tie(rows, cols) == std::tie(other.rows, other.cols);
 }
@@ -68,18 +86,9 @@ std::optional<Direction> GetRandomMoveDirection(MoveValidityCheck validity_check
   return *direction_iter;
 }
 
-Direction GetAsDirection(const Move& move) {
-  assert(
-      (abs(move.row) == kStep || abs(move.col) == kStep) &&
-      "A move is a single step."
-  );
-  if (move.row > 0)
-    return Direction::DOWN;
-  if (move.row < 0)
-    return Direction::UP;
-  if (move.col > 0)
-    return Direction::RIGHT;
-  return Direction::LEFT;
+Edge Edge::FromTwoCells(const Cell& origin, const Cell& destination) {
+  const Move move(destination.row - origin.row, destination.col - origin.col);
+  return {origin, GetAsDirection(move)};
 }
 
 }  // namespace maze

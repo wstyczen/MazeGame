@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "aldous_broder_generator.hpp"
+#include "ellers_generator.hpp"
 #include "generator.hpp"
 #include "growing_tree_generator.hpp"
 #include "kruskals_generator.hpp"
@@ -33,6 +34,8 @@ std::string GeneratorFactory::GetGeneratorName(
       return "Aldous-Broder";
     case GeneratorType::GROWING_TREE:
       return "Growing Tree";
+    case GeneratorType::ELLERS:
+      return "Eller's";
     case GeneratorType::KRUSKALS:
       return "Kruskal's";
     case GeneratorType::PRIMS:
@@ -54,6 +57,8 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
       return std::unique_ptr<Generator>(new AldousBroderGenerator);
     case GeneratorType::GROWING_TREE:
       return std::unique_ptr<Generator>(new GrowingTreeGenerator);
+    case GeneratorType::ELLERS:
+      return std::unique_ptr<Generator>(new EllersGenerator);
     case GeneratorType::KRUSKALS:
       return std::unique_ptr<Generator>(new KruskalsGenerator);
     case GeneratorType::PRIMS:

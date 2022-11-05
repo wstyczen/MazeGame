@@ -16,7 +16,7 @@ namespace {}  // namespace
 
 constexpr uint16_t kHalfStep = 1;
 constexpr uint16_t kStep = 2;
-constexpr uint16_t kFirstCellIndex = 1;
+constexpr uint16_t kLayoutFirstCellIndex = 1;
 
 enum class Direction {
   UP,
@@ -44,6 +44,7 @@ struct Edge {
   Cell from;
   Direction direction;
   std::optional<Cell> To(const uint16_t& step = kStep) const;
+  static Edge FromTwoCells(const Cell& origin, const Cell& destination);
 };
 
 using CellTree = std::unordered_set<Cell>;
@@ -73,8 +74,6 @@ std::deque<Direction> GetRandomizedMoveDirections(
 std::optional<Direction> GetRandomMoveDirection(
     MoveValidityCheck validity_check = nullptr
 );
-
-Direction GetAsDirection(const Move& move);
 
 }  // namespace maze
 

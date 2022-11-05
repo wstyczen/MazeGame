@@ -15,6 +15,7 @@ add_executable(maze
   aldous_broder_generator.cpp
   wilsons_generator.cpp
   generator_test_run.cpp
+  ellers_generator.cpp
 )
 
 find_package(Boost 1.80 REQUIRED COMPONENTS system json regex)
