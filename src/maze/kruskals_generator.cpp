@@ -26,7 +26,7 @@ std::unique_ptr<Layout> KruskalsGenerator::Get(const CellSize& cell_size) {
         [this, &edge](const CellTree& tree) { return tree.contains(edge.from); }
     );
     assert(tree_containing_edge_start != cell_trees_.end());
-    const std::optional<Position> edge_end = edge.To();
+    const std::optional<Cell> edge_end = edge.To();
     assert(edge_end && "Invalid direction selected");
 
     if (!tree_containing_edge_start->contains(*edge_end)) {

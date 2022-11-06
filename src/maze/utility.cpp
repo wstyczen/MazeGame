@@ -32,16 +32,16 @@ bool Size::operator<(const Size& other) const {
   return std::tie(rows, cols) < std::tie(other.rows, other.cols);
 }
 
-std::optional<Position> Edge::To(const uint16_t& step) const {
+std::optional<Cell> Edge::To(const uint16_t& step) const {
   switch (direction) {
     case Direction::UP:
-      return Position(from.row - step, from.col);
+      return Cell(from.row - step, from.col);
     case Direction::RIGHT:
-      return Position(from.row, from.col + step);
+      return Cell(from.row, from.col + step);
     case Direction::DOWN:
-      return Position(from.row + step, from.col);
+      return Cell(from.row + step, from.col);
     case Direction::LEFT:
-      return Position(from.row, from.col - step);
+      return Cell(from.row, from.col - step);
   }
   return std::nullopt;
 }

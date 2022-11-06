@@ -4,20 +4,18 @@
 #include <optional>
 
 #include "layout.hpp"
+#include "predecessors.hpp"
 #include "solver.hpp"
 #include "utility.hpp"
 
 namespace maze {
 
-class BreadthFirstSearchSolver : public Solver {
+class BreadthFirstSearchSolver : public Solver, public Predecessors {
  public:
   ~BreadthFirstSearchSolver();
 
-  std::optional<Path> Solve(
-      const Layout* const layout,
-      const Cell& start,
-      const Cell& goal
-  ) override;
+  std::optional<Path>
+  Solve(const Layout* const layout, const Cell& start, const Cell& goal) final;
 
  private:
   BreadthFirstSearchSolver();

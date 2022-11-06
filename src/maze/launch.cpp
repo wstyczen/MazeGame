@@ -37,7 +37,7 @@ int main() {
 
   // Generate a maze and print it to the terminal
   // GenerateToTerminal(
-  //     maze::GeneratorType::ELLERS, maze::SolverType::BREADTH_FIRST_SEARCH,
+  //     maze::GeneratorType::ELLERS, maze::SolverType::DJIKSTRA,
   //     maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, {33, 33}
   // );
 

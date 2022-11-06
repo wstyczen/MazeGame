@@ -16,8 +16,8 @@ std::unique_ptr<Layout> GrowingTreeGenerator::Get(const CellSize& cell_size) {
 
   static const std::function<bool(const Cell&, const Direction&)>
       validity_check =
-          [this, &layout](const Position& origin, const Direction& direction) {
-            const Position destination = *Edge(origin, direction).To();
+          [this, &layout](const Cell& origin, const Direction& direction) {
+            const Cell destination = *Edge(origin, direction).To();
             return unvisited_.contains(destination) &&
                    layout->IsWithin(destination);
           };
@@ -36,7 +36,7 @@ std::unique_ptr<Layout> GrowingTreeGenerator::Get(const CellSize& cell_size) {
     }
     const Edge move(cell, *move_direction);
     layout->Unblock(move);
-    const Position destination = *move.To();
+    const Cell destination = *move.To();
     unvisited_.erase(destination);
     path_.push_back(destination);
   }

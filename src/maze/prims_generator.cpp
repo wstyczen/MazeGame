@@ -36,7 +36,7 @@ std::unique_ptr<Layout> PrimsGenerator::Get(const CellSize& cell_size) {
 
   static const std::function<bool(const Cell&, const Direction&)>
       validity_check =
-          [this, &layout](const Position& origin, const Direction& direction) {
+          [this, &layout](const Cell& origin, const Direction& direction) {
             const Cell destination = *Edge(origin, direction).To();
             return layout->IsWithin(destination) &&
                    unvisited_.contains(destination);

@@ -26,7 +26,7 @@ class Layout {
   void ClearCells();
   void Unblock(const Edge& edge);
   void AddPath(const Path& path);
-  void SetLocation(const Position& position);
+  void SetLocation(const Cell& cell);
 
   void Show() const;
 

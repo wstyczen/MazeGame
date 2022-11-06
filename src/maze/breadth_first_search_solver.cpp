@@ -26,7 +26,6 @@ std::optional<Path> BreadthFirstSearchSolver::Solve(
 
   std::queue<Cell> to_visit;
   std::unordered_set<Cell> visited;
-  std::map<Cell, Cell> predecessors;
 
   visited.insert(start);
   to_visit.push(start);
@@ -41,7 +40,7 @@ std::optional<Path> BreadthFirstSearchSolver::Solve(
       const Cell adjacent_position = *edge.To();
       if (visited.contains(adjacent_position))
         continue;
-      predecessors[adjacent_position] = position;
+      predecessors_[adjacent_position] = position;
       if (adjacent_position == goal)
         break;
       to_visit.push(adjacent_position);
@@ -49,18 +48,7 @@ std::optional<Path> BreadthFirstSearchSolver::Solve(
     to_visit.pop();
   }
 
-  if (!predecessors.contains(goal))
-    return std::nullopt;
-
-  Path path{goal};
-  Cell predecessor = goal;
-  while (predecessors.contains(predecessor)) {
-    predecessor = predecessors.at(predecessor);
-    path.push_back(predecessor);
-  }
-  std::reverse(path.begin(), path.end());
-
-  return path;
+  return RecreatePath(start, goal);
 }
 
 }  // namespace maze

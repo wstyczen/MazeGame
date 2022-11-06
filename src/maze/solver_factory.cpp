@@ -1,8 +1,10 @@
 #include "solver_factory.hpp"
 
+#include <cassert>
 #include <memory>
 
 #include "breadth_first_search_solver.hpp"
+#include "djikstra_solver.hpp"
 
 namespace maze {
 
@@ -17,11 +19,24 @@ SolverFactory* SolverFactory::GetInstance() {
   return instance_;
 }
 
+std::string SolverFactory::GetSolverName(const SolverType& solver_type) const {
+  switch (solver_type) {
+    case SolverType::BREADTH_FIRST_SEARCH:
+      return "Breadth First Search";
+    case SolverType::DJIKSTRA:
+      return "Djikstra's";
+  }
+  assert(0 && "No such solver type.");
+  return "";
+}
+
 std::unique_ptr<Solver> SolverFactory::GetSolver(const SolverType& solver_type
 ) const {
   switch (solver_type) {
     case SolverType::BREADTH_FIRST_SEARCH:
       return std::unique_ptr<Solver>(new BreadthFirstSearchSolver);
+    case SolverType::DJIKSTRA:
+      return std::unique_ptr<Solver>(new DjikstraSolver);
   }
   return nullptr;
 }

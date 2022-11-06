@@ -28,7 +28,7 @@ std::unique_ptr<Layout> AldousBroderGenerator::Get(const CellSize& cell_size) {
                   std::bind(validity_check, cell, std::placeholders::_1)
               )
     );
-    const Position destination = *move.To();
+    const Cell destination = *move.To();
     if (unvisited_.contains(destination)) {
       layout->Unblock(move);
       unvisited_.erase(destination);
