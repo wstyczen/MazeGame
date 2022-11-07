@@ -24,10 +24,12 @@ constexpr std::array kTestSizes = {
 std::vector<std::unique_ptr<Solver>> GetSolvers() {
   std::vector<std::unique_ptr<Solver>> solvers;
   for (int i = static_cast<int>(SolverType::FIRST);
-       i != static_cast<int>(SolverType::LAST); i++)
+       i <= static_cast<int>(SolverType::LAST); i++) {
+    volatile SolverType st = static_cast<SolverType>(i);
     solvers.push_back(
         SolverFactory::GetInstance()->GetSolver(static_cast<SolverType>(i))
     );
+  }
   return solvers;
 }
 
@@ -49,7 +51,7 @@ void RunSolvers(const Layout* const layout) {
 
   const auto& path = paths.at(0);
   if (path)
-    std::cout << "Path:\t\t\t" << path->size() << " moves\n";
+    std::cout << "Path:\t\t\t" << path->size() - 1 << " moves\n";
   else
     std::cout << "No path found.\n";
 }

@@ -83,7 +83,7 @@ bool Layout::IsACell(const Position& position) const {
 }
 
 bool Layout::CanMove(const Edge& edge) const {
-  return IsWithin(*edge.To()) && !IsBlocked(*edge.To(kHalfStep));
+  return edge.To() && IsWithin(*edge.To()) && !IsBlocked(*edge.To(kHalfStep));
 }
 
 void Layout::Unblock(const Edge& edge) {

@@ -9,7 +9,8 @@ namespace maze {
 
 enum class SolverType {
   FIRST,
-  BREADTH_FIRST_SEARCH = FIRST,
+  A_STAR = FIRST,
+  BREADTH_FIRST_SEARCH,
   DJIKSTRA,
   LAST = DJIKSTRA,
 };

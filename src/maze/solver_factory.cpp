@@ -3,6 +3,7 @@
 #include <cassert>
 #include <memory>
 
+#include "a_star_solver.hpp"
 #include "breadth_first_search_solver.hpp"
 #include "djikstra_solver.hpp"
 
@@ -21,6 +22,8 @@ SolverFactory* SolverFactory::GetInstance() {
 
 std::string SolverFactory::GetSolverName(const SolverType& solver_type) const {
   switch (solver_type) {
+    case SolverType::A_STAR:
+      return "A*";
     case SolverType::BREADTH_FIRST_SEARCH:
       return "Breadth First Search";
     case SolverType::DJIKSTRA:
@@ -33,6 +36,8 @@ std::string SolverFactory::GetSolverName(const SolverType& solver_type) const {
 std::unique_ptr<Solver> SolverFactory::GetSolver(const SolverType& solver_type
 ) const {
   switch (solver_type) {
+    case SolverType::A_STAR:
+      return std::unique_ptr<Solver>(new AStarSolver);
     case SolverType::BREADTH_FIRST_SEARCH:
       return std::unique_ptr<Solver>(new BreadthFirstSearchSolver);
     case SolverType::DJIKSTRA:
