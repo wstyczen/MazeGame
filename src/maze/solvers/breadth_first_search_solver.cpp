@@ -15,11 +15,9 @@ namespace maze {
 BreadthFirstSearchSolver::BreadthFirstSearchSolver() = default;
 BreadthFirstSearchSolver::~BreadthFirstSearchSolver() = default;
 
-std::optional<Path> BreadthFirstSearchSolver::Solve(
-    const Layout* const layout,
-    const Cell& start,
-    const Cell& goal
-) {
+std::optional<Path> BreadthFirstSearchSolver::Solve(const Layout* const layout,
+                                                    const Cell& start,
+                                                    const Cell& goal) {
   static const auto directions = GetValidMoveDirections();
 
   SetParameters(layout, start, goal);

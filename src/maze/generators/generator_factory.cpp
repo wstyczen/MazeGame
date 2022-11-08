@@ -27,8 +27,7 @@ GeneratorFactory* GeneratorFactory::GetInstance() {
 }
 
 std::string GeneratorFactory::GetGeneratorName(
-    const GeneratorType& generator_type
-) const {
+    const GeneratorType& generator_type) const {
   switch (generator_type) {
     case GeneratorType::ALDOUS_BRODER:
       return "Aldous-Broder";
@@ -50,8 +49,7 @@ std::string GeneratorFactory::GetGeneratorName(
 }
 
 std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
-    const GeneratorType& generator_type
-) const {
+    const GeneratorType& generator_type) const {
   switch (generator_type) {
     case GeneratorType::ALDOUS_BRODER:
       return std::unique_ptr<Generator>(new AldousBroderGenerator);

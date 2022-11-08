@@ -21,8 +21,9 @@ class DjikstraSolver : public Solver, public Predecessors {
  public:
   ~DjikstraSolver();
 
-  std::optional<Path>
-  Solve(const Layout* const layout, const Cell& start, const Cell& goal) final;
+  std::optional<Path> Solve(const Layout* const layout,
+                            const Cell& start,
+                            const Cell& goal) final;
 
  private:
   DjikstraSolver();
@@ -31,10 +32,9 @@ class DjikstraSolver : public Solver, public Predecessors {
   bool ProcessUnvisitedWithShortestDistance();
 
   std::unordered_map<Cell, uint16_t> distances_;
-  std::priority_queue<
-      djikstra::Distance,
-      std::vector<djikstra::Distance>,
-      std::greater<djikstra::Distance>>
+  std::priority_queue<djikstra::Distance,
+                      std::vector<djikstra::Distance>,
+                      std::greater<djikstra::Distance>>
       minimum_distance_queue_;
   std::function<bool(const Cell&, const Direction&)> move_validity_check_;
 

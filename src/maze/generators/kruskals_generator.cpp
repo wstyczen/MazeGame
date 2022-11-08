@@ -21,24 +21,23 @@ std::unique_ptr<Layout> KruskalsGenerator::Get(const CellSize& cell_size) {
 
   while (!edges_.empty()) {
     const Edge& edge = edges_.front();
-    auto tree_containing_edge_start = std::find_if(
-        cell_trees_.begin(), cell_trees_.end(),
-        [this, &edge](const CellTree& tree) { return tree.contains(edge.from); }
-    );
+    auto tree_containing_edge_start =
+        std::find_if(cell_trees_.begin(), cell_trees_.end(),
+                     [this, &edge](const CellTree& tree) {
+                       return tree.contains(edge.from);
+                     });
     assert(tree_containing_edge_start != cell_trees_.end());
     const std::optional<Cell> edge_end = edge.To();
     assert(edge_end && "Invalid direction selected");
 
     if (!tree_containing_edge_start->contains(*edge_end)) {
-      auto tree_containing_edge_end = std::find_if(
-          cell_trees_.begin(), cell_trees_.end(),
-          [this, &edge_end](const CellTree& tree) {
-            return tree.contains(*edge_end);
-          }
-      );
-      tree_containing_edge_start->insert(
-          tree_containing_edge_end->begin(), tree_containing_edge_end->end()
-      );
+      auto tree_containing_edge_end =
+          std::find_if(cell_trees_.begin(), cell_trees_.end(),
+                       [this, &edge_end](const CellTree& tree) {
+                         return tree.contains(*edge_end);
+                       });
+      tree_containing_edge_start->insert(tree_containing_edge_end->begin(),
+                                         tree_containing_edge_end->end());
       cell_trees_.erase(tree_containing_edge_end);
       layout->Unblock(edge);
     }

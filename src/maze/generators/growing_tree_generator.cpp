@@ -28,8 +28,7 @@ std::unique_ptr<Layout> GrowingTreeGenerator::Get(const CellSize& cell_size) {
   while (!unvisited_.empty()) {
     cell = path_.back();
     std::optional<Direction> move_direction = GetRandomMoveDirection(
-        std::bind(validity_check, cell, std::placeholders::_1)
-    );
+        std::bind(validity_check, cell, std::placeholders::_1));
     if (!move_direction) {
       path_.pop_back();
       continue;

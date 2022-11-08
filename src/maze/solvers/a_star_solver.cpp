@@ -16,11 +16,9 @@ uint16_t h(const Cell& cell, const Cell& goal) {
 AStarSolver::AStarSolver() = default;
 AStarSolver::~AStarSolver() = default;
 
-std::optional<Path> AStarSolver::Solve(
-    const Layout* const layout,
-    const Cell& start,
-    const Cell& goal
-) {
+std::optional<Path> AStarSolver::Solve(const Layout* const layout,
+                                       const Cell& start,
+                                       const Cell& goal) {
   SetParameters(layout, start, goal);
   g_values_.clear();
 
@@ -32,8 +30,7 @@ std::optional<Path> AStarSolver::Solve(
     return f(first) > f(second);
   };
   std::priority_queue<Cell, std::vector<Cell>, decltype(compare_f)> cell_queue(
-      compare_f
-  );
+      compare_f);
 
   std::function<bool(const Cell&, const Direction&)> move_validity_check_ =
       [this](const Cell& origin, const Direction& direction) {
@@ -48,8 +45,7 @@ std::optional<Path> AStarSolver::Solve(
     Cell cell = cell_queue.top();
     cell_queue.pop();
     for (const Direction& direction : GetValidMoveDirections(
-             std::bind(move_validity_check_, cell, std::placeholders::_1)
-         )) {
+             std::bind(move_validity_check_, cell, std::placeholders::_1))) {
       Cell destination = *Edge(cell, direction).To();
       g_values_[destination] = g_values_.at(cell) + 1;
       cell_queue.push(destination);

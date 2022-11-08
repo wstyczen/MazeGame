@@ -13,8 +13,7 @@ RecursiveBacktrackingGenerator::RecursiveBacktrackingGenerator() = default;
 RecursiveBacktrackingGenerator::~RecursiveBacktrackingGenerator() = default;
 
 std::unique_ptr<Layout> RecursiveBacktrackingGenerator::Get(
-    const CellSize& cell_size
-) {
+    const CellSize& cell_size) {
   auto layout = std::make_unique<Layout>(cell_size);
   InitializeUnvisited(layout->size());
 
@@ -23,10 +22,8 @@ std::unique_ptr<Layout> RecursiveBacktrackingGenerator::Get(
   return std::move(layout);
 }
 
-void RecursiveBacktrackingGenerator::Move(
-    Layout* const layout,
-    const Cell& origin
-) {
+void RecursiveBacktrackingGenerator::Move(Layout* const layout,
+                                          const Cell& origin) {
   std::deque<Direction> randomized_directions = GetRandomizedMoveDirections();
 
   while (!randomized_directions.empty()) {

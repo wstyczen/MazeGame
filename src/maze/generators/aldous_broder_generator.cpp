@@ -23,11 +23,8 @@ std::unique_ptr<Layout> AldousBroderGenerator::Get(const CellSize& cell_size) {
   // Choose any cell - visited or not - and travel through until all cells have
   // been visited
   while (!unvisited_.empty()) {
-    const Edge move(
-        cell, *GetRandomMoveDirection(
-                  std::bind(validity_check, cell, std::placeholders::_1)
-              )
-    );
+    const Edge move(cell, *GetRandomMoveDirection(std::bind(
+                              validity_check, cell, std::placeholders::_1)));
     const Cell destination = *move.To();
     if (unvisited_.contains(destination)) {
       layout->Unblock(move);

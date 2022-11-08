@@ -10,10 +10,8 @@ namespace maze {
 namespace {
 
 Direction GetAsDirection(const Move& move) {
-  assert(
-      (abs(move.row) == kStep || abs(move.col) == kStep) &&
-      "A move is a single step."
-  );
+  assert((abs(move.row) == kStep || abs(move.col) == kStep) &&
+         "A move is a single step.");
   if (move.row > 0)
     return Direction::DOWN;
   if (move.row < 0)
@@ -56,26 +54,22 @@ std::deque<Direction> GetValidMoveDirections(MoveValidityCheck validity_check) {
   if (!validity_check)
     return directions;
   std::deque<Direction> valid_directions;
-  std::copy_if(
-      directions.begin(), directions.end(),
-      std::back_inserter(valid_directions), validity_check
-  );
+  std::copy_if(directions.begin(), directions.end(),
+               std::back_inserter(valid_directions), validity_check);
   return valid_directions;
 }
 
 std::deque<Direction> GetRandomizedMoveDirections(
-    MoveValidityCheck validity_check
-) {
+    MoveValidityCheck validity_check) {
   std::deque<Direction> randomized_directions =
       GetValidMoveDirections(validity_check);
-  std::random_shuffle(
-      randomized_directions.begin(), randomized_directions.end()
-  );
+  std::random_shuffle(randomized_directions.begin(),
+                      randomized_directions.end());
   return randomized_directions;
 }
 
-std::optional<Direction> GetRandomMoveDirection(MoveValidityCheck validity_check
-) {
+std::optional<Direction> GetRandomMoveDirection(
+    MoveValidityCheck validity_check) {
   auto valid_move_directions = GetValidMoveDirections(validity_check);
 
   if (valid_move_directions.empty())

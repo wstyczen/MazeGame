@@ -12,19 +12,16 @@ const uint16_t DjikstraSolver::max_distance =
 DjikstraSolver::DjikstraSolver() = default;
 DjikstraSolver::~DjikstraSolver() = default;
 
-std::optional<Path> DjikstraSolver::Solve(
-    const Layout* const layout,
-    const Cell& start,
-    const Cell& goal
-) {
+std::optional<Path> DjikstraSolver::Solve(const Layout* const layout,
+                                          const Cell& start,
+                                          const Cell& goal) {
   SetParameters(layout, start, goal);
   predecessors_.clear();
   InitializeDistances();
   minimum_distance_queue_ = {};
 
-  move_validity_check_ = [this](
-                             const Cell& origin, const Direction& direction
-                         ) {
+  move_validity_check_ = [this](const Cell& origin,
+                                const Direction& direction) {
     Edge move = Edge(origin, direction);
     return layout_->CanMove(move) && distances_.at(*move.To()) == max_distance;
   };
@@ -57,8 +54,7 @@ bool DjikstraSolver::ProcessUnvisitedWithShortestDistance() {
   // time reached will always be the shortest path
 
   for (const Direction& direction : GetValidMoveDirections(
-           std::bind(move_validity_check_, cell, std::placeholders::_1)
-       )) {
+           std::bind(move_validity_check_, cell, std::placeholders::_1))) {
     Cell destination = *Edge(cell, direction).To();
     const uint16_t new_distance = distance + 1;
 

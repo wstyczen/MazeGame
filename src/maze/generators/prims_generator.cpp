@@ -46,8 +46,7 @@ std::unique_ptr<Layout> PrimsGenerator::Get(const CellSize& cell_size) {
 
   while (!unvisited_.empty()) {
     for (const Direction& direction : GetValidMoveDirections(
-             std::bind(validity_check, cell, std::placeholders::_1)
-         )) {
+             std::bind(validity_check, cell, std::placeholders::_1))) {
       const Cell destination = *Edge(cell, direction).To();
       if (frontier_.contains(destination))
         frontier_.at(destination).push_back(cell);

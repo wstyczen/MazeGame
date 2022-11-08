@@ -14,8 +14,9 @@ class BreadthFirstSearchSolver : public Solver, public Predecessors {
  public:
   ~BreadthFirstSearchSolver();
 
-  std::optional<Path>
-  Solve(const Layout* const layout, const Cell& start, const Cell& goal) final;
+  std::optional<Path> Solve(const Layout* const layout,
+                            const Cell& start,
+                            const Cell& goal) final;
 
  private:
   BreadthFirstSearchSolver();

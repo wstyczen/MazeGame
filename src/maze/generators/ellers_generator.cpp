@@ -113,13 +113,10 @@ std::unique_ptr<Layout> EllersGenerator::Get(const CellSize& cell_size) {
   return std::move(layout);
 }
 
-Row EllersGenerator::GetRow(
-    const LayoutSize& layout_size,
-    const uint16_t& row_index
-) {
-  assert(
-      row_index > 0 && row_index < layout_size.rows && row_index % kStep != 0
-  );
+Row EllersGenerator::GetRow(const LayoutSize& layout_size,
+                            const uint16_t& row_index) {
+  assert(row_index > 0 && row_index < layout_size.rows &&
+         row_index % kStep != 0);
   std::vector<Cell> cells;
   RowTrees trees;
 
@@ -134,11 +131,9 @@ Row EllersGenerator::GetRow(
   return {cells, trees};
 }
 
-void EllersGenerator::MergeCellsInRow(
-    Layout* const layout,
-    Row& row,
-    bool randomly
-) {
+void EllersGenerator::MergeCellsInRow(Layout* const layout,
+                                      Row& row,
+                                      bool randomly) {
   auto& [cells, trees] = row;
   for (uint16_t i = 0; i != cells.size() - 1; i++) {
     auto &first_tree = trees.at(i), second_tree = trees.at(i + 1);

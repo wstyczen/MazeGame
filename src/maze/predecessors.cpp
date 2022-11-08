@@ -2,8 +2,8 @@
 
 namespace maze {
 
-std::optional<Path>
-Predecessors::RecreatePath(const Cell& start, const Cell& goal) {
+std::optional<Path> Predecessors::RecreatePath(const Cell& start,
+                                               const Cell& goal) {
   if (!predecessors_.contains(goal))
     return std::nullopt;
 

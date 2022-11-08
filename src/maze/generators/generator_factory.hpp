@@ -25,8 +25,8 @@ class GeneratorFactory {
   static GeneratorFactory* GetInstance();
 
   std::string GetGeneratorName(const GeneratorType& generator_type) const;
-  std::unique_ptr<Generator> GetGenerator(const GeneratorType& generator_type
-  ) const;
+  std::unique_ptr<Generator> GetGenerator(
+      const GeneratorType& generator_type) const;
 
  private:
   GeneratorFactory();

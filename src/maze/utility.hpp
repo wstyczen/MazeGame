@@ -63,16 +63,13 @@ using MoveValidityCheck = std::function<bool(const Direction& direction)>;
 std::deque<Direction> GetMoveDirections();
 
 std::deque<Direction> GetValidMoveDirections(
-    MoveValidityCheck validity_check = nullptr
-);
+    MoveValidityCheck validity_check = nullptr);
 
 std::deque<Direction> GetRandomizedMoveDirections(
-    MoveValidityCheck validity_check = nullptr
-);
+    MoveValidityCheck validity_check = nullptr);
 
 std::optional<Direction> GetRandomMoveDirection(
-    MoveValidityCheck validity_check = nullptr
-);
+    MoveValidityCheck validity_check = nullptr);
 
 }  // namespace maze
 

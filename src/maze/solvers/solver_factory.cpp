@@ -33,8 +33,8 @@ std::string SolverFactory::GetSolverName(const SolverType& solver_type) const {
   return "";
 }
 
-std::unique_ptr<Solver> SolverFactory::GetSolver(const SolverType& solver_type
-) const {
+std::unique_ptr<Solver> SolverFactory::GetSolver(
+    const SolverType& solver_type) const {
   switch (solver_type) {
     case SolverType::A_STAR:
       return std::unique_ptr<Solver>(new AStarSolver);

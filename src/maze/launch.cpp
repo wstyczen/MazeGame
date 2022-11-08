@@ -11,12 +11,10 @@
 
 namespace {
 
-void GenerateToTerminal(
-    const maze::GeneratorType& generator_type,
-    const maze::SolverType& solver_type,
-    const maze::PathType& path_type,
-    const maze::CellSize& cell_size
-) {
+void GenerateToTerminal(const maze::GeneratorType& generator_type,
+                        const maze::SolverType& solver_type,
+                        const maze::PathType& path_type,
+                        const maze::CellSize& cell_size) {
   const std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(generator_type);
   const std::unique_ptr<maze::Layout> maze_layout = generator->Get(cell_size);
@@ -37,16 +35,17 @@ int main() {
   std::srand(std::time(0));  // use current time as seed for random generators
 
   // Generate a maze and print it to the terminal
-  GenerateToTerminal(
-      maze::GeneratorType::KRUSKALS, maze::SolverType::BREADTH_FIRST_SEARCH,
-      maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, {33, 33}
-  );
+  // GenerateToTerminal(
+  //     maze::GeneratorType::RECURSIVE_BACKTRACKING,
+  //     maze::SolverType::DJIKSTRA, maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT,
+  //     {33, 33}
+  // );
 
   // Run a generation test for a particular generator
   // maze::GeneatorTestRun(maze::GeneratorType::KRUSKALS);
 
   // Run generation test for all generators
-  // maze::GeneratorsTestRun();
+  maze::GeneratorsTestRun();
 
   return 0;
 }

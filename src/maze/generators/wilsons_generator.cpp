@@ -29,8 +29,7 @@ std::unique_ptr<Layout> WilsonsGenerator::Get(const CellSize& cell_size) {
     Cell current_cell = starting_cell;
     while (unvisited_.contains(current_cell)) {
       const Direction random_direction = *GetRandomMoveDirection(
-          std::bind(validity_check, current_cell, std::placeholders::_1)
-      );
+          std::bind(validity_check, current_cell, std::placeholders::_1));
       walk[current_cell] = random_direction;
       current_cell = *Edge(current_cell, random_direction).To();
     }

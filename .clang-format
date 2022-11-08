@@ -1,0 +1,5 @@
+# https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+# clang-format -dump-config > dump.txt
+---
+BasedOnStyle: Chromium
+IndentWidth: 2

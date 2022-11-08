@@ -16,18 +16,15 @@ uint16_t GetMazeDimensionFromCells(const uint16_t& cells) {
 }
 
 LayoutSize GetLayoutSizeFromCellSize(const CellSize& cell_size) {
-  return {
-      GetMazeDimensionFromCells(cell_size.rows),
-      GetMazeDimensionFromCells(cell_size.cols)};
+  return {GetMazeDimensionFromCells(cell_size.rows),
+          GetMazeDimensionFromCells(cell_size.cols)};
 }
 }  // namespace
 
 Layout::Layout(const CellSize& cell_size)
     : size_(GetLayoutSizeFromCellSize(cell_size)) {
-  assert(
-      (cell_size.rows % kStep != 0 && cell_size.cols % kStep != 0) &&
-      "Even Cell size provided - only odd accepted."
-  );
+  assert((cell_size.rows % kStep != 0 && cell_size.cols % kStep != 0) &&
+         "Even Cell size provided - only odd accepted.");
 
   const auto& [rows, cols] = size_;
 
@@ -67,19 +64,16 @@ bool Layout::IsWithin(const Position& position) const {
 }
 
 bool Layout::IsBlocked(const Position& position) const {
-  assert(
-      IsWithin(position) && "Trying to access a cell outside of the layout."
-  );
+  assert(IsWithin(position) &&
+         "Trying to access a cell outside of the layout.");
   return layout_.at(position.row).at(position.col) == kWall;
 }
 
 bool Layout::IsACell(const Position& position) const {
-  assert(
-      IsWithin(position) && "Trying to access a cell outside of the layout."
-  );
+  assert(IsWithin(position) &&
+         "Trying to access a cell outside of the layout.");
   return std::unordered_set<char>{kCell, kLocation, kPath}.contains(
-      layout_.at(position.row).at(position.col)
-  );
+      layout_.at(position.row).at(position.col));
 }
 
 bool Layout::CanMove(const Edge& edge) const {
@@ -89,9 +83,8 @@ bool Layout::CanMove(const Edge& edge) const {
 void Layout::Unblock(const Edge& edge) {
   const std::optional<Cell> to = edge.To();
   assert(to && "Invalid Direction enum passed to Edge instance.");
-  const Cell to_unblock(
-      (edge.from.row + to->row) / 2, (edge.from.col + to->col) / 2
-  );
+  const Cell to_unblock((edge.from.row + to->row) / 2,
+                        (edge.from.col + to->col) / 2);
   layout_.at(to_unblock.row).at(to_unblock.col) = kDoor;
 }
 
