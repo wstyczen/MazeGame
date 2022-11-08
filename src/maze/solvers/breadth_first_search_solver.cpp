@@ -1,4 +1,4 @@
-#include "breadth_first_search_solver.hpp"
+#include "maze/solvers/breadth_first_search_solver.hpp"
 
 #include <algorithm>
 #include <map>
@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "utility.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

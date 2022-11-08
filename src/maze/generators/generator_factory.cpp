@@ -1,16 +1,16 @@
-#include "generator_factory.hpp"
+#include "maze/generators/generator_factory.hpp"
 
 #include <cassert>
 #include <memory>
 
-#include "aldous_broder_generator.hpp"
-#include "ellers_generator.hpp"
-#include "generator.hpp"
-#include "growing_tree_generator.hpp"
-#include "kruskals_generator.hpp"
-#include "prims_generator.hpp"
-#include "recursive_backtracking_generator.hpp"
-#include "wilsons_generator.hpp"
+#include "maze/generators/aldous_broder_generator.hpp"
+#include "maze/generators/ellers_generator.hpp"
+#include "maze/generators/generator.hpp"
+#include "maze/generators/growing_tree_generator.hpp"
+#include "maze/generators/kruskals_generator.hpp"
+#include "maze/generators/prims_generator.hpp"
+#include "maze/generators/recursive_backtracking_generator.hpp"
+#include "maze/generators/wilsons_generator.hpp"
 
 namespace maze {
 

@@ -1,11 +1,11 @@
-#include "kruskals_generator.hpp"
+#include "maze/generators/kruskals_generator.hpp"
 
 #include <algorithm>
 #include <cassert>
 #include <iostream>
 
-#include "layout.hpp"
-#include "utility.hpp"
+#include "maze/layout.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

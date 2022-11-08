@@ -1,11 +1,11 @@
-#include "layout.hpp"
+#include "maze/layout.hpp"
 
 #include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <set>
 
-#include "utility.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

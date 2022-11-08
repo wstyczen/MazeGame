@@ -5,7 +5,6 @@
 #include <deque>
 #include <functional>
 #include <optional>
-#include <set>
 #include <tuple>
 #include <unordered_set>
 #include <vector>
@@ -80,7 +79,7 @@ std::optional<Direction> GetRandomMoveDirection(
 template <>
 struct std::hash<maze::Position> {
   std::size_t operator()(maze::Position const& position) const noexcept {
-    auto [y, x] = position;
+    const auto& [y, x] = position;
     return (y << 8) ^ x;
   }
 };

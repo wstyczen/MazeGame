@@ -1,11 +1,11 @@
-#include "recursive_backtracking_generator.hpp"
+#include "maze/generators/recursive_backtracking_generator.hpp"
 
 #include <deque>
 #include <memory>
 #include <set>
 
-#include "layout.hpp"
-#include "utility.hpp"
+#include "maze/layout.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

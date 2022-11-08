@@ -3,10 +3,10 @@
 
 #include <optional>
 
-#include "layout.hpp"
-#include "predecessors.hpp"
-#include "solver.hpp"
-#include "utility.hpp"
+#include "maze/layout.hpp"
+#include "maze/predecessors.hpp"
+#include "maze/solvers/solver.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

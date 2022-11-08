@@ -5,9 +5,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "predecessors.hpp"
-#include "solver.hpp"
-#include "unvisited.hpp"
+#include "maze/predecessors.hpp"
+#include "maze/solvers/solver.hpp"
+#include "maze/unvisited.hpp"
 
 namespace maze {
 

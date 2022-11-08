@@ -1,7 +1,7 @@
-#include "prims_generator.hpp"
+#include "maze/generators/prims_generator.hpp"
 
-#include "layout.hpp"
-#include "utility.hpp"
+#include "maze/layout.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

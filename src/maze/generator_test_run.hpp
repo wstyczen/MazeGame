@@ -1,9 +1,9 @@
 #ifndef MAZE_GENERATOR_TEST_RUN_HPP_
 #define MAZE_GENERATOR_TEST_RUN_HPP_
 
-#include "generator_factory.hpp"
-
 namespace maze {
+
+enum class GeneratorType;
 
 void GeneratorTestRun(const GeneratorType& generator_type);
 

@@ -1,8 +1,8 @@
 #ifndef MAZE_SOLVER_HPP_
 #define MAZE_SOLVER_HPP_
 
-#include "layout.hpp"
-#include "utility.hpp"
+#include "maze/layout.hpp"
+#include "maze/utility.hpp"
 
 #include <optional>
 #include <vector>

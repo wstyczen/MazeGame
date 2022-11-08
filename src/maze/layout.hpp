@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <vector>
 
-#include "utility.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

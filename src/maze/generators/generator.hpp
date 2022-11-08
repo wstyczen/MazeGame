@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "utility.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

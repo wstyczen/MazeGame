@@ -1,8 +1,8 @@
-#include "growing_tree_generator.hpp"
+#include "maze/generators/growing_tree_generator.hpp"
 
 #include <functional>
 
-#include "utility.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

@@ -2,8 +2,8 @@
 
 #include <cassert>
 
-#include "layout.hpp"
-#include "utility.hpp"
+#include "maze/layout.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

@@ -3,7 +3,7 @@
 
 #include <unordered_set>
 
-#include "utility.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

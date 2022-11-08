@@ -1,4 +1,4 @@
-#include "utility.hpp"
+#include "maze/utility.hpp"
 
 #include <algorithm>
 #include <cassert>

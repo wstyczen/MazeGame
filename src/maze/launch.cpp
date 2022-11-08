@@ -1,9 +1,9 @@
-#include "generator.hpp"
-#include "generator_factory.hpp"
-#include "generator_test_run.hpp"
-#include "layout.hpp"
-#include "solver.hpp"
-#include "solver_factory.hpp"
+#include "maze/generator_test_run.hpp"
+#include "maze/generators/generator.hpp"
+#include "maze/generators/generator_factory.hpp"
+#include "maze/layout.hpp"
+#include "maze/solvers/solver.hpp"
+#include "maze/solvers/solver_factory.hpp"
 
 #include <ctime>
 #include <iostream>
@@ -17,13 +17,14 @@ void GenerateToTerminal(
     const maze::PathType& path_type,
     const maze::CellSize& cell_size
 ) {
-  std::unique_ptr<maze::Generator> generator =
+  const std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(generator_type);
   const std::unique_ptr<maze::Layout> maze_layout = generator->Get(cell_size);
 
-  std::unique_ptr<maze::Solver> solver =
+  const std::unique_ptr<maze::Solver> solver =
       maze::SolverFactory::GetInstance()->GetSolver(solver_type);
-  std::optional<maze::Path> path = solver->Solve(maze_layout.get(), path_type);
+  const std::optional<maze::Path> path =
+      solver->Solve(maze_layout.get(), path_type);
 
   if (path)
     maze_layout->AddPath(*path);
@@ -36,16 +37,16 @@ int main() {
   std::srand(std::time(0));  // use current time as seed for random generators
 
   // Generate a maze and print it to the terminal
-  // GenerateToTerminal(
-  //     maze::GeneratorType::ELLERS, maze::SolverType::A_STAR,
-  //     maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, {33, 33}
-  // );
+  GenerateToTerminal(
+      maze::GeneratorType::KRUSKALS, maze::SolverType::BREADTH_FIRST_SEARCH,
+      maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, {33, 33}
+  );
 
   // Run a generation test for a particular generator
   // maze::GeneatorTestRun(maze::GeneratorType::KRUSKALS);
 
   // Run generation test for all generators
-  maze::GeneratorsTestRun();
+  // maze::GeneratorsTestRun();
 
   return 0;
 }

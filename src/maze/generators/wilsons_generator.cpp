@@ -1,7 +1,7 @@
-#include "wilsons_generator.hpp"
+#include "maze/generators/wilsons_generator.hpp"
 
-#include "layout.hpp"
-#include "utility.hpp"
+#include "maze/layout.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

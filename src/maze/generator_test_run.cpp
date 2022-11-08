@@ -1,4 +1,4 @@
-#include "generator_test_run.hpp"
+#include "maze/generator_test_run.hpp"
 
 #include <stdint.h>
 #include <array>
@@ -7,7 +7,8 @@
 #include <iomanip>
 #include <iostream>
 
-#include "solver_factory.hpp"
+#include "maze/generators/generator_factory.hpp"
+#include "maze/solvers/solver_factory.hpp"
 
 namespace maze {
 

@@ -5,8 +5,8 @@
 #include <unordered_set>
 #include <vector>
 
-#include "generator.hpp"
-#include "utility.hpp"
+#include "maze/generators/generator.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

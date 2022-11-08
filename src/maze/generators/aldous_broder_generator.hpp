@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "generator.hpp"
-#include "unvisited.hpp"
+#include "maze/generators/generator.hpp"
+#include "maze/unvisited.hpp"
 
 namespace maze {
 

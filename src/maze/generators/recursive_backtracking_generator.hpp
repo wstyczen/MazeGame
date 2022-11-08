@@ -4,10 +4,10 @@
 #include <memory>
 #include <set>
 
-#include "generator.hpp"
-#include "layout.hpp"
-#include "unvisited.hpp"
-#include "utility.hpp"
+#include "maze/generators/generator.hpp"
+#include "maze/layout.hpp"
+#include "maze/unvisited.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

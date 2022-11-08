@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 
-#include "utility.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 

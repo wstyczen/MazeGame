@@ -1,4 +1,4 @@
-#include "unvisited.hpp"
+#include "maze/unvisited.hpp"
 
 #include <cstdlib>
 

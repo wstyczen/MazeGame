@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "solver.hpp"
+#include "maze/solvers/solver.hpp"
 
 namespace maze {
 

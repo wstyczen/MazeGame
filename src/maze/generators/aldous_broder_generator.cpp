@@ -1,6 +1,6 @@
-#include "aldous_broder_generator.hpp"
+#include "maze/generators/aldous_broder_generator.hpp"
 
-#include "layout.hpp"
+#include "maze/layout.hpp"
 
 namespace maze {
 

@@ -1,4 +1,4 @@
-#include "djikstra_solver.hpp"
+#include "maze/solvers/djikstra_solver.hpp"
 
 #include <functional>
 #include <limits>

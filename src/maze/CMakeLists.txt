@@ -1,33 +1,33 @@
-add_executable(maze
-  launch.cpp
-  utility.cpp
-  layout.hpp
+add_library(maze
+  generators/aldous_broder_generator.cpp
+  generators/ellers_generator.cpp
+  generators/generator_factory.cpp
+  generators/growing_tree_generator.cpp
+  generators/kruskals_generator.cpp
+  generators/prims_generator.cpp
+  generators/recursive_backtracking_generator.cpp
+  generators/wilsons_generator.cpp
   layout.cpp
-  generator_factory.cpp
-  kruskals_generator.cpp
-  prims_generator.cpp
-  recursive_backtracking_generator.cpp
-  breadth_first_search_solver.cpp
-  solver_factory.cpp
-  solver.cpp
-  unvisited.cpp
-  growing_tree_generator.cpp
-  aldous_broder_generator.cpp
-  wilsons_generator.cpp
-  generator_test_run.cpp
-  ellers_generator.cpp
-  djikstra_solver.cpp
+  layout.hpp
   predecessors.cpp
-  a_star_solver.cpp
+  solvers/a_star_solver.cpp
+  solvers/breadth_first_search_solver.cpp
+  solvers/djikstra_solver.cpp
+  solvers/solver_factory.cpp
+  solvers/solver.cpp
+  unvisited.cpp
+  utility.cpp
 )
 
-find_package(Boost 1.80 REQUIRED COMPONENTS system json regex)
 target_link_libraries(maze
-  Boost::system
-  Boost::regex
-  Boost::json)
+  Boost::json
+)
 
+add_executable(maze_test
+  generator_test_run.cpp
+  launch.cpp
+)
 
-
-# target_link_libraries(launch
-#   maze_generators)
+target_link_libraries(maze_test
+  maze
+)

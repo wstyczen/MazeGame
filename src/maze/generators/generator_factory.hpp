@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "generator.hpp"
+#include "maze/generators/generator.hpp"
 
 namespace maze {
 

@@ -1,4 +1,4 @@
-#include "predecessors.hpp"
+#include "maze/predecessors.hpp"
 
 namespace maze {
 

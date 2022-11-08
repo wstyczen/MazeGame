@@ -1,9 +1,9 @@
-#include "ellers_generator.hpp"
+#include "maze/generators/ellers_generator.hpp"
 
 #include <cassert>
 #include <iterator>
 
-#include "layout.hpp"
+#include "maze/layout.hpp"
 
 namespace maze {
 

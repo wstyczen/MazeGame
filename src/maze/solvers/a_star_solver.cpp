@@ -1,4 +1,4 @@
-#include "a_star_solver.hpp"
+#include "maze/solvers/a_star_solver.hpp"
 
 #include <queue>
 

@@ -3,9 +3,9 @@
 #include <cassert>
 #include <memory>
 
-#include "a_star_solver.hpp"
-#include "breadth_first_search_solver.hpp"
-#include "djikstra_solver.hpp"
+#include "maze/solvers/a_star_solver.hpp"
+#include "maze/solvers/breadth_first_search_solver.hpp"
+#include "maze/solvers/djikstra_solver.hpp"
 
 namespace maze {
 
