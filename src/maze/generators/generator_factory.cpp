@@ -10,6 +10,7 @@
 #include "maze/generators/kruskals_generator.hpp"
 #include "maze/generators/prims_generator.hpp"
 #include "maze/generators/recursive_backtracking_generator.hpp"
+#include "maze/generators/sidewinder_generator.hpp"
 #include "maze/generators/wilsons_generator.hpp"
 
 namespace maze {
@@ -41,6 +42,8 @@ std::string GeneratorFactory::GetGeneratorName(
       return "Prim's";
     case GeneratorType::RECURSIVE_BACKTRACKING:
       return "Recursive Backtracking";
+    case GeneratorType::SIDEWINDER:
+      return "Sidewinder";
     case GeneratorType::WILSONS_GENERATOR:
       return "Wilson's";
   }
@@ -63,6 +66,8 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
       return std::unique_ptr<Generator>(new PrimsGenerator);
     case GeneratorType::RECURSIVE_BACKTRACKING:
       return std::unique_ptr<Generator>(new RecursiveBacktrackingGenerator);
+    case GeneratorType::SIDEWINDER:
+      return std::unique_ptr<Generator>(new SidewinderGenerator);
     case GeneratorType::WILSONS_GENERATOR:
       return std::unique_ptr<Generator>(new WilsonsGenerator);
   }

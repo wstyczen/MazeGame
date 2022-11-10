@@ -6,6 +6,7 @@ add_library(maze
   generators/kruskals_generator.cpp
   generators/prims_generator.cpp
   generators/recursive_backtracking_generator.cpp
+  generators/sidewinder_generator.cpp
   generators/wilsons_generator.cpp
   layout.cpp
   layout.hpp
