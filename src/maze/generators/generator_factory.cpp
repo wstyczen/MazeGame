@@ -7,6 +7,7 @@
 #include "maze/generators/ellers_generator.hpp"
 #include "maze/generators/generator.hpp"
 #include "maze/generators/growing_tree_generator.hpp"
+#include "maze/generators/hunt_and_kill_generator.hpp"
 #include "maze/generators/kruskals_generator.hpp"
 #include "maze/generators/prims_generator.hpp"
 #include "maze/generators/recursive_backtracking_generator.hpp"
@@ -32,10 +33,12 @@ std::string GeneratorFactory::GetGeneratorName(
   switch (generator_type) {
     case GeneratorType::ALDOUS_BRODER:
       return "Aldous-Broder";
-    case GeneratorType::GROWING_TREE:
-      return "Growing Tree";
     case GeneratorType::ELLERS:
       return "Eller's";
+    case GeneratorType::GROWING_TREE:
+      return "Growing Tree";
+    case GeneratorType::HUNT_AND_KILL:
+      return "Hunt and Kill";
     case GeneratorType::KRUSKALS:
       return "Kruskal's";
     case GeneratorType::PRIMS:
@@ -56,10 +59,12 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
   switch (generator_type) {
     case GeneratorType::ALDOUS_BRODER:
       return std::unique_ptr<Generator>(new AldousBroderGenerator);
-    case GeneratorType::GROWING_TREE:
-      return std::unique_ptr<Generator>(new GrowingTreeGenerator);
     case GeneratorType::ELLERS:
       return std::unique_ptr<Generator>(new EllersGenerator);
+    case GeneratorType::GROWING_TREE:
+      return std::unique_ptr<Generator>(new GrowingTreeGenerator);
+    case GeneratorType::HUNT_AND_KILL:
+      return std::unique_ptr<Generator>(new HuntAndKillGenerator);
     case GeneratorType::KRUSKALS:
       return std::unique_ptr<Generator>(new KruskalsGenerator);
     case GeneratorType::PRIMS:

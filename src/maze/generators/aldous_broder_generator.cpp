@@ -13,11 +13,10 @@ std::unique_ptr<Layout> AldousBroderGenerator::Get(const CellSize& cell_size) {
 
   InitializeUnvisited(layout->size());
 
-  static const std::function<bool(const Cell&, const Direction&)>
-      validity_check =
-          [this, &layout](const Cell& origin, const Direction& direction) {
-            return layout->IsWithin(*Edge(origin, direction).To());
-          };
+  static const MoveGeneralValidityCheck validity_check =
+      [this, &layout](const Cell& origin, const Direction& direction) {
+        return layout->IsWithin(*Edge(origin, direction).To());
+      };
 
   Cell cell = PickRandomUnvisited();
   // Choose any cell - visited or not - and travel through until all cells have

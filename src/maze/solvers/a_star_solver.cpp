@@ -32,7 +32,7 @@ std::optional<Path> AStarSolver::Solve(const Layout* const layout,
   std::priority_queue<Cell, std::vector<Cell>, decltype(compare_f)> cell_queue(
       compare_f);
 
-  std::function<bool(const Cell&, const Direction&)> move_validity_check_ =
+  MoveGeneralValidityCheck move_validity_check_ =
       [this](const Cell& origin, const Direction& direction) {
         Edge move(origin, direction);
         return layout_->CanMove(move) && !g_values_.contains(*move.To());

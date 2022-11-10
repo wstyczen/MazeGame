@@ -12,11 +12,10 @@ std::unique_ptr<Layout> WilsonsGenerator::Get(const CellSize& cell_size) {
   auto layout = std::make_unique<Layout>(cell_size);
   InitializeUnvisited(layout->size());
 
-  static const std::function<bool(const Cell&, const Direction&)>
-      validity_check =
-          [this, &layout](const Cell& origin, const Direction& direction) {
-            return layout->IsWithin(*Edge(origin, direction).To());
-          };
+  static const MoveGeneralValidityCheck validity_check =
+      [this, &layout](const Cell& origin, const Direction& direction) {
+        return layout->IsWithin(*Edge(origin, direction).To());
+      };
 
   std::map<Cell, Direction> walk;
 

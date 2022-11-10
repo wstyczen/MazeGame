@@ -1,5 +1,6 @@
 add_library(maze
   generators/aldous_broder_generator.cpp
+  generators/hunt_and_kill_generator.cpp
   generators/ellers_generator.cpp
   generators/generator_factory.cpp
   generators/growing_tree_generator.cpp

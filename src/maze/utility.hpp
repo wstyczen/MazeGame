@@ -58,6 +58,8 @@ struct Size {
 using CellSize = Size;
 using LayoutSize = Size;
 
+using MoveGeneralValidityCheck =
+    std::function<bool(const Cell&, const Direction&)>;
 using MoveValidityCheck = std::function<bool(const Direction& direction)>;
 
 std::deque<Direction> GetMoveDirections();
