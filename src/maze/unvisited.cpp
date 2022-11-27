@@ -16,7 +16,7 @@ void Unvisited::InitializeUnvisited(const LayoutSize& layout_size) {
 
 Cell Unvisited::PickRandomUnvisited(bool erase) {
   auto iter = unvisited_.begin();
-  std::advance(iter, std::rand() % unvisited_.size());
+  std::advance(iter, GetRandomNumber(unvisited_.size() - 1));
 
   const Cell picked = *iter;
   if (erase)

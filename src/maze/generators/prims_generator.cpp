@@ -10,12 +10,12 @@ namespace {
 Edge PickRandomEdgeFromFrontier(Frontier& frontier) {
   // Pick destination
   auto frontier_iter = frontier.begin();
-  std::advance(frontier_iter, std::rand() % frontier.size());
+  std::advance(frontier_iter, GetRandomNumber(frontier.size() - 1));
   const Cell destination = frontier_iter->first;
   // Pick origin
   std::vector<Cell>& valid_origins = frontier_iter->second;
   auto origin_iter = valid_origins.begin();
-  std::advance(origin_iter, std::rand() % valid_origins.size());
+  std::advance(origin_iter, GetRandomNumber(valid_origins.size() - 1));
   Cell origin = *origin_iter;
 
   const Edge edge = Edge::FromTwoCells(origin, destination);

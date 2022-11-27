@@ -26,7 +26,7 @@ bool ShouldJoin(const JoinType join_type) {
   const float join_chance = join_type == JoinType::HORIZONTAL
                                 ? kHorizontalJoinChance
                                 : kVerticalJoinChance;
-  return static_cast<float>(std::rand() % 100) / 100 < join_chance;
+  return static_cast<float>(GetRandomNumber(100)) / 100 < join_chance;
 }
 
 }  // namespace

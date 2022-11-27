@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <random>
 #include <tuple>
 
 namespace maze {
@@ -21,6 +22,7 @@ Direction GetAsDirection(const Move& move) {
   return Direction::LEFT;
 }
 
+inline std::mt19937 GetRNG() { return std::mt19937(std::random_device{}()); }
 }  // namespace
 
 bool Size::operator==(const Size& other) const {
@@ -63,8 +65,8 @@ std::deque<Direction> GetRandomizedMoveDirections(
     MoveValidityCheck validity_check) {
   std::deque<Direction> randomized_directions =
       GetValidMoveDirections(validity_check);
-  std::random_shuffle(randomized_directions.begin(),
-                      randomized_directions.end());
+  std::shuffle(randomized_directions.begin(), randomized_directions.end(),
+               GetRNG());
   return randomized_directions;
 }
 
@@ -76,13 +78,20 @@ std::optional<Direction> GetRandomMoveDirection(
     return std::nullopt;
 
   auto direction_iter = valid_move_directions.begin();
-  std::advance(direction_iter, std::rand() % valid_move_directions.size());
+  std::advance(direction_iter,
+               GetRandomNumber(valid_move_directions.size() - 1));
   return *direction_iter;
 }
 
 Edge Edge::FromTwoCells(const Cell& origin, const Cell& destination) {
   const Move move(destination.row - origin.row, destination.col - origin.col);
   return {origin, GetAsDirection(move)};
+}
+
+uint16_t GetRandomNumber(const uint16_t &upper_limit) {
+  std::uniform_int_distribution<> dist(0, upper_limit);
+  std::mt19937 rng = GetRNG();
+  return dist(rng);
 }
 
 }  // namespace maze

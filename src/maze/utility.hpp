@@ -1,10 +1,10 @@
 #ifndef MAZE_UTILITY_HPP_
 #define MAZE_UTILITY_HPP_
 
-#include <stdint.h>
 #include <deque>
 #include <functional>
 #include <optional>
+#include <stdint.h>
 #include <tuple>
 #include <unordered_set>
 #include <vector>
@@ -71,6 +71,7 @@ std::deque<Direction> GetRandomizedMoveDirections(
 std::optional<Direction> GetRandomMoveDirection(
     MoveValidityCheck validity_check = nullptr);
 
+uint16_t GetRandomNumber(const uint16_t &upper_limit);
 }  // namespace maze
 
 template <>
