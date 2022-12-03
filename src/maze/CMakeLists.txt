@@ -9,6 +9,7 @@ add_library(maze
   generators/recursive_backtracking_generator.cpp
   generators/sidewinder_generator.cpp
   generators/wilsons_generator.cpp
+  generators/recursive_division_generator.cpp
   layout.cpp
   layout.hpp
   predecessors.cpp

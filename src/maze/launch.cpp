@@ -35,17 +35,15 @@ int main() {
   std::srand(std::time(0));  // use current time as seed for random generators
 
   // Generate a maze and print it to the terminal
-  // GenerateToTerminal(
-  //     maze::GeneratorType::RECURSIVE_BACKTRACKING,
-  //     maze::SolverType::DJIKSTRA, maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT,
-  //     {33, 33}
-  // );
+  GenerateToTerminal(maze::GeneratorType::RECURSIVE_DIVISION,
+                     maze::SolverType::DJIKSTRA,
+                     maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, {33, 33});
 
   // Run a generation test for a particular generator
   // maze::GeneatorTestRun(maze::GeneratorType::KRUSKALS);
 
   // Run generation test for all generators
-  maze::GeneratorsTestRun();
+  // maze::GeneratorsTestRun();
 
   return 0;
 }

@@ -10,7 +10,12 @@ namespace maze {
 
 class Layout {
  public:
-  Layout(const CellSize& cell_size);
+  enum class Base {
+    GRID,
+    EMPTY,
+  };
+
+  Layout(const CellSize& cell_size, const Base& layout_base = Base::GRID);
 
   LayoutSize size() const;
   uint16_t middle_row() const;
@@ -23,10 +28,13 @@ class Layout {
   bool IsACell(const Position& position) const;
   bool CanMove(const Edge& edge) const;
 
-  void ClearCells();
   void Unblock(const Edge& edge);
+  void Unblock(const Position& position);
+  void Block(const Position& position);
+
   void AddPath(const Path& path);
   void SetLocation(const Cell& cell);
+  void ClearCells();
 
   void Show() const;
 
