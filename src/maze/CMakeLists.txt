@@ -19,9 +19,13 @@ add_library(maze
   utility.cpp
 )
 
+
+#[[
 target_link_libraries(maze
   Boost::json
 )
+]]
+
 
 add_executable(maze_test
   generator_test_run.cpp
