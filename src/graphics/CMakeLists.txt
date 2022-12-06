@@ -42,7 +42,6 @@ target_link_libraries(graphics
 add_executable(graphics_main
   main.cpp
 )
-
 target_link_libraries(graphics_main
   graphics
 )
