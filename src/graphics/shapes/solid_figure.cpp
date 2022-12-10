@@ -19,11 +19,11 @@ SolidFigure::SolidFigure(GLfloat *vertices,unsigned int vert_size, GLuint *indic
     mvp.proj = glm::mat4(1.0f);
     mvp.view = glm::mat4(1.0f);
     //delete that later
-    mvp.model = glm::rotate(mvp.model, glm::radians(pos.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    mvp.model = mvp.model * glm::rotate(mvp.model, glm::radians(pos.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    mvp.model = mvp.model * glm::rotate(mvp.model, glm::radians(pos.z), glm::vec3(0.0f, 0.0f, 1.0f));
-    mvp.view = glm::translate(mvp.view, posi);
-	mvp.proj = glm::perspective(glm::radians(45.0f), (float)(800/800), 0.1f, 100.0f);
+    mvp.model = glm::rotate(mvp.model, glm::radians(pose.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    mvp.model = glm::rotate(mvp.model, glm::radians(pose.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    mvp.model = glm::rotate(mvp.model, glm::radians(pose.z), glm::vec3(0.0f, 0.0f, 1.0f));
+    mvp.view = glm::translate(mvp.view, position);
+	  mvp.proj = glm::perspective(glm::radians(45.0f), (float)(800/800), 0.1f, 100.0f);
 }
 
 void SolidFigure::show(const GLuint &shader_id) {

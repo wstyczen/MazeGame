@@ -2,7 +2,7 @@
 #include "graphics/shapes/data_buffers/EBO.hpp"
 #include "graphics/shapes/data_buffers/VBO.hpp"
 #include "graphics/shapes/data_buffers/VAO.hpp"
-#include "graphics/shapes/solid_figure.hpp"
+#include "graphics/shapes/complex_cube.hpp"
 #include<iostream>
 #include<cmath>
 #include<vector>
@@ -33,7 +33,16 @@ GLfloat vertices[] =
 	 0.0f,  -0.3f, 0.0f,	0.1f, 0.02f, 0.02f	// Dark inner point 6
 
 };
-
+GLfloat vertices2[] = {
+ 	-5.5f,  -5.5f, 0.0f,     0.8f, 0.3f,  0.02f,	// Lower left corner
+	-5.5f,  5.5f, 0.0f,     0.8f, 0.3f,  0.02f,	// Upper left corner
+	 5.5f,  5.5f, 0.0f,     0.8f, 0.3f,  0.02f,	// Upper right corner
+	 5.5f,  -5.5f, 0.0f,     0.8f, 0.3f,  0.02f,	// Lower right corner
+};
+GLuint indices2[] = {
+0,1,2,
+0,2,3
+};
 GLuint indices[] =
 {
 
@@ -82,10 +91,6 @@ int main()
 	// Tell GLFW we are using the CORE profile
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-  std::list<std::vector<GLfloat>> vector;
-  vector.push_back(std::vector<GLfloat>{1, 2, 3});
-  vector.push_back(std::vector<GLfloat>{4, 5, 6});
-  vector.push_back(std::vector<GLfloat>{7, 8, 9});
 	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
 	GLFWwindow* window = glfwCreateWindow(width, height, "HelloOpenGL", NULL, NULL);
 	// Error check if the window fails to create
@@ -110,13 +115,15 @@ int main()
   // getline(myfile, s);
   // std::cout << s << "\n\n\n\n dupaaaaa";
  Shader shaderProgram("default.vert", "default.frag");
- SolidFigure figure(vertices, sizeof(vertices), indices, sizeof(indices), {0.0f, 0.0f, -10.0f}, {0.0f, 0.0f, 0.0f});
+ DynamicSolidFigure figure(vertices, sizeof(vertices), indices, sizeof(indices), {0.0f, 5.0f, -20.0f}, {0.0f, 0.0f, 0.0f});
+ ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 3.0f, -10.0f}, {0.0f, 0.0f, 0.0f});
+DynamicSolidFigure figure2(vertices2, sizeof(vertices2), indices2, sizeof(indices2), {0.0f, 0.0f, -10.5f}, {0.0f, 0.0f, 0.0f});
+
+
 	// Generates Shader object using shaders defualt.vert and default.frag
-  for(std::list<std::vector<GLfloat>>::iterator i = vector.begin(); i != vector.end(); i++){
-    std::vector<GLfloat> a = *i;
-    std::cout<< a[0]<<", "<< a[1] << ", " << a[2]<<std::endl;
-  }
   glEnable(GL_DEPTH_TEST);
+  double prevTime = glfwGetTime();
+  GLfloat angle = 0.0f;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -124,7 +131,19 @@ int main()
 		// Clean the back buffer and assign the new color to it
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shaderProgram.Activate();
+    //glm::vec3 angle(0.01f, 0.0f, 0.0f);
+    double crntTime = glfwGetTime();
+		if (crntTime - prevTime >= 1/20)
+		{
+      //angle += -0.01f;
+			figure.turn(glm::vec3{1.0f, 1.0f, 1.0f});
+      cube.Roll({0.0f, -1.0f}, 1.0f);
+      prevTime = crntTime;
+
+		}
     figure.show(shaderProgram.GetId());
+    figure2.show(shaderProgram.GetId());
+    cube.show(shaderProgram.GetId());
 
 		// Tell OpenGL which Shader Program we want to use
 		// Draw primitives, number of indices, datatype of indices, index of indices
