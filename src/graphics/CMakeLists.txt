@@ -6,6 +6,8 @@ shapes/data_buffers/EBO.cpp
 shapes/data_buffers/VBO.cpp
 shapes/data_buffers/VAO.cpp
 shapes/solid_figure.cpp
+shapes/dynamic_solid_figure.cpp
+shapes/complex_cube.cpp
 )
 
 
