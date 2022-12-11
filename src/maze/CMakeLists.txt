@@ -12,7 +12,7 @@ add_library(maze
   generators/recursive_division_generator.cpp
   layout.cpp
   layout.hpp
-  predecessors.cpp
+  solvers/predecessors.cpp
   solvers/a_star_solver.cpp
   solvers/breadth_first_search_solver.cpp
   solvers/djikstra_solver.cpp

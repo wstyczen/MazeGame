@@ -17,14 +17,15 @@ class RecursiveDivisionGenerator : public Generator {
     uint16_t PickRandom() const {
       if (high - low == kStep)
         return low + 1;
-      return low + 1 + (std::rand() % ((high - low - kStep) / kStep)) * kStep;
+      return low + 1 +
+             GetRandomNumber((high - low - kStep) / kStep - 1) * kStep;
     }
     std::vector<uint16_t> GetWall() const {
       std::vector<uint16_t> wall;
       wall.reserve(high - low + 1);
       for (uint16_t i = low; i <= high; i += kStep)
         wall.push_back(i);
-      wall.erase(std::next(wall.begin(), std::rand() % wall.size()));
+      wall.erase(std::next(wall.begin(), GetRandomNumber(wall.size() - 1)));
       return wall;
     }
   };

@@ -20,7 +20,7 @@ std::unique_ptr<Layout> RecursiveDivisionGenerator::Get(
 
 RecursiveDivisionGenerator::DivisionDirection
 RecursiveDivisionGenerator::GetRandomDivisionDirection() {
-  return (std::rand() % 2 == 0)
+  return RollAPercentChance(50)
              ? RecursiveDivisionGenerator::DivisionDirection::VERTICAL
              : RecursiveDivisionGenerator::DivisionDirection::HORIZONTAL;
 }

@@ -1,5 +1,5 @@
-#ifndef MAZE_WILSONS_GENERATOR_HPP_
-#define MAZE_WILSONS_GENERATOR_HPP_
+#ifndef MAZE_WILSONS_HPP_
+#define MAZE_WILSONS_HPP_
 
 #include "maze/generators/generator.hpp"
 #include "maze/unvisited.hpp"
@@ -22,4 +22,4 @@ class WilsonsGenerator : public Generator, public Unvisited {
 
 }  // namespace maze
 
-#endif  // MAZE_WILSONS_GENERATOR_HPP_
+#endif  // MAZE_WILSONS_HPP_

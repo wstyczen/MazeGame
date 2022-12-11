@@ -41,6 +41,7 @@ Layout::Layout(const CellSize& cell_size, const Layout::Base& layout_base)
           layout_.push_back(std::move(row));
         }
       }
+      break;
     }
     case Layout::Base::EMPTY: {
       auto middle_row_odd = std::vector<char>(cols, kDoor);
@@ -65,6 +66,7 @@ Layout::Layout(const CellSize& cell_size, const Layout::Base& layout_base)
           layout_.push_back(middle_row_even);
         }
       }
+      break;
     }
   }
 }

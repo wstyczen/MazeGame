@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "maze/predecessors.hpp"
+#include "maze/solvers/predecessors.hpp"
 #include "maze/solvers/solver.hpp"
 #include "maze/unvisited.hpp"
 

@@ -18,8 +18,8 @@ enum class GeneratorType {
   RECURSIVE_BACKTRACKING,
   RECURSIVE_DIVISION,
   SIDEWINDER,
-  WILSONS_GENERATOR,
-  LAST = WILSONS_GENERATOR,
+  WILSONS,
+  LAST = WILSONS,
 };
 
 class GeneratorFactory {

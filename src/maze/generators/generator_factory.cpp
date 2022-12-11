@@ -50,7 +50,7 @@ std::string GeneratorFactory::GetGeneratorName(
       return "Recursive Division";
     case GeneratorType::SIDEWINDER:
       return "Sidewinder";
-    case GeneratorType::WILSONS_GENERATOR:
+    case GeneratorType::WILSONS:
       return "Wilson's";
   }
   assert(0 && "No such generator type.");
@@ -78,7 +78,7 @@ std::unique_ptr<Generator> GeneratorFactory::GetGenerator(
       return std::unique_ptr<Generator>(new RecursiveDivisionGenerator);
     case GeneratorType::SIDEWINDER:
       return std::unique_ptr<Generator>(new SidewinderGenerator);
-    case GeneratorType::WILSONS_GENERATOR:
+    case GeneratorType::WILSONS:
       return std::unique_ptr<Generator>(new WilsonsGenerator);
   }
   assert(0 && "No such generator type.");

@@ -3,6 +3,7 @@
 #include <iterator>
 
 #include "maze/layout.hpp"
+#include "maze/utility.hpp"
 
 namespace maze {
 
@@ -10,7 +11,7 @@ namespace {
 
 bool ShouldUnblock() {
   constexpr float kUnblockChance = .5;
-  return static_cast<float>(std::rand() % 100) / 100 < kUnblockChance;
+  return RollAPercentChance(kUnblockChance * 100);
 }
 
 void DoUnblockRight(Layout* const layout, const Cell& cell) {
@@ -26,7 +27,7 @@ bool MaybeUnblockRight(Layout* const layout, const Cell& cell) {
 
 void UnblockRandomUp(Layout* const layout, const std::vector<Cell>& group) {
   const Cell picked_cell =
-      *std::next(group.begin(), std::rand() % group.size());
+      *std::next(group.begin(), GetRandomNumber(group.size() - 1));
   layout->Unblock(Edge(picked_cell, Direction::UP));
 }
 

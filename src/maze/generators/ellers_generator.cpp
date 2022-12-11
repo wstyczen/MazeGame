@@ -26,7 +26,7 @@ bool ShouldJoin(const JoinType join_type) {
   const float join_chance = join_type == JoinType::HORIZONTAL
                                 ? kHorizontalJoinChance
                                 : kVerticalJoinChance;
-  return static_cast<float>(GetRandomNumber(100)) / 100 < join_chance;
+  return RollAPercentChance(join_chance * 100);
 }
 
 }  // namespace
@@ -85,7 +85,7 @@ std::unique_ptr<Layout> EllersGenerator::Get(const CellSize& cell_size) {
       if (!cells)
         continue;
 
-      Cell* picked_cell = cells->at(std::rand() % cells->size());
+      Cell* picked_cell = cells->at(GetRandomNumber(cells->size() - 1));
 
       uint16_t downward_cell_index = picked_cell->col / kStep;
       auto& downward_cell = downward_cells.at(downward_cell_index);
