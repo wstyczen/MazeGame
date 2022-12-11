@@ -12,71 +12,6 @@
 
 const unsigned int width(1000), height(1000);
 
-// Vertices coordinates
-GLfloat vertices[] =
-{ //               COORDINATES
-	-0.5f,  -0.5f, 0.5f,     0.8f, 0.3f,  0.02f,	// Lower left corner
-	-0.5f,  0.5f, 0.5f,     0.8f, 0.3f,  0.02f,	// Upper left corner
-	 0.5f,  0.5f, 0.5f,     0.8f, 0.3f,  0.02f,	// Upper right corner
-	 0.5f,  -0.5f, 0.5f,     0.8f, 0.3f,  0.02f,	// Lower right corner
-
-	-0.5f,  -0.5f, -0.5f,    0.8f, 0.3f,  0.02f,	// Lower left corner
-	-0.5f,  0.5f, -0.5f,    0.8f, 0.3f,  0.02f,	// Upper left corner
-	 0.5f,  0.5f, -0.5f,    0.8f, 0.3f,  0.02f,	// Upper right corner
-	 0.5f,  -0.5f, -0.5f,    0.8f, 0.3f,  0.02f,	// Lower right corner
-
-	 0.0f,  0.0f, 0.3f,		0.1f, 0.02f, 0.02f,// Dark inner point 1
-	-0.3f,  0.0f, 0.0f,		0.1f, 0.02f, 0.02f,	// Dark inner point 2
-	 0.0f,  0.0f, -0.3f,	0.1f, 0.02f, 0.02f,// Dark inner point 3
-	 0.3f,  0.0f, 0.0f,		0.1f, 0.02f, 0.02f,	// Dark inner point 4
-	 0.0f,  0.3f, 0.0f,		0.1f, 0.02f, 0.02f,	// Dark inner point 5
-	 0.0f,  -0.3f, 0.0f,	0.1f, 0.02f, 0.02f	// Dark inner point 6
-
-};
-GLfloat vertices2[] = {
- 	-5.5f,  -5.5f, 0.0f,     0.8f, 0.3f,  0.02f,	// Lower left corner
-	-5.5f,  5.5f, 0.0f,     0.8f, 0.3f,  0.02f,	// Upper left corner
-	 5.5f,  5.5f, 0.0f,     0.8f, 0.3f,  0.02f,	// Upper right corner
-	 5.5f,  -5.5f, 0.0f,     0.8f, 0.3f,  0.02f,	// Lower right corner
-};
-GLuint indices2[] = {
-0,1,2,
-0,2,3
-};
-GLuint indices[] =
-{
-
-	0, 1, 8,
-	1, 2, 8,
-	2, 3, 8,
-	3, 0, 8,
-
-	0, 1, 9,
-	1, 5, 9,
-	5, 4, 9,
-	4, 0, 9,
-
-	5, 6, 10,
-	6, 7, 10,
-	7, 4, 10,
-	4, 5, 10,
-
-	2, 6, 11,
-	6, 7, 11,
-	7, 3, 11,
-	3, 2, 11,
-
-	1, 5, 12,
-	5, 6, 12,
-	6, 2, 12,
-	2, 1, 12,
-
-	0, 4, 13,
-	4, 7, 13,
-	7, 3, 13,
-	3, 0, 13
-
-};
 
 
 int main()
@@ -109,21 +44,17 @@ int main()
 	// Specify the viewport of OpenGL in the Window
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
-  // std::ifstream myfile;
-  // myfile.open ("graphics/shaders/default.vert", std::ios::binary);
-  // std::string s;
-  // getline(myfile, s);
-  // std::cout << s << "\n\n\n\n dupaaaaa";
- Shader shaderProgram("default.vert", "default.frag");
- DynamicSolidFigure figure(vertices, sizeof(vertices), indices, sizeof(indices), {0.0f, 5.0f, -20.0f}, {0.0f, 0.0f, 0.0f});
- ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {0.0f, 3.0f, -10.0f}, {0.0f, 0.0f, 0.0f});
-DynamicSolidFigure figure2(vertices2, sizeof(vertices2), indices2, sizeof(indices2), {0.0f, 0.0f, -10.5f}, {0.0f, 0.0f, 0.0f});
+
+  Shader shaderProgram("default.vert", "default.frag");
+  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {3.0f, 3.0f, -50.0f}, {0.0f, 0.0f, 0.0f});
 
 
 	// Generates Shader object using shaders defualt.vert and default.frag
   glEnable(GL_DEPTH_TEST);
   double prevTime = glfwGetTime();
-  GLfloat angle = 0.0f;
+  glm::vec3 a{1, 2, 3};
+  glm::vec3 b{0, 1, 0};
+  glm::vec3 c = a*b;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -133,17 +64,44 @@ DynamicSolidFigure figure2(vertices2, sizeof(vertices2), indices2, sizeof(indice
     shaderProgram.Activate();
     //glm::vec3 angle(0.01f, 0.0f, 0.0f);
     double crntTime = glfwGetTime();
-		if (crntTime - prevTime >= 1/20)
+    //cube.MoveAnimation(ComplexCube::MoveDirection::north);
+    // if(crntTime - floor(crntTime / 5) * 5.0f < 0.05f){
+    //     cube.MakeMove(ComplexCube::MoveDirection::move_east);
+    // }
+    if (glfwGetKey(window, GLFW_KEY_UP ) == GLFW_PRESS){
+      cube.MakeMove(ComplexCube::MoveDirection::move_north);
+    }
+    // Move backward
+    if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS){
+      cube.MakeMove(ComplexCube::MoveDirection::move_south);
+    }
+    // Strafe right
+    if (glfwGetKey(window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
+      cube.MakeMove(ComplexCube::MoveDirection::move_east);
+    }
+    // Strafe left
+    if (glfwGetKey(window, GLFW_KEY_LEFT ) == GLFW_PRESS){
+      cube.MakeMove(ComplexCube::MoveDirection::move_west);
+    }
+
+
+		if (crntTime - prevTime >= 1/60)
 		{
       //angle += -0.01f;
-			figure.turn(glm::vec3{1.0f, 1.0f, 1.0f});
-      cube.Roll({0.0f, -1.0f}, 1.0f);
+			//figure.turn(glm::vec3{1.0f, 1.0f, 1.0f});
+      //cube.Roll({-1.0f, 0.0f}, 1.0f);
+      cube.Act();
+      std::cout << cube.getPosition().z << std::endl;
+      //std::cout << c.x << " "<< c.y << " " << c.z << "GIT\n";
+      //std::cout << cube.getPose().x <<" " <<floor(cube.getPose().x / 90) * 90 << std::endl;
+      //std::cout << crntTime << std::endl;
       prevTime = crntTime;
 
 		}
-    figure.show(shaderProgram.GetId());
-    figure2.show(shaderProgram.GetId());
-    cube.show(shaderProgram.GetId());
+
+      //figure.show(shaderProgram.GetId());
+      //figure2.show(shaderProgram.GetId());
+      cube.show(shaderProgram.GetId());
 
 		// Tell OpenGL which Shader Program we want to use
 		// Draw primitives, number of indices, datatype of indices, index of indices

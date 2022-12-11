@@ -60,18 +60,14 @@ ComplexCube::ComplexCube(GLfloat side,glm::vec3 vertex_color, glm::vec3 inner_co
 
           }, 288, posi, pos) {
   size = side;
+  start_position = posi;
 }
 
-
-
-
-
-
-void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
-    float prev_pose_x, prev_pose_y, move_x, move_y, prev_position_z, position_z, move_z(0), pose_x, pose_y;
+void ComplexCube::Roll(const glm::vec3& turn_vec, GLfloat scale) {
+    float prev_pose_x, prev_pose_y, move_x, move_y, prev_position_z, position_z, move_z, pose_x, pose_y;
     prev_pose_x = pose.x - floor(pose.x / 90) * 90.0f;
     prev_pose_y = pose.y - floor(pose.y / 90) * 90.0f;
-    turn(glm::vec3(turn_vec.x, turn_vec.y, 0.0f));
+    turn(turn_vec);
     pose_x = pose.x - floor(pose.x / 90) * 90.0f;
     pose_y = pose.y - floor(pose.y / 90) * 90.0f;
     if (fabs(prev_pose_x - pose_x) > 2 * fabs(turn_vec.x)) prev_pose_x = pose_x;
@@ -86,3 +82,77 @@ void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
     move(glm::vec3(move_x, move_y, move_z) * scale);
 
 }
+
+void ComplexCube::MakeMove(ComplexCube::MoveDirection direction){
+  if(move_state == steady){
+  move_state = direction;
+  if (direction == move_north){
+    ang_vel.x = -move_settings.start_velocity;
+    Roll({ang_vel.x, 0.0f, 0.0f}, 1.0f);
+  } else if (direction == move_south){
+    ang_vel.x = move_settings.start_velocity;
+    Roll({ang_vel.x, 0.0f, 0.0f}, 1.0f);
+  }  else if (direction == move_east){
+    ang_vel.y = move_settings.start_velocity;
+    Roll({0.0f, ang_vel.y, 0.0f}, 1.0f);
+    }
+  else if (direction == move_west){
+    ang_vel.y = -move_settings.start_velocity;
+    Roll({0.0f, ang_vel.y, 0.0f}, 1.0f);
+  }
+  }
+}
+
+void ComplexCube::Perform(){
+    if(move_state == ComplexCube::MoveDirection::move_north){
+      if( (pose.x - floor(pose.x / 90) * 90.0f) >= -ang_vel.x){
+        Roll({ang_vel.x, 0.0f, 0.0f}, 1.0f);
+        ang_vel.x -= cos((pose.x - floor(pose.x / 90) * 90.0f) * 3.1415 / 180) * move_settings.acceleration;
+
+      }else {
+        setPose({0.0f, 0.0f, 0.0f});
+        std::cout << ang_vel.x << std::endl;
+        ang_vel.x = 0.0f;
+        move_state = steady;
+      }
+
+    }
+    else if (move_state == ComplexCube::MoveDirection::move_east)
+    {
+      if( (pose.y - floor(pose.y / 90) * 90.0f) >= ang_vel.y){
+        Roll({0.0f, ang_vel.y, 0.0f}, 1.0f);
+        ang_vel.y += sin((pose.y - floor(pose.y / 90) * 90.0f) * 3.1415 / 180) * move_settings.acceleration;
+
+      }else {
+        setPose({0.0f, 0.0f, 0.0f});
+        ang_vel.y = 0.0f;
+        move_state = steady;
+      }
+    }
+    else if (move_state == ComplexCube::MoveDirection::move_south){
+      if((pose.x - floor(pose.x / 90) * 90.0f) >= ang_vel.x){
+        Roll({ang_vel.x, 0.0f, 0.0f}, 1.0f);
+        ang_vel.x += sin((pose.x - floor(pose.x / 90) * 90.0f) * 3.1415 / 180) * move_settings.acceleration;
+
+      }else {
+        setPose({0.0f, 0.0f, 0.0f});
+        std::cout << ang_vel.x << std::endl;
+        ang_vel.x = 0.0f;
+        move_state = steady;
+      }
+    }
+    else if (move_state == ComplexCube::MoveDirection::move_west)
+    {
+      if( (pose.y - floor(pose.y / 90) * 90.0f) >= -ang_vel.y){
+        Roll({0.0f, ang_vel.y, 0.0f}, 1.0f);
+        ang_vel.y -= cos((pose.y - floor(pose.y / 90) * 90.0f) * 3.1415 / 180) * move_settings.acceleration;
+
+      }else {
+        setPose({0.0f, 0.0f, 0.0f});
+        ang_vel.y = 0.0f;
+        move_state = steady;
+      }
+    }
+}
+
+
