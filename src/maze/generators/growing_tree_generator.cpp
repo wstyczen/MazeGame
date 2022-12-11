@@ -14,13 +14,12 @@ std::unique_ptr<Layout> GrowingTreeGenerator::Get(const CellSize& cell_size) {
 
   InitializeUnvisited(layout->size());
 
-  static const std::function<bool(const Cell&, const Direction&)>
-      validity_check =
-          [this, &layout](const Cell& origin, const Direction& direction) {
-            const Cell destination = *Edge(origin, direction).To();
-            return unvisited_.contains(destination) &&
-                   layout->IsWithin(destination);
-          };
+  static const MoveGeneralValidityCheck validity_check =
+      [this, &layout](const Cell& origin, const Direction& direction) {
+        const Cell destination = *Edge(origin, direction).To();
+        return unvisited_.contains(destination) &&
+               layout->IsWithin(destination);
+      };
 
   path_.push_back(PickRandomUnvisited());
 

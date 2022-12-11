@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "maze/predecessors.hpp"
+#include "maze/solvers/predecessors.hpp"
 #include "maze/solvers/solver.hpp"
 #include "maze/unvisited.hpp"
 
@@ -36,7 +36,7 @@ class DjikstraSolver : public Solver, public Predecessors {
                       std::vector<djikstra::Distance>,
                       std::greater<djikstra::Distance>>
       minimum_distance_queue_;
-  std::function<bool(const Cell&, const Direction&)> move_validity_check_;
+  MoveGeneralValidityCheck move_validity_check_;
 
   static const uint16_t max_distance;
 

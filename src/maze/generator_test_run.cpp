@@ -74,9 +74,8 @@ void GeneratorTestRun(const GeneratorType& generator_type) {
   std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(generator_type);
 
-  std::cout << "=> "
-            << GeneratorFactory::GetInstance()->GetGeneratorName(generator_type)
-            << ":\n\n";
+  std::cout << GeneratorFactory::GetInstance()->GetGeneratorName(generator_type)
+            << "\n\n";
   for (const uint16_t& size : kTestSizes)
     Run(generator.get(), size);
 
@@ -85,8 +84,10 @@ void GeneratorTestRun(const GeneratorType& generator_type) {
 
 void GeneratorsTestRun() {
   for (auto i = static_cast<int>(GeneratorType::FIRST);
-       i <= static_cast<int>(GeneratorType::LAST); i++)
+       i <= static_cast<int>(GeneratorType::LAST); i++) {
+    std::cout << i + 1 << ". ";
     GeneratorTestRun(static_cast<GeneratorType>(i));
+  }
 }
 
 }  // namespace maze

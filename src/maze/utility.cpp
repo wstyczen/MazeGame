@@ -22,7 +22,6 @@ Direction GetAsDirection(const Move& move) {
   return Direction::LEFT;
 }
 
-inline std::mt19937 GetRNG() { return std::mt19937(std::random_device{}()); }
 }  // namespace
 
 bool Size::operator==(const Size& other) const {
@@ -44,6 +43,11 @@ std::optional<Cell> Edge::To(const uint16_t& step) const {
       return Cell(from.row, from.col - step);
   }
   return std::nullopt;
+}
+
+Edge Edge::FromTwoCells(const Cell& origin, const Cell& destination) {
+  const Move move(destination.row - origin.row, destination.col - origin.col);
+  return {origin, GetAsDirection(move)};
 }
 
 std::deque<Direction> GetValidMoveDirections(MoveValidityCheck validity_check) {
@@ -77,21 +81,22 @@ std::optional<Direction> GetRandomMoveDirection(
   if (valid_move_directions.empty())
     return std::nullopt;
 
-  auto direction_iter = valid_move_directions.begin();
-  std::advance(direction_iter,
-               GetRandomNumber(valid_move_directions.size() - 1));
-  return *direction_iter;
+  return *std::next(valid_move_directions.begin(),
+                    GetRandomNumber(valid_move_directions.size() - 1));
 }
 
-Edge Edge::FromTwoCells(const Cell& origin, const Cell& destination) {
-  const Move move(destination.row - origin.row, destination.col - origin.col);
-  return {origin, GetAsDirection(move)};
+inline std::mt19937 GetRNG() {
+  return std::mt19937(std::random_device{}());
 }
 
-uint16_t GetRandomNumber(const uint16_t &upper_limit) {
+uint16_t GetRandomNumber(const uint16_t& upper_limit) {
   std::uniform_int_distribution<> dist(0, upper_limit);
   std::mt19937 rng = GetRNG();
   return dist(rng);
+}
+
+bool RollAPercentChance(const uint16_t& percent_success_chance) {
+  return GetRandomNumber(100) >= percent_success_chance;
 }
 
 }  // namespace maze

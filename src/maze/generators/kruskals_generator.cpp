@@ -66,7 +66,7 @@ void KruskalsGenerator::InitializeEdges(const LayoutSize& layout_size) {
       if (j > kLayoutFirstCellIndex)
         edges_.emplace_back(Cell(i, j), Direction::LEFT);
     }
-  std::random_shuffle(edges_.begin(), edges_.end());
+  std::shuffle(edges_.begin(), edges_.end(), GetRNG());
 }
 
 }  // namespace maze

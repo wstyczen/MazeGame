@@ -4,7 +4,7 @@
 #include <optional>
 
 #include "maze/layout.hpp"
-#include "maze/predecessors.hpp"
+#include "maze/solvers/predecessors.hpp"
 #include "maze/solvers/solver.hpp"
 #include "maze/utility.hpp"
 

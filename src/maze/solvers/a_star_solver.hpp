@@ -1,7 +1,7 @@
 #ifndef MAZE_A_STAR_SOLVER_HPP_
 #define MAZE_A_STAR_SOLVER_HPP_
 
-#include "maze/predecessors.hpp"
+#include "maze/solvers/predecessors.hpp"
 #include "maze/solvers/solver.hpp"
 
 #include <unordered_map>

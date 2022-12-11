@@ -21,7 +21,7 @@ LayoutSize GetLayoutSizeFromCellSize(const CellSize& cell_size) {
 }
 }  // namespace
 
-Layout::Layout(const CellSize& cell_size)
+Layout::Layout(const CellSize& cell_size, const Layout::Base& layout_base)
     : size_(GetLayoutSizeFromCellSize(cell_size)) {
   assert((cell_size.rows % kStep != 0 && cell_size.cols % kStep != 0) &&
          "Even Cell size provided - only odd accepted.");
@@ -29,14 +29,44 @@ Layout::Layout(const CellSize& cell_size)
   const auto& [rows, cols] = size_;
 
   layout_.reserve(rows);
-  for (size_t i = 0; i != rows; i += 1) {
-    if (i % kStep == 0)
-      layout_.push_back(std::vector<char>(cols, kWall));
-    else {
-      auto row = std::vector<char>(cols, kWall);
-      for (size_t j = kLayoutFirstCellIndex; j <= cols; j += kStep)
-        row[j] = kCell;
-      layout_.push_back(std::move(row));
+  switch (layout_base) {
+    case Layout::Base::GRID: {
+      for (size_t i = 0; i != rows; i++) {
+        if (i % kStep == 0)
+          layout_.push_back(std::vector<char>(cols, kWall));
+        else {
+          auto row = std::vector<char>(cols, kWall);
+          for (size_t j = kLayoutFirstCellIndex; j <= cols; j += kStep)
+            row[j] = kCell;
+          layout_.push_back(std::move(row));
+        }
+      }
+      break;
+    }
+    case Layout::Base::EMPTY: {
+      auto middle_row_odd = std::vector<char>(cols, kDoor);
+      auto middle_row_even = std::vector<char>(cols, kDoor);
+      for (size_t j = 0; j != cols; j++) {
+        if (j == 0 || j == cols - 1) {
+          middle_row_odd[j] = kWall;
+        }
+        if (j % kStep == 0) {
+          middle_row_even[j] = kWall;
+        } else if (j % kStep == kLayoutFirstCellIndex) {
+          middle_row_odd[j] = kCell;
+        }
+      }
+
+      for (size_t i = 0; i != rows; i++) {
+        if (i == 0 || i == rows - 1) {
+          layout_.push_back(std::vector<char>(cols, kWall));
+        } else if (i % kStep == kLayoutFirstCellIndex) {
+          layout_.push_back(middle_row_odd);
+        } else {
+          layout_.push_back(middle_row_even);
+        }
+      }
+      break;
     }
   }
 }
@@ -72,7 +102,7 @@ bool Layout::IsBlocked(const Position& position) const {
 bool Layout::IsACell(const Position& position) const {
   assert(IsWithin(position) &&
          "Trying to access a cell outside of the layout.");
-  return std::unordered_set<char>{kCell, kLocation, kPath}.contains(
+  return !std::unordered_set<char>{kWall, kDoor}.contains(
       layout_.at(position.row).at(position.col));
 }
 
@@ -81,11 +111,36 @@ bool Layout::CanMove(const Edge& edge) const {
 }
 
 void Layout::Unblock(const Edge& edge) {
-  const std::optional<Cell> to = edge.To();
-  assert(to && "Invalid Direction enum passed to Edge instance.");
-  const Cell to_unblock((edge.from.row + to->row) / 2,
-                        (edge.from.col + to->col) / 2);
+  const Cell to = *edge.To();
+  const Position to_unblock((edge.from.row + to.row) / 2,
+                            (edge.from.col + to.col) / 2);
   layout_.at(to_unblock.row).at(to_unblock.col) = kDoor;
+}
+
+void Layout::Unblock(const Position& position) {
+  assert(!IsACell(position) && "Cannot unblock a cell.");
+  layout_.at(position.row).at(position.col) = kDoor;
+}
+
+void Layout::Block(const Position& position) {
+  assert(!IsACell(position) && "Cannot block a cell.");
+  layout_.at(position.row).at(position.col) = kWall;
+}
+
+void Layout::AddPath(const Path& path) {
+  for (const Cell& position : path)
+    layout_.at(position.row).at(position.col) = kPath;
+}
+
+void Layout::SetLocation(const Cell& cell) {
+  assert(IsACell(cell) && "Trying to set a location that is not a cell.");
+  layout_.at(cell.row).at(cell.col) = kLocation;
+}
+
+void Layout::ClearCells() {
+  for (size_t i = kLayoutFirstCellIndex; i < size_.rows; i += kStep)
+    for (size_t j = kLayoutFirstCellIndex; j < size_.cols; j += kStep)
+      layout_.at(i).at(j) = kCell;
 }
 
 void Layout::Show() const {
@@ -112,22 +167,6 @@ void Layout::Show() const {
     }
     std::cout << "\n";
   }
-}
-
-void Layout::AddPath(const Path& path) {
-  for (const Cell& position : path)
-    layout_.at(position.row).at(position.col) = kPath;
-}
-
-void Layout::SetLocation(const Cell& cell) {
-  assert(IsACell(cell) && "Trying to set a location that is not a cell.");
-  layout_.at(cell.row).at(cell.col) = kLocation;
-}
-
-void Layout::ClearCells() {
-  for (size_t i = kLayoutFirstCellIndex; i < size_.rows; i += kStep)
-    for (size_t j = kLayoutFirstCellIndex; j < size_.cols; j += kStep)
-      layout_.at(i).at(j) = kCell;
 }
 
 }  // namespace maze
