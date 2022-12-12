@@ -1,4 +1,5 @@
-
+#ifndef SOLID_FIGURE_HPP_
+#define SOLID_FIGURE_HPP_
 
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
@@ -17,6 +18,8 @@ class SolidFigure {
                unsigned int indi_size,
                 glm::vec3 posi = {0.0f, 0.0f, 0.0f},
                 glm::vec3 pos = { 0.0f, 0.0f, 0.0f });
+
+    SolidFigure(const SolidFigure &original);
     void show(const GLuint &sharer_id);
     glm::vec3 getPosition() { return position; };
     glm::vec3 getPose() { return pose; };
@@ -36,4 +39,8 @@ class SolidFigure {
 
 
 
+
+
 };
+
+#endif

@@ -26,6 +26,21 @@ SolidFigure::SolidFigure(GLfloat *vertices,unsigned int vert_size, GLuint *indic
 	  mvp.proj = glm::perspective(glm::radians(45.0f), (float)(800/800), 0.1f, 100.0f);
 }
 
+SolidFigure::SolidFigure(const SolidFigure &original){
+  position = original.position;
+  pose = original.pose;
+  vao = std::unique_ptr<VAO>(new VAO(*original.vao));
+  vao->Bind();
+  vbo = std::unique_ptr<VBO>(new VBO(*original.vbo));
+  ebo = std::unique_ptr<EBO>(new EBO(*original.ebo));
+  vao->LinkAttrib(*vbo, 0, 3, GL_FLOAT, 6 * sizeof(float), (void *)0);
+  vao->LinkAttrib(*vbo, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+  vao->Unbind();
+  vbo->Unbind();
+  ebo->Unbind();
+  mvp = original.mvp;
+
+}
 void SolidFigure::show(const GLuint &shader_id) {
     int modelLoc = glGetUniformLocation(shader_id, "model");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(mvp.model));

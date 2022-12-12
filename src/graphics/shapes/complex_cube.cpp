@@ -1,9 +1,12 @@
 #include "graphics/shapes/complex_cube.hpp"
 #include <vector>
 
+
+
+
 ComplexCube::ComplexCube(GLfloat side,glm::vec3 vertex_color, glm::vec3 inner_color,glm::vec3 posi, glm::vec3 pos
                                     )
-    : DynamicSolidFigure(new GLfloat[] {
+    : DynamicSolidFigure( new GLfloat[]{
           //               COORDINATES
           -0.5f * side, -0.5f * side, 0.5f * side,
               vertex_color.x,      vertex_color.y,      vertex_color.z,  // Lower left corner
@@ -35,8 +38,7 @@ ComplexCube::ComplexCube(GLfloat side,glm::vec3 vertex_color, glm::vec3 inner_co
               inner_color.x,      inner_color.y,      inner_color.z,  // Dark inner point 5
           0.0f * side,  -0.3f * side, 0.0f * side,
               inner_color.x,      inner_color.y,      inner_color.z  // Dark inner point 6
-
-      },
+          },
           336,
           new GLuint[]{
 
@@ -79,11 +81,11 @@ void ComplexCube::Roll(const glm::vec3& turn_vec, GLfloat scale) {
     position_z = fabs(sqrt(3) * cos((pose_y - 45.0f) / 180 * 3.1415) * cos((pose_x - 45.0f) / 180.0f * 3.1415)) / sqrt(2);
     move_z = position_z - prev_position_z;
 
-    move(glm::vec3(move_x, move_y, move_z) * scale);
+    move(glm::vec3(move_x, move_y, move_z));
 
 }
 
-void ComplexCube::MakeMove(ComplexCube::MoveDirection direction){
+void ComplexCube::MakeMove(ComplexCube::MoveState direction){
   if(move_state == steady){
   move_state = direction;
   if (direction == move_north){
@@ -104,55 +106,64 @@ void ComplexCube::MakeMove(ComplexCube::MoveDirection direction){
 }
 
 void ComplexCube::Perform(){
-    if(move_state == ComplexCube::MoveDirection::move_north){
+    if(move_state == ComplexCube::MoveState::move_north){
       if( (pose.x - floor(pose.x / 90) * 90.0f) >= -ang_vel.x){
-        Roll({ang_vel.x, 0.0f, 0.0f}, 1.0f);
+        Roll({ang_vel.x, 0.0f, 0.0f}, move_settings.distance);
         ang_vel.x -= cos((pose.x - floor(pose.x / 90) * 90.0f) * 3.1415 / 180) * move_settings.acceleration;
 
       }else {
         setPose({0.0f, 0.0f, 0.0f});
-        std::cout << ang_vel.x << std::endl;
+        DiscretizatePosition();
         ang_vel.x = 0.0f;
         move_state = steady;
       }
 
     }
-    else if (move_state == ComplexCube::MoveDirection::move_east)
+    else if (move_state == ComplexCube::MoveState::move_east)
     {
       if( (pose.y - floor(pose.y / 90) * 90.0f) >= ang_vel.y){
-        Roll({0.0f, ang_vel.y, 0.0f}, 1.0f);
+        Roll({0.0f, ang_vel.y, 0.0f}, move_settings.distance);
         ang_vel.y += sin((pose.y - floor(pose.y / 90) * 90.0f) * 3.1415 / 180) * move_settings.acceleration;
 
       }else {
         setPose({0.0f, 0.0f, 0.0f});
+        DiscretizatePosition();
         ang_vel.y = 0.0f;
         move_state = steady;
       }
     }
-    else if (move_state == ComplexCube::MoveDirection::move_south){
+    else if (move_state == ComplexCube::MoveState::move_south){
       if((pose.x - floor(pose.x / 90) * 90.0f) >= ang_vel.x){
-        Roll({ang_vel.x, 0.0f, 0.0f}, 1.0f);
+        Roll({ang_vel.x, 0.0f, 0.0f}, move_settings.distance);
         ang_vel.x += sin((pose.x - floor(pose.x / 90) * 90.0f) * 3.1415 / 180) * move_settings.acceleration;
 
       }else {
         setPose({0.0f, 0.0f, 0.0f});
-        std::cout << ang_vel.x << std::endl;
+        DiscretizatePosition();
         ang_vel.x = 0.0f;
         move_state = steady;
       }
     }
-    else if (move_state == ComplexCube::MoveDirection::move_west)
+    else if (move_state == ComplexCube::MoveState::move_west)
     {
       if( (pose.y - floor(pose.y / 90) * 90.0f) >= -ang_vel.y){
-        Roll({0.0f, ang_vel.y, 0.0f}, 1.0f);
+        Roll({0.0f, ang_vel.y, 0.0f}, move_settings.distance);
         ang_vel.y -= cos((pose.y - floor(pose.y / 90) * 90.0f) * 3.1415 / 180) * move_settings.acceleration;
 
       }else {
         setPose({0.0f, 0.0f, 0.0f});
+        DiscretizatePosition();
         ang_vel.y = 0.0f;
         move_state = steady;
       }
     }
+
 }
 
+void ComplexCube::DiscretizatePosition(){
+  float discrete_x, discrete_y;
+  discrete_x = roundf(position.x / move_settings.distance) * move_settings.distance;
+  discrete_y = roundf(position.y / move_settings.distance) * move_settings.distance;
+  setPosition({discrete_x, discrete_y, start_position.z});
+}
 

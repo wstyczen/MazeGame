@@ -3,6 +3,7 @@
 #include "graphics/shapes/data_buffers/VBO.hpp"
 #include "graphics/shapes/data_buffers/VAO.hpp"
 #include "graphics/shapes/complex_cube.hpp"
+#include "graphics/shapes/maze_figure.hpp"
 #include<iostream>
 #include<cmath>
 #include<vector>
@@ -44,11 +45,27 @@ int main()
 	// Specify the viewport of OpenGL in the Window
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
-
+  std::vector<std::vector<char>> maze = {
+    {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'},
+    {'w', ' ', 'w', ' ', 'w', 'w', ' ', ' ', 'w'},
+    {'w', ' ', 'w', ' ', ' ', 'w', 'w', ' ', 'w'},
+    {'w', ' ', 'w', 'w', ' ', 'w', 'w', ' ', 'w'},
+    {'w', ' ', ' ', 'w', ' ', 'w', 'w', ' ', 'w'},
+    {'w', ' ', 'w', 'w', ' ', 'w', 'w', ' ', 'w'},
+    {'w', ' ', 'w', ' ', ' ', ' ', ' ', ' ', 'w'},
+    {'w', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w'},
+    {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'}
+  };
+  std::vector<std::vector<char>> maze2 = {
+    {'w', ' ', ' ', ' '},
+    {' ', ' ', ' ', ' '},
+    {' ', ' ', ' ', ' '},
+    {' ', ' ', ' ', 'w'}
+  };
   Shader shaderProgram("default.vert", "default.frag");
-  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {3.0f, 3.0f, -50.0f}, {0.0f, 0.0f, 0.0f});
-
-
+  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {3.0f, 3.0f, -20.0f}, {0.0f, 0.0f, 0.0f});
+  MazeFigure maze_fig(maze, {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 0.0f},1.0f );
+  maze_fig.move({-5.0f, -5.0f, -20.0f});
 	// Generates Shader object using shaders defualt.vert and default.frag
   glEnable(GL_DEPTH_TEST);
   double prevTime = glfwGetTime();
@@ -69,19 +86,19 @@ int main()
     //     cube.MakeMove(ComplexCube::MoveDirection::move_east);
     // }
     if (glfwGetKey(window, GLFW_KEY_UP ) == GLFW_PRESS){
-      cube.MakeMove(ComplexCube::MoveDirection::move_north);
+      cube.MakeMove(ComplexCube::MoveState::move_north);
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS){
-      cube.MakeMove(ComplexCube::MoveDirection::move_south);
+      cube.MakeMove(ComplexCube::MoveState::move_south);
     }
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
-      cube.MakeMove(ComplexCube::MoveDirection::move_east);
+      cube.MakeMove(ComplexCube::MoveState::move_east);
     }
     // Strafe left
     if (glfwGetKey(window, GLFW_KEY_LEFT ) == GLFW_PRESS){
-      cube.MakeMove(ComplexCube::MoveDirection::move_west);
+      cube.MakeMove(ComplexCube::MoveState::move_west);
     }
 
 
@@ -91,7 +108,8 @@ int main()
 			//figure.turn(glm::vec3{1.0f, 1.0f, 1.0f});
       //cube.Roll({-1.0f, 0.0f}, 1.0f);
       cube.Act();
-      std::cout << cube.getPosition().z << std::endl;
+      //maze_fig.turn({1.1f, 1.2f, 1.1f});
+      //std::cout << cube.getPosition().z << std::endl;
       //std::cout << c.x << " "<< c.y << " " << c.z << "GIT\n";
       //std::cout << cube.getPose().x <<" " <<floor(cube.getPose().x / 90) * 90 << std::endl;
       //std::cout << crntTime << std::endl;
@@ -101,6 +119,7 @@ int main()
 
       //figure.show(shaderProgram.GetId());
       //figure2.show(shaderProgram.GetId());
+      maze_fig.show(shaderProgram.GetId());
       cube.show(shaderProgram.GetId());
 
 		// Tell OpenGL which Shader Program we want to use
