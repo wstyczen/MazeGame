@@ -10,6 +10,8 @@ shapes/dynamic_solid_figure.cpp
 shapes/dynamic_state_figure.cpp
 shapes/pawn_figure.cpp
 shapes/complex_cube.cpp
+shapes/maze_figure.cpp
+
 )
 
 
