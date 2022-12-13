@@ -23,7 +23,7 @@ class SolidFigure {
     void show(const GLuint &sharer_id);
     glm::vec3 getPosition() { return position; };
     glm::vec3 getPose() { return pose; };
-    ~SolidFigure();
+    ~SolidFigure(){};
   protected:
     struct MVP {
          glm::mat4 model;
