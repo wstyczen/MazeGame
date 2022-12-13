@@ -17,7 +17,7 @@ class ComplexCube : public DynamicSolidFigure {
 
     void MakeMove(ComplexCube::MoveState direction);
   protected:
-    void Roll(const glm::vec3 &turn_vec, GLfloat scale);
+    void Roll(const glm::vec2 &turn_vec, GLfloat scale);
     void DiscretizatePosition();
     GLfloat size;
     glm::vec3 start_position;

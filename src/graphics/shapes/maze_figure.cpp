@@ -1,18 +1,8 @@
 #include "graphics/shapes/maze_figure.hpp"
 
 
-static GLfloat vertices[]{
-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
--1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
--1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f
-};
 
-static GLfloat indices[]{
 
-              0, 1, 2,
-              0, 2, 3
-};
 DynamicSolidFigure VectorToMapFigureConvert(const std::vector<std::vector<char>> &maze, glm::vec3 lower_color, glm::vec3 upper_color, GLfloat height, glm::vec3 posi, glm::vec3 pos){
   std::vector<glm::vec2> maze_walls;
   size_t map_height = maze.size();

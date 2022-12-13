@@ -52,11 +52,6 @@ void SolidFigure::show(const GLuint &shader_id) {
     glDrawElements(GL_TRIANGLES, ebo->GetCount(), GL_UNSIGNED_INT, 0);
 
 }
-SolidFigure::~SolidFigure() {
-  vao->Unbind();
-  vbo->Unbind();
-  ebo->Unbind();
-}
 
 
 
