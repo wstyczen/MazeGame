@@ -57,22 +57,14 @@ int main()
     {'w', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w'},
     {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'}
   };
-  std::vector<std::vector<char>> maze2 = {
-    {'w', ' ', ' ', ' '},
-    {' ', ' ', ' ', ' '},
-    {' ', ' ', ' ', ' '},
-    {' ', ' ', ' ', 'w'}
-  };
+
   Shader shaderProgram("default.vert", "default.frag");
-  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {3.0f, 3.0f, -20.0f}, {0.0f, 0.0f, 0.0f});
-  MazeFigure maze_fig(maze, {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 0.0f},1.0f );
-  maze_fig.move({-5.0f, -5.0f, -20.0f});
+  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {-5.0f, 2.0f, -30.0f}, {0.0f, 0.0f, 0.0f});
+  MazeFigure maze_fig(maze, 1.5f,{-6.0f, -5.0f, -30.0f});
 	// Generates Shader object using shaders defualt.vert and default.frag
   glEnable(GL_DEPTH_TEST);
   double prevTime = glfwGetTime();
-  glm::vec3 a{1, 2, 3};
-  glm::vec3 b{0, 1, 0};
-  glm::vec3 c = a*b;
+  maze_fig.Appear();
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -102,26 +94,27 @@ int main()
       cube.MakeMove(ComplexCube::MoveState::move_west);
     }
 
-
 		if (crntTime - prevTime >= 1/60)
 		{
       //angle += -0.01f;
 			//figure.turn(glm::vec3{1.0f, 1.0f, 1.0f});
       //cube.Roll({-1.0f, 0.0f}, 1.0f);
       cube.Act();
+      maze_fig.Act();
       //maze_fig.turn({1.1f, 1.2f, 1.1f});
       //std::cout << cube.getPosition().z << std::endl;
       //std::cout << c.x << " "<< c.y << " " << c.z << "GIT\n";
       //std::cout << cube.getPose().x <<" " <<floor(cube.getPose().x / 90) * 90 << std::endl;
       //std::cout << crntTime << std::endl;
+      maze_fig.show(shaderProgram.GetId());
+      cube.show(shaderProgram.GetId());
       prevTime = crntTime;
 
 		}
 
       //figure.show(shaderProgram.GetId());
       //figure2.show(shaderProgram.GetId());
-      maze_fig.show(shaderProgram.GetId());
-      cube.show(shaderProgram.GetId());
+
 
 		// Tell OpenGL which Shader Program we want to use
 		// Draw primitives, number of indices, datatype of indices, index of indices
