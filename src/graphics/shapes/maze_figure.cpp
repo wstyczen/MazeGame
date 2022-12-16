@@ -3,7 +3,18 @@
 
 
 
-DynamicSolidFigure VectorToMapFigureConvert(const std::vector<std::vector<char>> &maze, glm::vec3 lower_color, glm::vec3 upper_color, GLfloat height, glm::vec3 posi, glm::vec3 pos){
+DynamicSolidFigure VectorToMapFigureConvert(const std::vector<std::vector<char>> &maze, GLfloat height, glm::vec3 posi, glm::vec3 pos){
+  GLfloat side_of_a_base = 1.0f; //should be same as side of a cube Pawn!
+  GLfloat half_of_side = side_of_a_base / 2.0f;
+  glm::vec3 celing_color{0.8f, 0.8f, 0.8f}; //Colors for each side of single maze block
+  glm::vec3 south_color{0.6f, 0.6f, 0.6f};
+  glm::vec3 north_color{0.6f, 0.6f, 0.6f};
+  glm::vec3 west_color{0.6f, 0.6f, 0.6f};
+  glm::vec3 east_color{0.6f, 0.6f, 0.6f};
+  std::vector<glm::vec3> pallette{celing_color, south_color, north_color, west_color, east_color};
+  std::vector<float> shadings{1.0f, 0.1f, 0.1f, 0.1f, 0.1f}; // descrbies the level of shading for each side
+
+
   std::vector<glm::vec2> maze_walls;
   size_t map_height = maze.size();
   size_t map_width = maze[0].size();
@@ -19,111 +30,95 @@ DynamicSolidFigure VectorToMapFigureConvert(const std::vector<std::vector<char>>
     }
   }
 
-
-  std::vector<std::vector<float>> vertices_coordinates{
-    {-0.5f, -0.5f, -0.5f},         //0
-    {-0.5f, -0.5f, height - 0.5f}, //1
-    { 0.5f, -0.5f, height - 0.5f}, //2
-    { 0.5f, -0.5f, -0.5f},         //3
-    {-0.5f,  0.5f, -0.5f}, //4
-    {-0.5f,  0.5f, height - 0.5f}, //5
-    { 0.5f,  0.5f, height - 0.5f}, //6
-    { 0.5f,  0.5f, -0.5f}  //7
-  };
-  std::vector<GLuint> indices_coordinates{
-    0, 1, 2, 0, 2, 3, //front
-    4, 5, 6, 4, 6, 7, //back
-    0, 4, 5, 0, 5, 1, //left
-    3, 7, 6, 3, 6, 2, //right
-    1, 2, 6, 1, 6, 5, //upper
-    0, 7, 3, 0, 7, 4  //lower
-  };
-
-
   std::vector<GLuint> indices_coordinates2{
 
-    0, 1,  8,  1, 2,  8,  2,
-    3, 8,  3,  0, 8,
-
-    0, 1,  9,  1, 5,  9,  5,
-    4, 9,  4,  0, 9,
-
-    5, 6,  10, 6, 7,  10, 7,
-    4, 10, 4,  5, 10,
-
-    2, 6,  11, 6, 7,  11, 7,
-    3, 11, 3,  2, 11,
-
-    1, 5,  12, 5, 6,  12, 6,
-    2, 12, 2,  1, 12,
-
-    0, 4,  13, 4, 7,  13, 7,
-    3, 13, 3,  0, 13
+    0, 1, 2, 1, 2, 3    //the way that vertices need to be connected to create rectangle
 
   };
 
   std::vector<std::vector<float>> vertices_coordinates2{
     //               COORDINATES
-    {-0.5f, -0.5f, height - 0.5f},
-    {-0.5f, 0.5f,  height - 0.5f},
-    {0.5f,  0.5f,  height - 0.5f},
-    {0.5f,  -0.5f, height - 0.5f},
-    {-0.5f, -0.5f, -0.5f},
-    {-0.5f, 0.5f,  -0.5f},
-    {0.5f,  0.5f,  -0.5f},
-    {0.5f,  -0.5f, -0.5f},
-    {0.0f,  0.0f,  0.3f}, //inner
-    {-0.3f, 0.0f,  0.0f},
-    {0.0f,  0.0f,  -0.3f},
-    {0.3f,  0.0f,  0.0f},
-    {0.0f,  0.3f,  0.0f},
-    {0.0f,  -0.3f, 0.0f}
+    //IMPORTANT!
+    //Base of Maze need to start below 0 level. Precisely at the same 'z' as cube,
+    // thats why whole figure is moved half_of_side down.
+
+    //celing
+    { -half_of_side,  half_of_side, height - half_of_side},
+    {  half_of_side,  half_of_side, height - half_of_side},
+    { -half_of_side, -half_of_side, height - half_of_side},
+    {  half_of_side, -half_of_side, height - half_of_side},
+    //south
+    { -half_of_side, -half_of_side, height - half_of_side},
+    {  half_of_side, -half_of_side, height - half_of_side},
+    { -half_of_side, -half_of_side, -half_of_side},
+    {  half_of_side, -half_of_side, -half_of_side},
+    //north
+    { -half_of_side,  half_of_side, height - half_of_side},
+    {  half_of_side,  half_of_side, height - half_of_side},
+    { -half_of_side,  half_of_side, -half_of_side},
+    {  half_of_side,  half_of_side, -half_of_side},
+    //west
+    { -half_of_side, -half_of_side, height - half_of_side},
+    { -half_of_side,  half_of_side, height - half_of_side},
+    { -half_of_side, -half_of_side, -half_of_side},
+    { -half_of_side,  half_of_side, -half_of_side},
+    //east
+    {  half_of_side, -half_of_side, height - half_of_side},
+    {  half_of_side,  half_of_side, height - half_of_side},
+    {  half_of_side, -half_of_side, -half_of_side},
+    {  half_of_side,  half_of_side, -half_of_side}
+
   };
 
-  GLfloat vertices[maze_walls.size() * 8 * 6];
-  GLuint indices[maze_walls.size() * 36];
+  GLfloat vertices[maze_walls.size() * 20 * 6];
+  GLuint indices[maze_walls.size() * 30];
+   /*each block of maze is made of 5 rectangles,
+  each rectangle has 4 vertices,
+  each vertex is described by 6 floats.
+  Every rectangle need is made of two triangles -> 3 indices each*/
   for(size_t wall = 0; wall != maze_walls.size(); ++wall){
-    for(char n = 0; n != 8; ++n){
-      glm::vec3 color = upper_color;
-      if(vertices_coordinates[n][2] == -0.5) color = lower_color;
-      vertices[wall * 48 + n * 6] = maze_walls[wall].x + vertices_coordinates[n][0];
-      vertices[wall * 48 + n * 6 + 1] = maze_walls[wall].y + vertices_coordinates[n][1];
-      vertices[wall * 48 + n * 6 + 2] = vertices_coordinates[n][2];
-      vertices[wall * 48 + n * 6 + 3] = color.x;
-      vertices[wall * 48 + n * 6 + 4] = color.y;
-      vertices[wall * 48 + n * 6 + 5] = color.z;
-    }
-    for(char m = 0; m != 36; ++m ){
-      indices[wall * 36 + m] = indices_coordinates[m] + wall * 8;
-    }
-  }
-  std::cout << " SIZE: " << maze_walls.size() << " " << (sizeof(vertices) / 4)<< " " << (sizeof(indices) / 4)<< std::endl;
-  for(int i = 0; i < maze_walls.size(); ++i){
-    for(int j = 0; j < 6; ++j){
-      for(int k = 0; k < 6; ++k ){
-        std::cout << indices[i*36 + j*6 + k] << " ";
+    //filling vertices array
+    for(char n = 0; n != 5; ++n)
+      for(char m = 0; m != 4; ++m){
+        glm::vec3 color = pallette[n];
+        if(m >= 2) color = color * shadings[n];
+        vertices[wall * 120 + n * 24 + m * 6] = roundf((maze_walls[wall].x + vertices_coordinates2[n * 4 + m][0]) * 2) / 2;
+        vertices[wall * 120 + n * 24 + m * 6 + 1] = roundf((maze_walls[wall].y + vertices_coordinates2[n * 4 + m][1]) * 2) / 2;
+        vertices[wall * 120 + n * 24 + m * 6 + 2] = roundf((vertices_coordinates2[n * 4 + m][2]) * 2) / 2;
+        vertices[wall * 120 + n * 24 + m * 6 + 3] = color.x;
+        vertices[wall * 120 + n * 24 + m * 6 + 4] = color.y;
+        vertices[wall * 120 + n * 24 + m * 6 + 5] = color.z;
       }
-      std::cout << std::endl;
-    }
-
-      std::cout << std::endl;
+    //filling indices array
+    for(char n = 0; n != 5; ++n)
+      for(char m = 0; m != 6 ; ++m)
+        indices[wall * 30 + n * 6 + m] = wall * 20 + n * 4 + indices_coordinates2[m];
   }
-  for(int i = 0; i < maze_walls.size(); ++i){
-    for(int j = 0; j < 8; ++j){
-      std::cout << vertices[i * 8 + j * 6] << " " << vertices[j * 8 + j*6 + 1 ] << " " << vertices[i * 8 + j*6 + 2];
-      std::cout << std::endl;
-    }
-
-      std::cout << std::endl;
-  }
-
   DynamicSolidFigure maze_figure(vertices, sizeof(vertices), indices, sizeof(indices),  posi, pos);
   return maze_figure;
 }
 
-MazeFigure::MazeFigure(const std::vector<std::vector<char>> &maze, glm::vec3 lower_color, glm::vec3 upper_color, GLfloat height, glm::vec3 posi, glm::vec3 pos)
-    : DynamicSolidFigure(VectorToMapFigureConvert(maze, lower_color, upper_color, height, posi, pos)){
+MazeFigure::MazeFigure(const std::vector<std::vector<char>> &maze, GLfloat height, glm::vec3 posi, glm::vec3 pos)
+    : DynamicSolidFigure(VectorToMapFigureConvert(maze, height, posi, pos)){
+  height_ = height;
+  start_position_ = posi;
+}
 
+void MazeFigure::Appear(){
+  move(glm::vec3({0.0f, 0.0f, -height_}));
+  move_state_ = appear;
+  lin_vel_.z = move_settings_.start_velocity;
+}
 
+void MazeFigure::Perform(){
 
+  if(move_state_ == appear){
+    if(position.z <= start_position_.z){
+      lin_vel_.z += move_settings_.acceleration;
+      move(glm::vec3{0.0f, 0.0f, lin_vel_.z});
+    }else{
+      move_state_ = steady;
+      setPosition(glm::vec3{position.x, position.y, start_position_.z});
+    }
+  }
 }
