@@ -39,7 +39,7 @@ std::unique_ptr<Layout> GrowingTreeGenerator::Get(const CellSize& cell_size) {
     path_.push_back(destination);
   }
 
-  return std::move(layout);
+  return layout;
 }
 
 }  // namespace maze

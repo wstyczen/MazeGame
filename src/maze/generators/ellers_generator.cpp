@@ -110,7 +110,7 @@ std::unique_ptr<Layout> EllersGenerator::Get(const CellSize& cell_size) {
     previous_row = std::move(row);
   }
 
-  return std::move(layout);
+  return layout;
 }
 
 Row EllersGenerator::GetRow(const LayoutSize& layout_size,

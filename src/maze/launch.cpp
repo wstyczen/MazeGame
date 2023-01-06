@@ -11,10 +11,11 @@
 
 namespace {
 
-void GenerateToTerminal(const maze::GeneratorType& generator_type,
-                        const maze::SolverType& solver_type,
-                        const maze::PathType& path_type,
-                        const maze::CellSize& cell_size) {
+[[maybe_unused]] void GenerateToTerminal(
+    const maze::GeneratorType& generator_type,
+    const maze::SolverType& solver_type,
+    const maze::PathType& path_type,
+    const maze::CellSize& cell_size) {
   const std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(generator_type);
   const std::unique_ptr<maze::Layout> maze_layout = generator->Get(cell_size);

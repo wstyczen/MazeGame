@@ -34,7 +34,7 @@ std::optional<Path> DjikstraSolver::Solve(const Layout* const layout,
       break;
   }
 
-  return RecreatePath(start, goal);
+  return RecreatePath(goal);
 }
 
 void DjikstraSolver::InitializeDistances() {

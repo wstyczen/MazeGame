@@ -2,20 +2,13 @@
 #define MAZE_SOLVER_HPP_
 
 #include "maze/layout.hpp"
+#include "maze/paths.hpp"
 #include "maze/utility.hpp"
 
 #include <optional>
 #include <vector>
 
 namespace maze {
-
-enum class PathType {
-  BOTTOM_TO_TOP,
-  BOTTOM_LEFT_TO_TOP_RIGHT,
-  LEFT_TO_RIGHT,
-  TOP_LEFT_TO_BOTTOM_RIGHT,
-  TOP_TO_BOTTOM,
-};
 
 class Solver {
  public:

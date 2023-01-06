@@ -46,7 +46,7 @@ std::unique_ptr<Layout> WilsonsGenerator::Get(const CellSize& cell_size) {
     walk.clear();
   }
 
-  return std::move(layout);
+  return layout;
 }
 
 }  // namespace maze

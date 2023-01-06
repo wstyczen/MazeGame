@@ -34,7 +34,6 @@ class Layout {
 
   void AddPath(const Path& path);
   void SetLocation(const Cell& cell);
-  void ClearCells();
 
   void Show() const;
 

@@ -44,7 +44,7 @@ std::unique_ptr<Layout> KruskalsGenerator::Get(const CellSize& cell_size) {
 
     edges_.pop_front();
   }
-  return std::move(layout);
+  return layout;
 }
 
 void KruskalsGenerator::InitializeCellTrees(const LayoutSize& layout_size) {

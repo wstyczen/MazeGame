@@ -51,7 +51,7 @@ std::optional<Path> AStarSolver::Solve(const Layout* const layout,
       cell_queue.push(destination);
       predecessors_[destination] = cell;
       if (destination == goal)
-        return RecreatePath(start, goal);
+        return RecreatePath(goal);
     }
   }
 

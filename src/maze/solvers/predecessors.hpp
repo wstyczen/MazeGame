@@ -9,7 +9,7 @@ namespace maze {
 
 class Predecessors {
  protected:
-  std::optional<Path> RecreatePath(const Cell& start, const Cell& goal);
+  std::optional<Path> RecreatePath(const Cell& goal);
   std::unordered_map<Cell, Cell> predecessors_;
 };
 

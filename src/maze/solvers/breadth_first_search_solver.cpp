@@ -46,7 +46,7 @@ std::optional<Path> BreadthFirstSearchSolver::Solve(const Layout* const layout,
     to_visit.pop();
   }
 
-  return RecreatePath(start, goal);
+  return RecreatePath(goal);
 }
 
 }  // namespace maze

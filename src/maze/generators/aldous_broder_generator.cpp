@@ -32,7 +32,7 @@ std::unique_ptr<Layout> AldousBroderGenerator::Get(const CellSize& cell_size) {
     cell = destination;
   }
 
-  return std::move(layout);
+  return layout;
 }
 
 }  // namespace maze

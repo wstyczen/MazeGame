@@ -26,7 +26,6 @@ std::vector<std::unique_ptr<Solver>> GetSolvers() {
   std::vector<std::unique_ptr<Solver>> solvers;
   for (int i = static_cast<int>(SolverType::FIRST);
        i <= static_cast<int>(SolverType::LAST); i++) {
-    volatile SolverType st = static_cast<SolverType>(i);
     solvers.push_back(
         SolverFactory::GetInstance()->GetSolver(static_cast<SolverType>(i)));
   }
@@ -82,7 +81,7 @@ void GeneratorTestRun(const GeneratorType& generator_type) {
   std::cout << "\n";
 }
 
-void GeneratorsTestRun() {
+[[maybe_unused]] void GeneratorsTestRun() {
   for (auto i = static_cast<int>(GeneratorType::FIRST);
        i <= static_cast<int>(GeneratorType::LAST); i++) {
     std::cout << i + 1 << ". ";

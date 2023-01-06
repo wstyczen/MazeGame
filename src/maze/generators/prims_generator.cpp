@@ -58,7 +58,7 @@ std::unique_ptr<Layout> PrimsGenerator::Get(const CellSize& cell_size) {
     unvisited_.erase(cell);
   }
 
-  return std::move(layout);
+  return layout;
 }
 
 }  // namespace maze

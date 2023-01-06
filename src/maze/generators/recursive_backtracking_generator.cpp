@@ -19,7 +19,7 @@ std::unique_ptr<Layout> RecursiveBacktrackingGenerator::Get(
 
   Move(layout.get(), PickRandomUnvisited());
 
-  return std::move(layout);
+  return layout;
 }
 
 void RecursiveBacktrackingGenerator::Move(Layout* const layout,
