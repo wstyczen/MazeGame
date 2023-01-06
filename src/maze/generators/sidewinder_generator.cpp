@@ -61,7 +61,7 @@ std::unique_ptr<Layout> SidewinderGenerator::Get(const CellSize& cell_size) {
     group.clear();
   }
 
-  return std::move(layout);
+  return layout;
 }
 
 }  // namespace maze

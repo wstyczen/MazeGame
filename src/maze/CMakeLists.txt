@@ -12,10 +12,10 @@ add_library(maze
   generators/wilsons_generator.cpp
   layout.cpp
   paths.cpp
-  predecessors.cpp
   solvers/a_star_solver.cpp
   solvers/breadth_first_search_solver.cpp
   solvers/djikstra_solver.cpp
+  solvers/predecessors.cpp
   solvers/solver_factory.cpp
   solvers/solver.cpp
   unvisited.cpp

@@ -85,7 +85,7 @@ std::optional<Direction> GetRandomMoveDirection(
                     GetRandomNumber(valid_move_directions.size() - 1));
 }
 
-inline std::mt19937 GetRNG() {
+std::mt19937 GetRNG() {
   return std::mt19937(std::random_device{}());
 }
 

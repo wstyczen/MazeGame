@@ -15,7 +15,7 @@ class HuntAndKillGenerator : public Generator, public Unvisited {
  private:
   HuntAndKillGenerator();
 
-  std::optional<Cell> Hunt(Layout* const layout, const Cell& cell);
+  std::optional<Cell> Hunt(Layout* const layout);
 
   friend class GeneratorFactory;
 };

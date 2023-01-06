@@ -33,7 +33,6 @@ class Layout {
   void Block(const Position& position);
 
   void AddPath(const Path& path);
-  void SetLocation(const Cell& cell);
 
   void Show() const;
 

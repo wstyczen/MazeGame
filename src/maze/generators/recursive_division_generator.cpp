@@ -15,7 +15,7 @@ std::unique_ptr<Layout> RecursiveDivisionGenerator::Get(
       {kLayoutFirstCellIndex, static_cast<uint16_t>(layout->rightmost_col())},
       {kLayoutFirstCellIndex, static_cast<uint16_t>(layout->bottom_row())});
 
-  return std::move(layout);
+  return layout;
 }
 
 RecursiveDivisionGenerator::DivisionDirection

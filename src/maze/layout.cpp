@@ -46,7 +46,7 @@ Layout::Layout(const CellSize& cell_size, const Layout::Base& layout_base)
     case Layout::Base::EMPTY: {
       auto middle_row_odd = std::vector<char>(cols, kDoor);
       auto middle_row_even = std::vector<char>(cols, kDoor);
-      for (size_t j = 0; j != cols; j++) {
+      for (int j = 0; j != cols; j++) {
         if (j == 0 || j == cols - 1) {
           middle_row_odd[j] = kWall;
         }
@@ -57,7 +57,7 @@ Layout::Layout(const CellSize& cell_size, const Layout::Base& layout_base)
         }
       }
 
-      for (size_t i = 0; i != rows; i++) {
+      for (int i = 0; i != rows; i++) {
         if (i == 0 || i == rows - 1) {
           layout_.push_back(std::vector<char>(cols, kWall));
         } else if (i % kStep == kLayoutFirstCellIndex) {
@@ -130,17 +130,6 @@ void Layout::Block(const Position& position) {
 void Layout::AddPath(const Path& path) {
   for (const Cell& position : path)
     layout_.at(position.row).at(position.col) = kPath;
-}
-
-void Layout::SetLocation(const Cell& cell) {
-  assert(IsACell(cell) && "Trying to set a location that is not a cell.");
-  layout_.at(cell.row).at(cell.col) = kLocation;
-}
-
-void Layout::ClearCells() {
-  for (size_t i = kLayoutFirstCellIndex; i < size_.rows; i += kStep)
-    for (size_t j = kLayoutFirstCellIndex; j < size_.cols; j += kStep)
-      layout_.at(i).at(j) = kCell;
 }
 
 void Layout::Show() const {

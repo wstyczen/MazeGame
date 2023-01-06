@@ -31,7 +31,7 @@ std::unique_ptr<Layout> HuntAndKillGenerator::Get(const CellSize& cell_size) {
     // If found connect the selected cell to the visited neighbour and restart
     // the traversal from there.
     if (!direction) {
-      std::optional<Cell> new_cell = Hunt(layout.get(), cell);
+      std::optional<Cell> new_cell = Hunt(layout.get());
       if (!new_cell)
         break;
       cell = *new_cell;
@@ -47,11 +47,10 @@ std::unique_ptr<Layout> HuntAndKillGenerator::Get(const CellSize& cell_size) {
     cell = destination;
   }
 
-  return std::move(layout);
+  return layout;
 }
 
-std::optional<Cell> HuntAndKillGenerator::Hunt(Layout* const layout,
-                                               const Cell& cell) {
+std::optional<Cell> HuntAndKillGenerator::Hunt(Layout* const layout) {
   static const MoveGeneralValidityCheck is_within_validity_check =
       [this, &layout](const Cell& origin, const Direction& direction) {
         return layout->IsWithin(*Edge(origin, direction).To());
