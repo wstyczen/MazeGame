@@ -14,3 +14,4 @@ find_package(Boost 1.40 REQUIRED COMPONENTS json)
 ]==]
 
 add_subdirectory(src)
+add_subdirectory(external/glfw)

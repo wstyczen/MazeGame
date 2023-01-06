@@ -14,6 +14,8 @@
 
 # )
 
+add_executable(testing_glfw test_main.cpp)
+target_link_libraries(testing_glfw PUBLIC glfw3)
 
 # set(glad_DIR "/opt/vcpkg/installed/x64-linux/share/glad")
 # set(glm_DIR "/opt/vcpkg/installed/x64-linux/share/glm")
