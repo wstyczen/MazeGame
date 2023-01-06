@@ -1,5 +1,6 @@
 #include "game/maze.hpp"
 #include "graphics/shapes/dynamic_solid_figure.hpp"
+#include "maze/layout.hpp"
 
 class MazeFigure : public DynamicSolidFigure {
  public:

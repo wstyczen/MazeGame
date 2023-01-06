@@ -44,5 +44,6 @@ add_executable(graphics_main
 )
 target_link_libraries(graphics_main
   graphics
+  maze
 )
 
