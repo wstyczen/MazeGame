@@ -40,5 +40,6 @@ add_executable(graphics_test
 
 target_link_libraries(graphics_test
   graphics
+  maze
 )
 

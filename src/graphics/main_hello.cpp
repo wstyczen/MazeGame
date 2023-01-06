@@ -1,19 +1,23 @@
-#include "graphics/hellocmake.h"
-#include "graphics/shapes/data_buffers/EBO.hpp"
-#include "graphics/shapes/data_buffers/VBO.hpp"
-#include "graphics/shapes/data_buffers/VAO.hpp"
-#include "graphics/shapes/complex_cube.hpp"
-#include "graphics/shapes/maze_figure.hpp"
 #include<iostream>
 #include<cmath>
 #include<vector>
 #include<list>
 #include<iterator>
 
+#include "graphics/hellocmake.h"
+#include "graphics/shapes/data_buffers/EBO.hpp"
+#include "graphics/shapes/data_buffers/VBO.hpp"
+#include "graphics/shapes/data_buffers/VAO.hpp"
+#include "graphics/shapes/complex_cube.hpp"
+#include "graphics/shapes/maze_figure.hpp"
+
+#include "maze/generators/generator.hpp"
+#include "maze/generators/generator_factory.hpp"
+#include "maze/layout.hpp"
+#include "maze/solvers/solver.hpp"
+#include "maze/solvers/solver_factory.hpp"
 
 const unsigned int width(1000), height(1000);
-
-
 
 int main()
 {
@@ -46,21 +50,26 @@ int main()
 	// Specify the viewport of OpenGL in the Window
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
-  std::vector<std::vector<char>> maze = {
-    {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'},
-    {'w', ' ', 'w', ' ', 'w', 'w', ' ', ' ', 'w'},
-    {'w', ' ', 'w', ' ', ' ', 'w', 'w', ' ', 'w'},
-    {'w', ' ', 'w', 'w', ' ', 'w', 'w', ' ', 'w'},
-    {'w', ' ', ' ', 'w', ' ', 'w', 'w', ' ', 'w'},
-    {'w', ' ', 'w', 'w', ' ', 'w', 'w', ' ', 'w'},
-    {'w', ' ', 'w', ' ', ' ', ' ', ' ', ' ', 'w'},
-    {'w', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w'},
-    {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'}
-  };
+
+  const std::unique_ptr<maze::Generator> generator =
+      maze::GeneratorFactory::GetInstance()->GetGenerator(maze::GeneratorType::RECURSIVE_BACKTRACKING);
+  const std::unique_ptr<maze::Layout> maze_layout = generator->Get({15, 15});
+
+  // std::vector<std::vector<char>> maze = {
+  //   {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'},
+  //   {'w', ' ', 'w', ' ', 'w', 'w', ' ', ' ', 'w'},
+  //   {'w', ' ', 'w', ' ', ' ', 'w', 'w', ' ', 'w'},
+  //   {'w', ' ', 'w', 'w', ' ', 'w', 'w', ' ', 'w'},
+  //   {'w', ' ', ' ', 'w', ' ', 'w', 'w', ' ', 'w'},
+  //   {'w', ' ', 'w', 'w', ' ', 'w', 'w', ' ', 'w'},
+  //   {'w', ' ', 'w', ' ', ' ', ' ', ' ', ' ', 'w'},
+  //   {'w', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w'},
+  //   {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'}
+  // };
 
   Shader shaderProgram("default.vert", "default.frag");
-  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {-5.0f, 2.0f, -30.0f}, {0.0f, 0.0f, 0.0f});
-  MazeFigure maze_fig(maze, 1.5f,{-6.0f, -5.0f, -30.0f});
+  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {-5.0f, 2.0f, -40.0f}, {0.0f, 0.0f, 0.0f});
+  MazeFigure maze_fig(maze_layout.get(), 1.5f,{-15.0f, -15.0f, -40.0f});
 	// Generates Shader object using shaders defualt.vert and default.frag
   glEnable(GL_DEPTH_TEST);
   double prevTime = glfwGetTime();

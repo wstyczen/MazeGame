@@ -3,7 +3,7 @@
 
 
 
-DynamicSolidFigure VectorToMapFigureConvert(const std::vector<std::vector<char>> &maze, GLfloat height, glm::vec3 posi, glm::vec3 pos){
+DynamicSolidFigure VectorToMapFigureConvert(const maze::Layout* maze, GLfloat height, glm::vec3 posi, glm::vec3 pos){
   GLfloat side_of_a_base = 1.0f; //should be same as side of a cube Pawn!
   GLfloat half_of_side = side_of_a_base / 2.0f;
   glm::vec3 celing_color{0.8f, 0.8f, 0.8f}; //Colors for each side of single maze block
@@ -16,17 +16,14 @@ DynamicSolidFigure VectorToMapFigureConvert(const std::vector<std::vector<char>>
 
 
   std::vector<glm::vec2> maze_walls;
-  size_t map_height = maze.size();
-  size_t map_width = maze[0].size();
-  for(size_t row = 0; row != map_height; ++row){
-    if(maze[row].size() != map_width){
-      //exception
-      std::cout << "Wrong map Format \n";
-    }
-    for(size_t column = 0; column != map_width; ++column){
-      if(maze[row][column] == 'w')
-        maze_walls.push_back({column, row});
-
+  const auto &[map_height, map_width] = maze->size();
+  // size_t map_height = maze.size();
+  // size_t map_width = maze[0].size();
+  for(uint16_t row = 0; row != map_height; ++row){
+    for(uint16_t column = 0; column != map_width; ++column){
+      if (maze->IsBlocked({row, column})) {
+          maze_walls.push_back({column, row});
+      }
     }
   }
 
@@ -98,7 +95,7 @@ DynamicSolidFigure VectorToMapFigureConvert(const std::vector<std::vector<char>>
   return maze_figure;
 }
 
-MazeFigure::MazeFigure(const std::vector<std::vector<char>> &maze, GLfloat height, glm::vec3 posi, glm::vec3 pos)
+MazeFigure::MazeFigure(const maze::Layout* maze, GLfloat height, glm::vec3 posi, glm::vec3 pos)
     : DynamicSolidFigure(VectorToMapFigureConvert(maze, height, posi, pos)){
   height_ = height;
   start_position_ = posi;

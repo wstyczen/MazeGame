@@ -1,4 +1,5 @@
 #include "graphics/shapes/dynamic_solid_figure.hpp"
+#include "maze/layout.hpp"
 
 
 class MazeFigure : public DynamicSolidFigure {
@@ -9,7 +10,7 @@ class MazeFigure : public DynamicSolidFigure {
       float start_velocity;
     };
 
-    MazeFigure(const std::vector<std::vector<char>> &maze,
+    MazeFigure(const maze::Layout* maze,
                         GLfloat height = 1.0f,
                         glm::vec3 posi = {0.0f, 0.0f, 0.0f},
                         glm::vec3 pos = {0.0f, 0.0f, 0.0f});
