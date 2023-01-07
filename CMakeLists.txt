@@ -12,8 +12,10 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic")
 # set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 #[==[
-find_package(Boost 1.40 REQUIRED COMPONENTS json)
+find_package(Boost 1.40 REQUIRED COM
+PONENTS json)
 ]==]
 
 add_subdirectory(src)
 add_subdirectory(external/glfw)
+add_subdirectory(external/google_test)
