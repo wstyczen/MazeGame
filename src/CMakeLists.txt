@@ -2,11 +2,6 @@ add_subdirectory(maze)
 target_include_directories(maze PUBLIC .)
 
 add_subdirectory(graphics)
-target_include_directories(graphics PUBLIC .)
-
-add_subdirectory(game)
-target_include_directories(game PUBLIC .)
-
 target_include_directories(graphics
   PUBLIC .
   PUBLIC ../external/glfw/include
@@ -15,4 +10,13 @@ target_include_directories(graphics
 target_link_directories(graphics
   PUBLIC ../external/glfw/src
   PUBLIC ../external/glad/src)
+
+add_subdirectory(game)
+target_include_directories(game PUBLIC .)
+
+add_subdirectory(tests)
+target_include_directories(example_test
+  PUBLIC .
+  PUBLIC ../external/google_test/googletest/include
+  PUBLIC ../external/google_test/googlemock/include)
 

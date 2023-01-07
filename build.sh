@@ -1,4 +1,5 @@
 git submodule update --init
+git submodule update --recursive
 
 if [[ ! -d "build" ]]; then mkdir build; fi
 cd build
@@ -14,7 +15,8 @@ do
 done
 
 
-if [ $release == true ]; then
+if [ $release == true ];
+then
   if [[ ! -d "release" ]]; then mkdir release; fi
   cd release
   cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ../..
