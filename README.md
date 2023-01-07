@@ -31,8 +31,8 @@
 
 #### Wizualizacja
 
-- Wizualizacja labiryntu w 2d
-- Dodatkowa wizualizacja pozycji - podświetlenie zajętego pola / podświetlenie rzędu i kolumny
+- Wizualizacja labiryntu w 3d
+- Podświetlenie przebytej trasy
 - W przypadku przegranej możliwość wyświetlenia optymalnego rozwiązania - np. podświetlenie trasy - z obecnego położenia oraz od początku labiryntu + liczba potrzebnych ruchów
 
 #### Interfejs
@@ -62,10 +62,9 @@
     - [Kruskal's](https://weblog.jamisbuck.org/2011/1/3/maze-generation-kruskal-s-algorithm.html)
     - [Prim's](http://weblog.jamisbuck.org/2011/1/10/maze-generation-prim-s-algorithm)
     - [Recursive Backtracking](http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking)
+    - [Recursive Division](https://weblog.jamisbuck.org/2011/1/12/maze-generation-recursive-division-algorithm.html)
     - [Sidewinder](https://weblog.jamisbuck.org/2011/2/3/maze-generation-sidewinder-algorithm.html)
     - [Wilson's](https://weblog.jamisbuck.org/2011/1/20/maze-generation-wilson-s-algorithm.html)
-  - TODO:
-    - [Recursive Division](https://weblog.jamisbuck.org/2011/1/12/maze-generation-recursive-division-algorithm.html)
 
 - ##### Implementacja algorytmów do znajdywania rozwiązań
 
@@ -73,8 +72,6 @@
     - [A\*](https://en.wikipedia.org/wiki/A*_search_algorithm)
     - [Breadth first search](https://en.wikipedia.org/wiki/Breadth-first_search)
     - [Djikstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
-  - TODO:
-    - [Greedy Best-First-Search](https://en.wikipedia.org/wiki/Best-first_search)
 
 #### Frontend
 

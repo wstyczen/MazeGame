@@ -1,11 +1,9 @@
 add_library(game
   game.cpp
+  maze.cpp
+  difficulty.cpp
 )
 
 target_link_libraries(game
-  Boost::json
-)
-
-target_link_libraries(game
-  maze
+  PUBLIC maze
 )

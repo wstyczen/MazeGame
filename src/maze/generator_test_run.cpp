@@ -61,7 +61,7 @@ void Run(Generator* const generator, const uint16_t& size) {
 
   std::cout << std::fixed << std::setprecision(2);
   std::cout << "Size:\t\t\t" << size << "x" << size << "\n";
-  //std::cout << "Time:\t\t\t" << generation_duration << "\n";
+  std::cout << "Time:\t\t\t" << generation_duration << "\n";
   RunSolvers(maze_layout.get());
 
   std::cout << "\n";

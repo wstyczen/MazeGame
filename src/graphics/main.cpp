@@ -3,19 +3,42 @@
 #include <iterator>
 #include <list>
 #include <vector>
-#include "graphics/hellocmake.h"
+
 #include "graphics/shapes/complex_cube.hpp"
 #include "graphics/shapes/data_buffers/EBO.hpp"
 #include "graphics/shapes/data_buffers/VAO.hpp"
 #include "graphics/shapes/data_buffers/VBO.hpp"
 #include "graphics/shapes/maze_figure.hpp"
 
+#include "game/difficulty.hpp"
+#include "game/game.hpp"
+#include "maze/generators/generator_factory.hpp"
+#include "maze/paths.hpp"
+#include "maze/solvers/solver_factory.hpp"
+
 const unsigned int width(1000), height(1000);
+
+namespace {
+
+enum class GameState {
+  UNDECIDED,
+  LOST,
+  WON,
+};
+
+GameState GetGameState(const game::Game& game) {
+  if (game.GoalReached())
+    return GameState::WON;
+  if (game.MoveLimitReached() || game.TimeLimitReached())
+    return GameState::LOST;
+  return GameState::UNDECIDED;
+}
+
+}  // namespace
 
 int main() {
   // Initialize GLFW
   glfwInit();
-
   // Tell GLFW what version of OpenGL we are using
   // In this case we are using OpenGL 3.3
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -25,6 +48,7 @@ int main() {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   // Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
   GLFWwindow* window = glfwCreateWindow(width, height, "MazeGame", NULL, NULL);
+  glfwMaximizeWindow(window);
   // Error check if the window fails to create
   if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
@@ -32,35 +56,31 @@ int main() {
     return -1;
   }
   // Introduce the window into the current context
-
   glfwMakeContextCurrent(window);
-
   // Load GLAD so it configures OpenGL
   gladLoadGL();
   // Specify the viewport of OpenGL in the Window
   // In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
   glViewport(0, 0, width, height);
-  std::vector<std::vector<char>> maze = {
-      {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'},
-      {'w', ' ', 'w', ' ', 'w', 'w', ' ', ' ', 'w'},
-      {'w', ' ', 'w', ' ', ' ', 'w', 'w', ' ', 'w'},
-      {'w', ' ', 'w', 'w', ' ', 'w', 'w', ' ', 'w'},
-      {'w', ' ', ' ', 'w', ' ', 'w', 'w', ' ', 'w'},
-      {'w', ' ', 'w', 'w', ' ', 'w', 'w', ' ', 'w'},
-      {'w', ' ', 'w', ' ', ' ', ' ', ' ', ' ', 'w'},
-      {'w', ' ', ' ', ' ', 'w', 'w', 'w', 'w', 'w'},
-      {'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w', 'w'}};
+
+  game::Game game(maze::GeneratorType::GROWING_TREE, maze::SolverType::A_STAR,
+                  maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT,
+                  game::DifficultyLevel::HARD, {7, 7});
 
   Shader shaderProgram(".//graphics//shaders//default.vert",
                        ".//graphics//shaders//default.frag");
-  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f},
-                   {-5.0f, 2.0f, -30.0f}, {0.0f, 0.0f, 0.0f});
-  MazeFigure maze_fig(maze, 1.5f, {-6.0f, -5.0f, -30.0f});
+  ComplexCube cube(game.position());
+  MazeFigure maze_fig(game.layout(), 1.5f, {-6.0f, -5.0f, -30.0f});
   // Generates Shader object using shaders defualt.vert and default.frag
   glEnable(GL_DEPTH_TEST);
   double prevTime = glfwGetTime();
   maze_fig.Appear();
-  while (!glfwWindowShouldClose(window)) {
+
+  // Find a good place to put it
+  game.StartTimer();
+
+  while (!glfwWindowShouldClose(window) &&
+         GetGameState(game) == GameState::UNDECIDED) {
     // Specify the color of the background
     glClearColor(0.07f, 0.13f, 0.17f, 0.5f);
     // Clean the back buffer and assign the new color to it
@@ -74,18 +94,22 @@ int main() {
     //  }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
       cube.MakeMove(ComplexCube::MoveState::move_north);
+      game.Move(maze::Direction::UP);
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
       cube.MakeMove(ComplexCube::MoveState::move_south);
+      game.Move(maze::Direction::DOWN);
     }
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
       cube.MakeMove(ComplexCube::MoveState::move_east);
+      game.Move(maze::Direction::RIGHT);
     }
     // Strafe left
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
       cube.MakeMove(ComplexCube::MoveState::move_west);
+      game.Move(maze::Direction::LEFT);
     }
 
     if (crntTime - prevTime >= 1 / 60) {

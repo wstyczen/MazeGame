@@ -1,7 +1,5 @@
 add_library(graphics
   ../../external/glad/src/glad.c
-  hellocmake.cpp
-  hellocmake.h
   shaders/shader.cpp
   shapes/data_buffers/EBO.cpp
   shapes/data_buffers/VBO.cpp
@@ -15,17 +13,15 @@ add_library(graphics
 )
 
 target_link_libraries(graphics
-  PUBLIC glfw3
+  PUBLIC glfw3 game
 )
 
-add_executable(graphics_test
-  main_hello.cpp
+add_executable(graphics_main
+  main.cpp
 )
 
-target_link_libraries(graphics_test
+target_link_libraries(graphics_main
   graphics
   glfw3
 )
 
-add_executable(testing_glfw test_main.cpp)
-target_link_libraries(testing_glfw PUBLIC glfw3)

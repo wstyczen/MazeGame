@@ -89,7 +89,7 @@ uint16_t Layout::rightmost_col() const {
 }
 
 bool Layout::IsWithin(const Position& position) const {
-  return position.row > 0 && position.row < size_.rows && position.col > 0 &&
+  return position.row >= 0 && position.row < size_.rows && position.col >= 0 &&
          position.col < size_.cols;
 }
 

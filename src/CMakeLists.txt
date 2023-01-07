@@ -16,10 +16,3 @@ target_link_directories(graphics
   PUBLIC ../external/glfw/src
   PUBLIC ../external/glad/src)
 
-target_include_directories(testing_glfw
-  PUBLIC ../external/glfw/include
-  PUBLIC ../external/glad/include
-  PUBLIC ../external/glm)
-target_link_directories(testing_glfw
-  PRIVATE ../external/glfw/src
-  PRIVATE ../external/glad/src)
