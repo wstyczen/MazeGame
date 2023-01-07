@@ -22,11 +22,11 @@ add_library(maze
   utility.cpp
 )
 
-add_executable(maze_test
-  generator_test_run.cpp
-  launch.cpp
+add_executable(maze_test_run
+  test_run/test_run.cpp
+  test_run/launch.cpp
 )
 
-target_link_libraries(maze_test
+target_link_libraries(maze_test_run
   maze
 )

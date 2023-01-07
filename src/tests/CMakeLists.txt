@@ -1,8 +1,13 @@
-add_executable(example_test
-  example_test.cpp
+add_executable(tests
+  run_all_tests.cpp
+  maze/utility.cpp
+  maze/layout.cpp
+  maze/paths.cpp
+  maze/solvers.cpp
+  maze/generators.cpp
 )
 
-target_link_libraries(example_test
+target_link_libraries(tests
   maze
   gtest
   gmock
