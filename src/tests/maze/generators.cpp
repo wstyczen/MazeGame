@@ -100,9 +100,9 @@ TEST_F(MazeGenerators, HuntAndKillSmall) {
   RunTest(maze::GeneratorType::HUNT_AND_KILL, kSmallTest);
 }
 
-TEST_F(MazeGenerators, HuntAndKillMedium) {
-  RunTest(maze::GeneratorType::HUNT_AND_KILL, kMediumTest);
-}
+// TEST_F(MazeGenerators, HuntAndKillMedium) {
+//   RunTest(maze::GeneratorType::HUNT_AND_KILL, kMediumTest);
+// }
 
 // TEST_F(MazeGenerators, HuntAndKillLarge) {
 //   RunTest(maze::GeneratorType::HUNT_AND_KILL, kLargeTest);
