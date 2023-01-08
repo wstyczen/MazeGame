@@ -17,5 +17,4 @@ PONENTS json)
 ]==]
 
 add_subdirectory(src)
-add_subdirectory(external/glfw)
 add_subdirectory(external/google_test)

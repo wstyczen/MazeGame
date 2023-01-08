@@ -1,5 +1,4 @@
 add_library(graphics
-  ../../external/glad/src/glad.c
   shaders/shader.cpp
   shapes/data_buffers/EBO.cpp
   shapes/data_buffers/VBO.cpp
@@ -12,8 +11,32 @@ add_library(graphics
   shapes/maze_figure.cpp
 )
 
+if (LINUX)
+  set(glad_DIR "/opt/vcpkg/installed/x64-linux/share/glad")
+  set(glm_DIR "/opt/vcpkg/installed/x64-linux/share/glm")
+  set(glfw3_DIR "/opt/vcpkg/installed/x64-linux/share/glfw3")
+else()
+  set(glad_DIR "C:\\Cpp\\vcpkg\\installed\\x64-mingw-dynamic\\share\\glad")
+  set(glm_DIR "C:\\Cpp\\vcpkg\\installed\\x64-mingw-dynamic\\share\\glm")
+  set(glfw3_DIR "C:\\Cpp\\vcpkg\\installed\\x64-mingw-dynamic\\share\\glfw3")
+endif()
+
+find_package(glad CONFIG REQUIRED)
+target_link_libraries(graphics PUBLIC glad::glad)
+
+find_package(glm CONFIG REQUIRED)
+target_link_libraries(graphics PUBLIC glm::glm)
+
+find_package(glfw3 CONFIG REQUIRED)
+target_link_libraries(graphics PUBLIC glfw3)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders/default.vert
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders/default.frag
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 target_link_libraries(graphics
-  PUBLIC glfw3 game
+  PUBLIC game
 )
 
 add_executable(graphics_main
@@ -22,6 +45,5 @@ add_executable(graphics_main
 
 target_link_libraries(graphics_main
   graphics
-  glfw3
 )
 
