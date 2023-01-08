@@ -10,58 +10,79 @@ using namespace std::chrono;
 Game::Game(const maze::GeneratorType& generator_type,
            const maze::SolverType& solver_type,
            const maze::PathType& path_type,
-           const maze::CellSize& cell_size)
+           const DifficultyLevel& difficulty_level,
+           const maze::CellSize& starting_maze_size)
     : generator_{maze::GeneratorFactory::GetInstance()->GetGenerator(
           generator_type)},
       solver_{maze::SolverFactory::GetInstance()->GetSolver(solver_type)},
       path_type_{path_type},
-      layout_{generator_->Get(cell_size)} {
-  std::tie(position_, goal_) = GetStartAndGoal(layout_.get(), path_type);
-  visited_.push_back(position_);
+      maze_{generator_->Get(starting_maze_size), path_type},
+      difficulty_level_{difficulty_level} {
+  CalculateLimits();
 }
 
 Game::~Game() = default;
 
-const maze::Layout* Game::layout() {
-  return layout_.get();
+void Game::CalculateLimits() {
+  const uint16_t minimal_moves_required =
+      solver_->Solve(maze_.layout())->size();
+  move_limit_ = GetMaxMoves(difficulty_level_, minimal_moves_required);
+  time_limit_ = GetMaxTimeInSecs(difficulty_level_, minimal_moves_required);
 }
 
-void Game::SetMoveLimit(const uint16_t& move_limit) {
-  move_limit_ = move_limit;
+void Game::GenerateNewMaze(const maze::CellSize& maze_size,
+                           const maze::PathType& path_type) {
+  maze_ = Maze(generator_->Get(maze_size), path_type);
+  CalculateLimits();
 }
 
-uint16_t Game::GetMovesMade() {
-  return visited_.size() - 1;
+void Game::OnGameFinished() {
+  GenerateNewMaze(
+      maze_.GetNextCellSize(GetMazeGrowthPerDifficulty(difficulty_level_)),
+      path_type_);
 }
 
-bool Game::MoveLimitReached() {
-  return GetMovesMade() >= move_limit_;
+const maze::Layout* Game::layout() const {
+  return maze_.layout();
 }
 
-void Game::SetTimeLimit(const uint16_t& time_in_seconds) {
-  time_limit_ = seconds(time_in_seconds);
+maze::Cell Game::position() const {
+  return maze_.position();
 }
 
-void Game::StartTimer() {
-  game_start_timestamp_ = high_resolution_clock::now();
+uint16_t Game::time_limit() const {
+  return time_limit_;
 }
 
-std::chrono::seconds Game::TimeElapsed() {
-  auto now = high_resolution_clock::now();
-  return duration_cast<seconds>(now - game_start_timestamp_);
+uint16_t Game::move_limit() const {
+  return move_limit_;
 }
 
-bool Game::TimeExceeded() {
-  return TimeElapsed() > time_limit_;
+uint16_t Game::GetMovesMade() const {
+  return maze_.GetMovesMade();
+}
+
+bool Game::GoalReached() const {
+  return maze_.GoalReached();
 }
 
 bool Game::Move(const maze::Direction& direction) {
-  maze::Edge move(position_, direction);
-  if (!layout_->CanMove(move))
-    return false;
-  position_ = *move.To();
-  visited_.push_back(position_);
-  return true;
+  return maze_.Move(direction);
+}
+
+bool Game::MoveLimitReached() const {
+  return GetMovesMade() >= move_limit_;
+}
+
+void Game::StartTimer() {
+  game_start_time_ = std::chrono::high_resolution_clock::now();
+}
+double Game::TimeElapsed() const {
+  auto now = std::chrono::high_resolution_clock::now();
+  return std::chrono::duration<double>(now - game_start_time_).count();
+}
+bool Game::TimeLimitReached() const {
+  return TimeElapsed() >= time_limit_;
 }
 
 }  // namespace game

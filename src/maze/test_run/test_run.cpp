@@ -1,11 +1,11 @@
-#include "maze/generator_test_run.hpp"
+#include "maze/test_run/test_run.hpp"
 
-#include <stdint.h>
 #include <array>
 #include <cassert>
 #include <chrono>
 #include <iomanip>
 #include <iostream>
+#include <stdint.h>
 
 #include "maze/generators/generator_factory.hpp"
 #include "maze/solvers/solver_factory.hpp"
@@ -32,26 +32,26 @@ std::vector<std::unique_ptr<Solver>> GetSolvers() {
   return solvers;
 }
 
-void RunSolvers(const Layout* const layout) {
+void RunSolvers(const Layout *const layout) {
   static const auto solvers = GetSolvers();
 
   std::vector<std::optional<Path>> paths;
-  for (const auto& solver : solvers)
+  for (const auto &solver : solvers)
     paths.push_back(solver->Solve(layout, kPathType));
   assert(std::all_of(paths.begin(), paths.end(),
-                     [&paths](const std::optional<Path>& path) {
+                     [&paths](const std::optional<Path> &path) {
                        return path == paths.at(0);
                      }) &&
          "All solvers should find the same shortest path.");
 
-  const auto& path = paths.at(0);
+  const auto &path = paths.at(0);
   if (path)
     std::cout << "Path:\t\t\t" << path->size() - 1 << " moves\n";
   else
     std::cout << "No path found.\n";
 }
 
-void Run(Generator* const generator, const uint16_t& size) {
+void Run(Generator *const generator, const uint16_t &size) {
   auto before_generating = std::chrono::high_resolution_clock::now();
   const std::unique_ptr<maze::Layout> maze_layout =
       generator->Get({size, size});
@@ -67,15 +67,15 @@ void Run(Generator* const generator, const uint16_t& size) {
   std::cout << "\n";
 }
 
-}  // namespace
+} // namespace
 
-void GeneratorTestRun(const GeneratorType& generator_type) {
+void GeneratorTestRun(const GeneratorType &generator_type) {
   std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(generator_type);
 
   std::cout << GeneratorFactory::GetInstance()->GetGeneratorName(generator_type)
             << "\n\n";
-  for (const uint16_t& size : kTestSizes)
+  for (const uint16_t &size : kTestSizes)
     Run(generator.get(), size);
 
   std::cout << "\n";
@@ -89,4 +89,4 @@ void GeneratorTestRun(const GeneratorType& generator_type) {
   }
 }
 
-}  // namespace maze
+} // namespace maze
