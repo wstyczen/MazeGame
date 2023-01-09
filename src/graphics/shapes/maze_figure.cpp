@@ -1,22 +1,35 @@
 #include "graphics/shapes/maze_figure.hpp"
 
-DynamicSolidFigure VectorToMapFigureConvert(const maze::Layout* const layout,
+std::vector<glm::vec2> Layout2VecOfWalls(const maze::Layout* maze) {
+  std::vector<glm::vec2> maze_walls;
+  const auto& [map_height, map_width] = maze->size();
+  // size_t map_height = maze.size();
+  // size_t map_width = maze[0].size();
+  for (uint16_t row = 0; row != map_height; ++row) {
+    for (uint16_t column = 0; column != map_width; ++column) {
+      if (maze->IsBlocked({row, column})) {
+        maze_walls.push_back({column, row});
+      }
+    }
+  }
+  return maze_walls;
+}
+DynamicSolidFigure VectorToMapFigureConvert(const maze::Layout* layout,
                                             GLfloat height,
                                             glm::vec3 posi,
                                             glm::vec3 pos) {
   GLfloat side_of_a_base = 1.0f;  // should be same as side of a cube Pawn!
   GLfloat half_of_side = side_of_a_base / 2.0f;
-  glm::vec3 celing_color{0.8f, 0.8f,
-                         0.8f};  // Colors for each side of single maze block
-  glm::vec3 south_color{0.6f, 0.6f, 0.6f};
-  glm::vec3 north_color{0.6f, 0.6f, 0.6f};
-  glm::vec3 west_color{0.6f, 0.6f, 0.6f};
-  glm::vec3 east_color{0.6f, 0.6f, 0.6f};
+  glm::vec3 celing_color{0.8f, 0.8f, 0.8f};  // Color of celing in maze
+  glm::vec3 south_color{0.6f, 0.6f, 0.6f};   // Color of south walls in maze
+  glm::vec3 north_color{0.6f, 0.6f, 0.6f};   // Color of north walls in maze
+  glm::vec3 west_color{0.6f, 0.6f, 0.6f};    // Color of west walls in maze
+  glm::vec3 east_color{0.6f, 0.6f, 0.6f};    // Color of east walls in maze
   std::vector<glm::vec3> pallette{celing_color, south_color, north_color,
                                   west_color, east_color};
   std::vector<float> shadings{
       1.0f, 0.1f, 0.1f, 0.1f,
-      0.1f};  // describes the level of shading for each side
+      0.1f};  // descrbies the level of shading for each side
 
   std::vector<glm::vec2> maze_walls;
   const auto& [map_height, map_width] = layout->size();
@@ -113,19 +126,19 @@ MazeFigure::MazeFigure(const maze::Layout* const layout,
 }
 
 void MazeFigure::Appear() {
-  move(glm::vec3({0.0f, 0.0f, -height_}));
+  Move(glm::vec3({0.0f, 0.0f, -height_}));
   move_state_ = appear;
   lin_vel_.z = move_settings_.start_velocity;
 }
 
-void MazeFigure::Perform() {
+void MazeFigure::Act() {
   if (move_state_ == appear) {
-    if (position.z <= start_position_.z) {
+    if (position_.z <= start_position_.z) {
       lin_vel_.z += move_settings_.acceleration;
-      move(glm::vec3{0.0f, 0.0f, lin_vel_.z});
+      Move(glm::vec3{0.0f, 0.0f, lin_vel_.z});
     } else {
       move_state_ = steady;
-      setPosition(glm::vec3{position.x, position.y, start_position_.z});
+      SetPosition(glm::vec3{position_.x, position_.y, start_position_.z});
     }
   }
 }

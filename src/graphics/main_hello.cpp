@@ -4,6 +4,7 @@
 
 #include "graphics/hellocmake.h"
 #include "graphics/shapes/complex_cube.hpp"
+#include "graphics/shapes/cube_pawn.hpp"
 #include "graphics/shapes/data_buffers/EBO.hpp"
 #include "graphics/shapes/data_buffers/VAO.hpp"
 #include "graphics/shapes/data_buffers/VBO.hpp"
