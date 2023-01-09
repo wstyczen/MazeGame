@@ -8,13 +8,12 @@
 class DynamicSolidFigure : public SolidFigure {
   public:
     using SolidFigure::SolidFigure;
-    void move(const glm::vec3 &move_vec);
-    void turn(const glm::vec3 &turn_vec);
-    void setPosition(const glm::vec3 &new_position);
-    void Act(){Perform();}
-    void setPose(const glm::vec3 &new_pose);
-  protected:
-    virtual void Perform(){};
+    virtual void Act(){};
+  //protected:
+    void Move(const glm::vec3 &move_vec);
+    void Turn(const glm::vec3 &turn_vec);
+    void SetPosition(const glm::vec3 &new_position);
+    void SetPose(const glm::vec3 &new_pose);
 };
 
 #endif

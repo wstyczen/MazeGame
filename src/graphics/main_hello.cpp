@@ -10,6 +10,7 @@
 #include "graphics/shapes/data_buffers/VAO.hpp"
 #include "graphics/shapes/complex_cube.hpp"
 #include "graphics/shapes/maze_figure.hpp"
+#include "graphics/shapes/cube_pawn.hpp"
 
 #include "maze/generators/generator.hpp"
 #include "maze/generators/generator_factory.hpp"
@@ -68,8 +69,9 @@ int main()
   // };
 
   Shader shaderProgram("default.vert", "default.frag");
-  ComplexCube cube(1, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, {-5.0f, 2.0f, -40.0f}, {0.0f, 0.0f, 0.0f});
+  ComplexCube cube({-14.0f, -14.0f, -40.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f});
   MazeFigure maze_fig(maze_layout.get(), 1.5f,{-15.0f, -15.0f, -40.0f});
+
 	// Generates Shader object using shaders defualt.vert and default.frag
   glEnable(GL_DEPTH_TEST);
   double prevTime = glfwGetTime();
@@ -81,48 +83,37 @@ int main()
 		// Clean the back buffer and assign the new color to it
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     shaderProgram.Activate();
-    //glm::vec3 angle(0.01f, 0.0f, 0.0f);
     double crntTime = glfwGetTime();
-    //cube.MoveAnimation(ComplexCube::MoveDirection::north);
-    // if(crntTime - floor(crntTime / 5) * 5.0f < 0.05f){
-    //     cube.MakeMove(ComplexCube::MoveDirection::move_east);
-    // }
     if (glfwGetKey(window, GLFW_KEY_UP ) == GLFW_PRESS){
-      cube.MakeMove(ComplexCube::MoveState::move_north);
+      cube.MakeMove(ComplexCube::FigureState::move_north);
+
+
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS){
-      cube.MakeMove(ComplexCube::MoveState::move_south);
+      cube.MakeMove(ComplexCube::FigureState::move_south);
+
     }
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
-      cube.MakeMove(ComplexCube::MoveState::move_east);
+      cube.MakeMove(ComplexCube::FigureState::move_east);
     }
     // Strafe left
     if (glfwGetKey(window, GLFW_KEY_LEFT ) == GLFW_PRESS){
-      cube.MakeMove(ComplexCube::MoveState::move_west);
+      cube.MakeMove(ComplexCube::FigureState::move_west);
     }
 
-		if (crntTime - prevTime >= 1/60)
+		if (crntTime - prevTime >= 0.01)
 		{
-      //angle += -0.01f;
-			//figure.turn(glm::vec3{1.0f, 1.0f, 1.0f});
-      //cube.Roll({-1.0f, 0.0f}, 1.0f);
+
       cube.Act();
       maze_fig.Act();
-      //maze_fig.turn({1.1f, 1.2f, 1.1f});
-      //std::cout << cube.getPosition().z << std::endl;
-      //std::cout << c.x << " "<< c.y << " " << c.z << "GIT\n";
-      //std::cout << cube.getPose().x <<" " <<floor(cube.getPose().x / 90) * 90 << std::endl;
-      //std::cout << crntTime << std::endl;
-      maze_fig.show(shaderProgram.GetId());
-      cube.show(shaderProgram.GetId());
+      //figure.Turn(glm::vec3{0.0f, 0.5f, 0.0f});
       prevTime = crntTime;
 
 		}
-
-      //figure.show(shaderProgram.GetId());
-      //figure2.show(shaderProgram.GetId());
+    cube.Show(shaderProgram.GetId());
+    maze_fig.Show(shaderProgram.GetId());
 
 
 		// Tell OpenGL which Shader Program we want to use
@@ -132,9 +123,6 @@ int main()
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
-
-
-
 	// Delete all the objects we've created
   shaderProgram.Delete();
 	glfwDestroyWindow(window);
