@@ -1,8 +1,6 @@
 #include "graphics/shapes/complex_cube.hpp"
 #include <vector>
 
-namespace {
-
 ComplexCube::ComplexCube(const glm::vec3& posi,
                          const glm::vec3& pos,
                          const glm::vec3& vertex_color,
@@ -39,8 +37,6 @@ void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
   move_z = position_z - prev_position_z;
 
   Move(glm::vec3(move_x, move_y, move_z));
-
-  move(glm::vec3(move_x, move_y, move_z));
 }
 
 void ComplexCube::MakeMove(ComplexCube::FigureState direction) {
@@ -75,7 +71,6 @@ void ComplexCube::Act() {
       ang_vel.x = 0.0f;
       move_state = steady;
     }
-
   } else if (move_state == ComplexCube::FigureState::move_east) {
     if ((pose_.y - floor(pose_.y / 90) * 90.0f) >= ang_vel.y) {
       Roll({0.0f, ang_vel.y}, move_settings.distance);
@@ -114,46 +109,6 @@ void ComplexCube::Act() {
     }
   }
 }
-else if (move_state == ComplexCube::MoveState::move_east) {
-  if ((pose.y - floor(pose.y / 90) * 90.0f) >= ang_vel.y) {
-    Roll({0.0f, ang_vel.y}, move_settings.distance);
-    ang_vel.y += sin((pose.y - floor(pose.y / 90) * 90.0f) * 3.1415 / 180) *
-                 move_settings.acceleration;
-
-  } else {
-    setPose({0.0f, 0.0f, 0.0f});
-    DiscretizatePosition();
-    ang_vel.y = 0.0f;
-    move_state = steady;
-  }
-}
-else if (move_state == ComplexCube::MoveState::move_south) {
-  if ((pose.x - floor(pose.x / 90) * 90.0f) >= ang_vel.x) {
-    Roll({ang_vel.x, 0.0f}, move_settings.distance);
-    ang_vel.x += sin((pose.x - floor(pose.x / 90) * 90.0f) * 3.1415 / 180) *
-                 move_settings.acceleration;
-
-  } else {
-    setPose({0.0f, 0.0f, 0.0f});
-    DiscretizatePosition();
-    ang_vel.x = 0.0f;
-    move_state = steady;
-  }
-}
-else if (move_state == ComplexCube::MoveState::move_west) {
-  if ((pose.y - floor(pose.y / 90) * 90.0f) >= -ang_vel.y) {
-    Roll({0.0f, ang_vel.y}, move_settings.distance);
-    ang_vel.y -= cos((pose.y - floor(pose.y / 90) * 90.0f) * 3.1415 / 180) *
-                 move_settings.acceleration;
-
-  } else {
-    setPose({0.0f, 0.0f, 0.0f});
-    DiscretizatePosition();
-    ang_vel.y = 0.0f;
-    move_state = steady;
-  }
-}
-}  // namespace
 
 void ComplexCube::DiscretizatePosition() {
   float discrete_x, discrete_y;
