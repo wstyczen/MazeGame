@@ -62,10 +62,10 @@ void GameWindow::InitFigures(const maze::Layout& maze) {
   GLfloat maze_x_pos = -((maze_width - 1.0f) / 2.0f);
   GLfloat maze_y_pos = -((maze_height - 1.0f) / 2.0f);
   GLfloat maze_z_pos = -(maze_height * maze_settings_.maze_scale + maze_settings_.maze_height);
-
   glm::vec3 move_map_down(0.0f, maze_z_pos*maze_settings_.move_map_down, 0.0f);
 
   glm::vec3 maze_start_position = glm::vec3{maze_x_pos, maze_y_pos, maze_z_pos} + move_map_down;
+
   glm::vec3 cube_start_position = maze_start_position + glm::vec3{1.0f, 1.0f, 0.0f};
   maze_ = std::make_unique<MazeFigure>(
       MazeFigure{MazeFigure::Layout2VecOfWalls(&maze),
@@ -97,4 +97,12 @@ void GameWindow::InitFigures(const maze::Layout& maze) {
   floor_ = std::make_unique<SolidFigure>(floor_vertices, floor_indices,
                                          move_map_down,
                                          glm::vec3{0.0f, 0.0f, 0.0f});
+
+  //set propper projectrion matrix due to resize rendering space
+  GLfloat rendering_range = sqrt((maze_start_position.z*maze_start_position.z + maze_height*maze_height));
+  auto proj_matrix = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, rendering_range);
+  maze_->SetProjMatrix(proj_matrix);
+  cube_->SetProjMatrix(proj_matrix);
+  floor_->SetProjMatrix(proj_matrix);
+
 }
