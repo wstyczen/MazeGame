@@ -11,7 +11,7 @@
 
 class GameWindow {
  public:
-  GameWindow(const maze::Layout& maze);
+  GameWindow(const maze::Layout& maze, const maze::Cell& cube_position);
   void Act();
   void Show();
   void LiftMaze();
@@ -21,8 +21,13 @@ class GameWindow {
   int GetKeyState(const int& key) const { return glfwGetKey(window_, key); }
 
  private:
+  void InitGLFW();
+  glm::vec3 GetMazePosition(const maze::Layout& maze);
+  glm::vec3 GetAsVec(const maze::Layout& maze, const maze::Cell& position);
+  void InitFigures(const maze::Layout& maze, const maze::Cell& cube_position);
+
   std::unique_ptr<Shader> shader_;
-  struct DisplaySolution{
+  struct DisplaySolution {
     int width;
     int height;
   } display_solution_;
@@ -31,8 +36,6 @@ class GameWindow {
   std::unique_ptr<ComplexCube> cube_;
   std::unique_ptr<SolidFigure> floor_;
   double last_action_time;
-  void InitGLFW();
-  void InitFigures(const maze::Layout& maze);
 
   const struct MazeSettings {
     float maze_height;
@@ -47,5 +50,6 @@ class GameWindow {
   const struct WindowSettings {
     std::vector<float> ClearColor;
   } Window_settings_ = {{0.07f, 0.13f, 0.17f, 0.5f}};
+  glm::vec3 maze_position_;
 };
 #endif

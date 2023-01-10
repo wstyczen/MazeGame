@@ -17,7 +17,7 @@
 int main(int argc, char* argv[]) {
   game::Game game(game::ReadFlags(argc, argv));
 
-  GameWindow game_window(*game.layout());
+  GameWindow game_window(*game.layout(), game.position());
   game_window.LiftMaze();
   while (!game_window.WindowShouldClose()) {
     // Move forward
