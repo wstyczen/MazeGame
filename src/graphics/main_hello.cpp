@@ -129,7 +129,7 @@ int main()
 */
 int main(){
 
-  GameWindow game(maze::GeneratorType::ELLERS, 15);
+  GameWindow game(maze::GeneratorType::ELLERS, 25);
   while(!game.Close()){
       if (game.GetKeyState(GLFW_KEY_UP ) == GLFW_PRESS){
         game.MoveCube(ComplexCube::FigureState::move_north);
