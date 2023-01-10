@@ -12,7 +12,7 @@ class Shader {
   // Reference ID of the Shader Program
 
   // Constructor that build the Shader Program from 2 different shaders
-  Shader(const char* vertexFile, const char* fragmentFile);
+  Shader();
   GLuint const GetId() { return ID; }
   // Activates the Shader Program
   void Activate();

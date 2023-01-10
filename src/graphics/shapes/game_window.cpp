@@ -9,7 +9,7 @@ GameWindow::GameWindow(const maze::Layout& maze) {
   gladLoadGL();
   glViewport((mode->width - mode->height) / 2, -mode->height / 15, mode->height,
              mode->height);
-  shader_ = std::make_unique<Shader>("default.vert", "default.frag");
+  shader_ = std::make_unique<Shader>();
 
   InitFigures(maze);
 

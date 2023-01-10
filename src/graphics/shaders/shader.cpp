@@ -1,7 +1,12 @@
 #include "graphics/shaders/shader.hpp"
 
+#include <filesystem>
+#include <stdexcept>
+#include <string>
+
+namespace {
 // Reads a text file and outputs a string with everything in the text file
-std::string get_file_contents(const char* filename) {
+std::string get_file_contents(const std::string& filename) {
   std::ifstream in(filename, std::ios::binary);
   if (in) {
     std::string contents;
@@ -12,14 +17,19 @@ std::string get_file_contents(const char* filename) {
     in.close();
     return (contents);
   }
-  throw(errno);
+  throw std::invalid_argument("No such file.");
 }
+}  // namespace
 
 // Constructor that build the Shader Program from 2 different shaders
-Shader::Shader(const char* vertexFile, const char* fragmentFile) {
+Shader::Shader() {
+  const std::string vertex_file =
+      std::filesystem::absolute("../files/default.vert").string();
+  const std::string fragment_file =
+      std::filesystem::absolute("../files/default.frag").string();
   // Read vertexFile and fragmentFile and store the strings
-  std::string vertexCode = get_file_contents(vertexFile);
-  std::string fragmentCode = get_file_contents(fragmentFile);
+  std::string vertexCode = get_file_contents(vertex_file);
+  std::string fragmentCode = get_file_contents(fragment_file);
 
   // Convert the shader source strings into character arrays
   const char* vertexSource = vertexCode.c_str();
