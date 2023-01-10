@@ -5,10 +5,9 @@ add_library(graphics
   shapes/data_buffers/VAO.cpp
   shapes/solid_figure.cpp
   shapes/dynamic_solid_figure.cpp
-  shapes/dynamic_state_figure.cpp
-  shapes/pawn_figure.cpp
   shapes/complex_cube.cpp
   shapes/maze_figure.cpp
+  shapes/game_window.cpp
 )
 
 if (LINUX)
@@ -30,20 +29,22 @@ target_link_libraries(graphics PUBLIC glm::glm)
 find_package(glfw3 CONFIG REQUIRED)
 target_link_libraries(graphics PUBLIC glfw3)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders/default.vert
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders/default.frag
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
 target_link_libraries(graphics
   PUBLIC game
 )
 
-add_executable(graphics_main
-  main.cpp
-)
+# add_executable(graphics_main
+#   main.cpp
+# )
+# target_link_libraries(graphics_main
+#   graphics
+#   maze
+# )
 
-target_link_libraries(graphics_main
+add_executable(graphics_main_hello
+  main_hello.cpp
+)
+target_link_libraries(graphics_main_hello
   graphics
+  maze
 )
-

@@ -63,14 +63,33 @@ int main() {
   // In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
   glViewport(0, 0, width, height);
 
-  game::Game game(maze::GeneratorType::GROWING_TREE, maze::SolverType::A_STAR,
-                  maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT,
-                  game::DifficultyLevel::HARD, {7, 7});
-
   Shader shaderProgram(".//graphics//shaders//default.vert",
                        ".//graphics//shaders//default.frag");
-  ComplexCube cube(game.position());
-  MazeFigure maze_fig(game.layout(), 1.5f, {-6.0f, -5.0f, -30.0f});
+
+  const uint16_t maze_size = 15;
+  game::Game game(maze::GeneratorType::GROWING_TREE, maze::SolverType::A_STAR,
+                  maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT,
+                  game::DifficultyLevel::HARD, {maze_size, maze_size});
+  const struct MazeSettings {
+    float maze_height;
+    float maze_scale;
+  } maze_settings_ = {1.5f, 3.0f};
+  const struct CubeSettings {
+    glm::vec3 vertex_color;
+    glm::vec3 inner_color;
+  } cube_settings_ = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}};
+  glm::vec3 cube_start_position = {-maze_size + 1, -maze_size + 1,
+                                   -maze_size * maze_settings_.maze_scale};
+  ComplexCube cube({cube_start_position,
+                    {0.0f, 0.0f, 0.0f},
+                    cube_settings_.vertex_color,
+                    cube_settings_.inner_color});
+  glm::vec3 maze_start_position = {-maze_size, -maze_size,
+                                   -maze_size * maze_settings_.maze_scale};
+
+  MazeFigure maze_fig(MazeFigure::Layout2VecOfWalls(game.layout()),
+                      maze_settings_.maze_height, maze_start_position);
+
   // Generates Shader object using shaders defualt.vert and default.frag
   glEnable(GL_DEPTH_TEST);
   double prevTime = glfwGetTime();
@@ -93,46 +112,32 @@ int main() {
     //      cube.MakeMove(ComplexCube::MoveDirection::move_east);
     //  }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-      cube.MakeMove(ComplexCube::MoveState::move_north);
+      cube.MakeMove(ComplexCube::FigureState::move_north);
       game.Move(maze::Direction::UP);
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-      cube.MakeMove(ComplexCube::MoveState::move_south);
+      cube.MakeMove(ComplexCube::FigureState::move_south);
       game.Move(maze::Direction::DOWN);
     }
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-      cube.MakeMove(ComplexCube::MoveState::move_east);
+      cube.MakeMove(ComplexCube::FigureState::move_east);
       game.Move(maze::Direction::RIGHT);
     }
     // Strafe left
     if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-      cube.MakeMove(ComplexCube::MoveState::move_west);
+      cube.MakeMove(ComplexCube::FigureState::move_west);
       game.Move(maze::Direction::LEFT);
     }
 
     if (crntTime - prevTime >= 1 / 60) {
-      // angle += -0.01f;
-      // figure.turn(glm::vec3{1.0f, 1.0f, 1.0f});
-      // cube.Roll({-1.0f, 0.0f}, 1.0f);
       cube.Act();
       maze_fig.Act();
-      // maze_fig.turn({1.1f, 1.2f, 1.1f});
-      // std::cout << cube.getPosition().z << std::endl;
-      // std::cout << c.x << " "<< c.y << " " << c.z << "GIT\n";
-      // std::cout << cube.getPose().x <<" " <<floor(cube.getPose().x / 90) * 90
-      // << std::endl; std::cout << crntTime << std::endl;
-      maze_fig.show(shaderProgram.GetId());
-      cube.show(shaderProgram.GetId());
+      cube.Show(shaderProgram.GetId());
+      maze_fig.Show(shaderProgram.GetId());
       prevTime = crntTime;
     }
-
-    // figure.show(shaderProgram.GetId());
-    // figure2.show(shaderProgram.GetId());
-
-    // Tell OpenGL which Shader Program we want to use
-    // Draw primitives, number of indices, datatype of indices, index of indices
 
     glfwSwapBuffers(window);
     // Take care of all GLFW events
