@@ -48,7 +48,8 @@ uint16_t Maze::GetMovesMade() const {
 
 maze::CellSize Maze::GetNextCellSize(const uint16_t& increment) const {
   const auto& [rows, cols] = layout_->size();
-  return {rows + increment, cols + increment};
+  return {static_cast<uint16_t>(rows + increment),
+          static_cast<uint16_t>(cols + increment)};
 }
 
 bool Maze::Move(const maze::Direction& direction) {

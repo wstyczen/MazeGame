@@ -84,7 +84,8 @@ Layout Layout::FromString(const std::string &string_format, const char blocked,
     std::replace(row.begin(), row.end(), unblocked, kCell);
     as_vec.push_back(std::vector<char>(row.begin(), row.end()));
   }
-  Layout layout({as_vec.size() / 2, as_vec.at(0).size() / 2});
+  Layout layout({static_cast<uint16_t>(as_vec.size() / 2),
+                 static_cast<uint16_t>(as_vec.at(0).size() / 2)});
   layout.layout_ = std::move(as_vec);
   return layout;
 }
@@ -97,8 +98,7 @@ uint16_t Layout::middle_col() const { return size_.cols / kStep; }
 uint16_t Layout::rightmost_col() const { return size_.cols - 2; }
 
 bool Layout::IsWithin(const Position &position) const {
-  return position.row >= 0 && position.row < size_.rows && position.col >= 0 &&
-         position.col < size_.cols;
+  return position.row < size_.rows && position.col < size_.cols;
 }
 
 bool Layout::IsBlocked(const Position &position) const {
