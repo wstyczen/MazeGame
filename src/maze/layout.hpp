@@ -9,15 +9,15 @@
 namespace maze {
 
 class Layout {
-public:
+ public:
   enum class Base {
     GRID,
     EMPTY,
   };
 
-  Layout(const CellSize &cell_size, const Base &layout_base = Base::GRID);
+  Layout(const CellSize& cell_size, const Base& layout_base = Base::GRID);
 
-  static Layout FromString(const std::string &string_format,
+  static Layout FromString(const std::string& string_format,
                            const char blocked = '#',
                            const char unblocked = ' ');
 
@@ -27,16 +27,16 @@ public:
   uint16_t middle_col() const;
   uint16_t rightmost_col() const;
 
-  bool IsWithin(const Position &position) const;
-  bool IsBlocked(const Position &position) const;
-  bool IsACell(const Position &position) const;
-  bool CanMove(const Edge &edge) const;
+  bool IsWithin(const Position& position) const;
+  bool IsBlocked(const Position& position) const;
+  bool IsACell(const Position& position) const;
+  bool CanMove(const Edge& edge) const;
 
-  void Unblock(const Edge &edge);
-  void Unblock(const Position &position);
-  void Block(const Position &position);
+  void Unblock(const Edge& edge);
+  void Unblock(const Position& position);
+  void Block(const Position& position);
 
-  void AddPath(const Path &path);
+  void AddPath(const Path& path);
 
   void Show() const;
 
@@ -46,11 +46,11 @@ public:
   constexpr static char kPath = 'P';
   constexpr static char kLocation = 'X';
 
-private:
+ private:
   const LayoutSize size_;
   std::vector<std::vector<char>> layout_;
 };
 
-} // namespace maze
+}  // namespace maze
 
-#endif // MAZE_LAYOUT_HPP_
+#endif  // MAZE_LAYOUT_HPP_

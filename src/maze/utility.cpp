@@ -31,6 +31,12 @@ bool Size::operator<(const Size& other) const {
   return std::tie(rows, cols) < std::tie(other.rows, other.cols);
 }
 
+Size& Size::operator=(const Size& other) {
+  *const_cast<uint16_t*>(&rows) = other.rows;
+  *const_cast<uint16_t*>(&cols) = other.cols;
+  return *this;
+}
+
 std::optional<Cell> Edge::To(const uint16_t& step) const {
   switch (direction) {
     case Direction::UP:

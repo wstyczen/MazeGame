@@ -7,9 +7,11 @@
 namespace game {
 
 enum class DifficultyLevel {
-  EASY,
+  FIRST,
+  EASY = FIRST,
   NORMAL,
   HARD,
+  LAST = HARD,
 };
 
 // Move limit per difficult is calculated based on the minimum moves required to

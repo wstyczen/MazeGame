@@ -7,17 +7,13 @@
 namespace game {
 using namespace std::chrono;
 
-Game::Game(const maze::GeneratorType& generator_type,
-           const maze::SolverType& solver_type,
-           const maze::PathType& path_type,
-           const DifficultyLevel& difficulty_level,
-           const maze::CellSize& starting_maze_size)
-    : generator_{maze::GeneratorFactory::GetInstance()->GetGenerator(
-          generator_type)},
-      solver_{maze::SolverFactory::GetInstance()->GetSolver(solver_type)},
-      path_type_{path_type},
-      maze_{generator_->Get(starting_maze_size), path_type},
-      difficulty_level_{difficulty_level} {
+Game::Game(const Settings& settings)
+    : settings_{settings},
+      generator_{maze::GeneratorFactory::GetInstance()->GetGenerator(
+          settings.generator_type)},
+      solver_{
+          maze::SolverFactory::GetInstance()->GetSolver(settings.solver_type)},
+      maze_{generator_->Get(settings.starting_size), settings.path_type} {
   CalculateLimits();
 }
 
@@ -25,9 +21,9 @@ Game::~Game() = default;
 
 void Game::CalculateLimits() {
   const uint16_t minimal_moves_required =
-      solver_->Solve(maze_.layout())->size();
-  move_limit_ = GetMaxMoves(difficulty_level_, minimal_moves_required);
-  time_limit_ = GetMaxTimeInSecs(difficulty_level_, minimal_moves_required);
+      solver_->Solve(maze_.layout())->size() - 1;
+  move_limit_ = GetMaxMoves(settings_.difficulty, minimal_moves_required);
+  time_limit_ = GetMaxTimeInSecs(settings_.difficulty, minimal_moves_required);
 }
 
 void Game::GenerateNewMaze(const maze::CellSize& maze_size,
@@ -38,8 +34,8 @@ void Game::GenerateNewMaze(const maze::CellSize& maze_size,
 
 void Game::OnGameFinished() {
   GenerateNewMaze(
-      maze_.GetNextCellSize(GetMazeGrowthPerDifficulty(difficulty_level_)),
-      path_type_);
+      maze_.GetNextCellSize(GetMazeGrowthPerDifficulty(settings_.difficulty)),
+      settings_.path_type);
 }
 
 const maze::Layout* Game::layout() const {

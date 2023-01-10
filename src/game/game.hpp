@@ -6,6 +6,7 @@
 
 #include "game/difficulty.hpp"
 #include "game/maze.hpp"
+#include "game/settings.hpp"
 #include "maze/generators/generator_factory.hpp"
 #include "maze/layout.hpp"
 #include "maze/solvers/solver_factory.hpp"
@@ -15,11 +16,7 @@ namespace game {
 
 class Game {
  public:
-  Game(const maze::GeneratorType& generator_type,
-       const maze::SolverType& solver_type,
-       const maze::PathType& path_type,
-       const DifficultyLevel& difficulty_level,
-       const maze::CellSize& starting_maze_size);
+  Game(const Settings& settings);
   ~Game();
 
   const maze::Layout* layout() const;
@@ -44,13 +41,12 @@ class Game {
                        const maze::PathType& path_type);
   void CalculateLimits();
 
+  Settings settings_;
   std::unique_ptr<maze::Generator> generator_;
   std::unique_ptr<maze::Solver> solver_;
-  maze::PathType path_type_;
 
   game::Maze maze_;
 
-  DifficultyLevel difficulty_level_;
   uint16_t move_limit_;
   uint16_t time_limit_;
 
