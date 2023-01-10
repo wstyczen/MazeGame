@@ -136,4 +136,13 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   floor_ =
       std::make_unique<SolidFigure>(floor_vertices, floor_indices,
                                     move_map_down, glm::vec3{0.0f, 0.0f, 0.0f});
+
+  // set propper projectrion matrix due to resize rendering space
+  GLfloat rendering_range =
+      sqrt((maze_position_.z * maze_position_.z + maze_height * maze_height));
+  auto proj_matrix =
+      glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, rendering_range);
+  maze_->SetProjMatrix(proj_matrix);
+  cube_->SetProjMatrix(proj_matrix);
+  floor_->SetProjMatrix(proj_matrix);
 }
