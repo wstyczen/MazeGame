@@ -1,3 +1,5 @@
+#ifndef COMPLEX_CUBE_HPP_
+#define COMPLEX_CUBE_HPP_
 #include "graphics/shapes/dynamic_solid_figure.hpp"
 
 
@@ -36,3 +38,4 @@ class ComplexCube : public DynamicSolidFigure {
     const ComplexCube::MoveSettings move_settings = {0.2f, 2.0f, 2};
 
 };
+#endif

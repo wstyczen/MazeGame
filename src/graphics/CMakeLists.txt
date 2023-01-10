@@ -1,6 +1,4 @@
 add_library(graphics
-hellocmake.cpp
-hellocmake.h
 shaders/shader.cpp
 shapes/data_buffers/EBO.cpp
 shapes/data_buffers/VBO.cpp
@@ -9,6 +7,7 @@ shapes/solid_figure.cpp
 shapes/dynamic_solid_figure.cpp
 shapes/complex_cube.cpp
 shapes/maze_figure.cpp
+shapes/game_window.cpp
 
 )
 

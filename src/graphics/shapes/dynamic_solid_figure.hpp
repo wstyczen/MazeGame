@@ -8,8 +8,9 @@
 class DynamicSolidFigure : public SolidFigure {
   public:
     using SolidFigure::SolidFigure;
+
     virtual void Act(){};
-  //protected:
+    protected:
     void Move(const glm::vec3 &move_vec);
     void Turn(const glm::vec3 &turn_vec);
     void SetPosition(const glm::vec3 &new_position);

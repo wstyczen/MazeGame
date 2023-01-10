@@ -22,7 +22,7 @@ SolidFigure::SolidFigure(GLfloat *vertices,unsigned int vert_size, GLuint *indic
     mvp_.model = glm::rotate(mvp_.model, glm::radians(pose_.y), glm::vec3(0.0f, 1.0f, 0.0f));
     mvp_.model = glm::rotate(mvp_.model, glm::radians(pose_.z), glm::vec3(0.0f, 0.0f, 1.0f));
     mvp_.view = glm::translate(mvp_.view, position_);
-	  mvp_.proj = glm::perspective(glm::radians(45.0f), (float)(800/800), 0.1f, 100.0f);
+	  mvp_.proj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
 }
 
 SolidFigure::SolidFigure(const std::vector<GLfloat> &vertices, const std::vector<GLuint> &indices, const glm::vec3 &posi, const glm::vec3 &pos){
