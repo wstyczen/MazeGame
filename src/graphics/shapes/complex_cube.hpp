@@ -2,8 +2,6 @@
 #define COMPLEX_CUBE_HPP_
 #include "graphics/shapes/dynamic_solid_figure.hpp"
 
-#include "maze/utility.hpp"
-
 class ComplexCube : public DynamicSolidFigure {
  public:
   enum FigureState { move_north, move_east, move_south, move_west, steady };
@@ -18,13 +16,14 @@ class ComplexCube : public DynamicSolidFigure {
               const glm::vec3& inner_color);
   ComplexCube(const DynamicSolidFigure& cube)
       : DynamicSolidFigure(cube), start_position(cube.GetPosition()){};
-  void MakeMove(ComplexCube::FigureState direction);
+  bool MakeMove(ComplexCube::FigureState direction);
   void Act();
   static DynamicSolidFigure MakeCubeFigure(const GLfloat& side,
                                            const glm::vec3& posi,
                                            const glm::vec3& pos,
                                            const glm::vec3& vertex_color,
                                            const glm::vec3& inner_color);
+  // FigureState GetState() const {return};
 
  private:
   void Roll(const glm::vec2& turn_vec, GLfloat scale);

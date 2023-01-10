@@ -39,7 +39,7 @@ void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
   Move(glm::vec3(move_x, move_y, move_z));
 }
 
-void ComplexCube::MakeMove(ComplexCube::FigureState direction) {
+bool ComplexCube::MakeMove(ComplexCube::FigureState direction) {
   if (move_state == steady) {
     move_state = direction;
     if (direction == move_north) {
@@ -55,7 +55,9 @@ void ComplexCube::MakeMove(ComplexCube::FigureState direction) {
       ang_vel.y = -move_settings.start_velocity;
       Roll({0.0f, ang_vel.y}, 1.0f);
     }
-  }
+    return true;
+  } else
+    return false;
 }
 
 void ComplexCube::Act() {
@@ -71,6 +73,7 @@ void ComplexCube::Act() {
       ang_vel.x = 0.0f;
       move_state = steady;
     }
+
   } else if (move_state == ComplexCube::FigureState::move_east) {
     if ((pose_.y - floor(pose_.y / 90) * 90.0f) >= ang_vel.y) {
       Roll({0.0f, ang_vel.y}, move_settings.distance);

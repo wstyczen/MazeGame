@@ -8,7 +8,6 @@ add_library(graphics
   shapes/complex_cube.cpp
   shapes/maze_figure.cpp
   shapes/game_window.cpp
-
 )
 
 if (LINUX)
