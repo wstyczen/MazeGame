@@ -5,10 +5,10 @@ add_library(graphics
   shapes/data_buffers/VAO.cpp
   shapes/solid_figure.cpp
   shapes/dynamic_solid_figure.cpp
-  shapes/dynamic_state_figure.cpp
-  shapes/pawn_figure.cpp
   shapes/complex_cube.cpp
   shapes/maze_figure.cpp
+  shapes/game_window.cpp
+
 )
 
 if (LINUX)
