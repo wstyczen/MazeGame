@@ -11,13 +11,13 @@
 
 class GameWindow{
 public:
-  GameWindow(const maze::GeneratorType &generator_type, const uint16_t &maze_size);
+  GameWindow(const maze::Layout &maze);
   void Act();
   void Show();
   void LiftMaze();
-  void MoveCube(const ComplexCube::FigureState &direction);
+  bool MoveCube(const ComplexCube::FigureState &direction);
   ~GameWindow();
-  bool Close() const {return glfwWindowShouldClose(window_);}
+  bool WindowShouldClose() const {return glfwWindowShouldClose(window_);}
   int GetKeyState(const int &key) const{return glfwGetKey(window_, key);}
 
 private:
@@ -26,15 +26,17 @@ private:
   GLFWwindow* window_;
   std::unique_ptr<MazeFigure> maze_;
   std::unique_ptr<ComplexCube> cube_;
-  //std::unique_ptr<SolidFigure> floor_;
+  std::unique_ptr<SolidFigure> floor_;
   double last_action_time;
-  void Init();
+  void InitGLFW();
+  void InitFigures(const maze::Layout &maze);
 
   const struct MazeSettings
   {
     float maze_height;
     float maze_scale;
-  }maze_settings_ = {1.5f, 3.0f};
+    glm::vec3 floor_color;
+  }maze_settings_ = {1.5f, 3.0f, {0.1f, 0.1f, 0.0f}};
   const struct CubeSettings
   {
     glm::vec3 vertex_color;

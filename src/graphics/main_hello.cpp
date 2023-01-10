@@ -128,13 +128,16 @@ int main()
 }
 */
 int main(){
-
-  GameWindow game(maze::GeneratorType::ELLERS, 25);
-  while(!game.Close()){
-      if (game.GetKeyState(GLFW_KEY_UP ) == GLFW_PRESS){
-        game.MoveCube(ComplexCube::FigureState::move_north);
-
-
+  maze::CellSize maze_size = {10, 10};
+  const std::unique_ptr<maze::Generator> generator =
+  maze::GeneratorFactory::GetInstance()->GetGenerator(maze::GeneratorType::RECURSIVE_BACKTRACKING);
+  const std::unique_ptr<maze::Layout> maze_layout = generator->Get(maze_size);
+  GameWindow game(*maze_layout);
+  game.LiftMaze();
+  while(!game.WindowShouldClose()){
+    // Move forward
+    if (game.GetKeyState(GLFW_KEY_UP ) == GLFW_PRESS){
+      game.MoveCube(ComplexCube::FigureState::move_north);
     }
     // Move backward
     if (game.GetKeyState(GLFW_KEY_DOWN ) == GLFW_PRESS){

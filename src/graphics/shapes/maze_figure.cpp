@@ -113,7 +113,7 @@ MazeFigure::MazeFigure(const std::vector<glm::vec2> &maze, GLfloat height, glm::
 }
 
 void MazeFigure::Appear(){
-  Move(glm::vec3({0.0f, 0.0f, -height_}));
+  Move(glm::vec3({0.0f, 0.0f, -height_*1.5f}));
   move_state_ = appear;
   lin_vel_.z = move_settings_.start_velocity;
 }
