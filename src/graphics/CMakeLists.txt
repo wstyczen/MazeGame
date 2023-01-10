@@ -29,11 +29,6 @@ target_link_libraries(graphics PUBLIC glm::glm)
 find_package(glfw3 CONFIG REQUIRED)
 target_link_libraries(graphics PUBLIC glfw3)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders/default.vert
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/shaders/default.frag
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
 target_link_libraries(graphics
   PUBLIC game
 )
