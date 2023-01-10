@@ -27,7 +27,11 @@ find_package(glm CONFIG REQUIRED)
 target_link_libraries(graphics PUBLIC glm::glm)
 
 find_package(glfw3 CONFIG REQUIRED)
+if(LINUX)
+target_link_libraries(graphics PUBLIC glfw)
+else()
 target_link_libraries(graphics PUBLIC glfw3)
+endif()
 
 target_link_libraries(graphics
   PUBLIC game

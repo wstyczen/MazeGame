@@ -14,7 +14,7 @@
 #include "maze/solvers/solver_factory.hpp"
 
 int main() {
-  maze::CellSize maze_size = {11, 11};
+  maze::CellSize maze_size = {3, 3};
   const std::unique_ptr<maze::Generator> generator =
       maze::GeneratorFactory::GetInstance()->GetGenerator(
           maze::GeneratorType::RECURSIVE_BACKTRACKING);

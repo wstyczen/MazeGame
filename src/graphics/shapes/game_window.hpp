@@ -22,7 +22,10 @@ class GameWindow {
 
  private:
   std::unique_ptr<Shader> shader_;
-  std::pair<unsigned int, unsigned int> display_solution_;
+  struct DisplaySolution{
+    int width;
+    int height;
+  } display_solution_;
   GLFWwindow* window_;
   std::unique_ptr<MazeFigure> maze_;
   std::unique_ptr<ComplexCube> cube_;
@@ -35,7 +38,8 @@ class GameWindow {
     float maze_height;
     float maze_scale;
     glm::vec3 floor_color;
-  } maze_settings_ = {1.5f, 3.0f, {0.1f, 0.1f, 0.0f}};
+    float move_map_down;
+  } maze_settings_ = {1.5f, 1.5f, {0.1f, 0.1f, 0.0f}, 0.03f};
   const struct CubeSettings {
     glm::vec3 vertex_color;
     glm::vec3 inner_color;
