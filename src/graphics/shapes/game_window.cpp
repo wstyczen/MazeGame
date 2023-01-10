@@ -2,17 +2,16 @@
 
 GameWindow::GameWindow(const maze::Layout& maze) {
   InitGLFW();
-  const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-  display_solution_ = std::make_pair(mode->width, mode->height);
-  window_ = glfwCreateWindow(mode->width, mode->height, "MazeGame", NULL, NULL);
+  int xpos, ypos;
+  glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), &xpos, &ypos, &display_solution_.width, &display_solution_.height);
+  window_ = glfwCreateWindow(display_solution_.width, display_solution_.height, "MazeGame", NULL, NULL);
   glfwMakeContextCurrent(window_);
   gladLoadGL();
-  glViewport((mode->width - mode->height) / 2, -mode->height / 15, mode->height,
-             mode->height);
+  glViewport((display_solution_.width - display_solution_.height) / 2, -ypos, display_solution_.height,
+             display_solution_.height);
   shader_ = std::make_unique<Shader>();
 
   InitFigures(maze);
-
   glEnable(GL_DEPTH_TEST);
   shader_->Activate();
   last_action_time = glfwGetTime();
@@ -58,14 +57,16 @@ void GameWindow::InitGLFW() {
 }
 
 void GameWindow::InitFigures(const maze::Layout& maze) {
-  uint16_t maze_width = (maze.size().cols - 1) / 2;
-  uint16_t maze_height = (maze.size().rows - 1) / 2;
-  GLfloat floor_width = maze_width;
-  GLfloat floor_height = maze_height;
-  glm::vec3 maze_start_position = {-maze_width, -maze_height,
-                                   -maze_height * maze_settings_.maze_scale};
-  glm::vec3 cube_start_position = {-maze_width + 1, -maze_height + 1,
-                                   -maze_height * maze_settings_.maze_scale};
+  GLfloat maze_width = maze.size().cols;
+  GLfloat maze_height = maze.size().rows;
+  GLfloat maze_x_pos = -((maze_width - 1.0f) / 2.0f);
+  GLfloat maze_y_pos = -((maze_height - 1.0f) / 2.0f);
+  GLfloat maze_z_pos = -(maze_height * maze_settings_.maze_scale + maze_settings_.maze_height);
+
+  glm::vec3 move_map_down(0.0f, maze_z_pos*maze_settings_.move_map_down, 0.0f);
+
+  glm::vec3 maze_start_position = glm::vec3{maze_x_pos, maze_y_pos, maze_z_pos} + move_map_down;
+  glm::vec3 cube_start_position = maze_start_position + glm::vec3{1.0f, 1.0f, 0.0f};
   maze_ = std::make_unique<MazeFigure>(
       MazeFigure{MazeFigure::Layout2VecOfWalls(&maze),
                  maze_settings_.maze_height, maze_start_position});
@@ -75,27 +76,25 @@ void GameWindow::InitFigures(const maze::Layout& maze) {
                                                 cube_settings_.vertex_color,
                                                 cube_settings_.inner_color});
 
-  GLfloat wall_thickness = 1;
+  GLfloat floor_vertex_x = maze_width / 2;
+  GLfloat floor_vertex_y = maze_height / 2;
+
   std::vector<GLfloat> floor_vertices = {
-      -(floor_width + wall_thickness / 2), -(floor_height + wall_thickness / 2),
-      maze_start_position.z - 0.5f,        maze_settings_.floor_color.x,
-      maze_settings_.floor_color.y,        maze_settings_.floor_color.z,
+      -floor_vertex_x, -floor_vertex_y, maze_start_position.z - 0.5f,
+      maze_settings_.floor_color.x, maze_settings_.floor_color.y, maze_settings_.floor_color.z,
 
-      -(floor_width + wall_thickness / 2), (floor_height + wall_thickness / 2),
-      maze_start_position.z - 0.5f,        maze_settings_.floor_color.x,
-      maze_settings_.floor_color.y,        maze_settings_.floor_color.z,
+      -floor_vertex_x, floor_vertex_y, maze_start_position.z - 0.5f,
+      maze_settings_.floor_color.x, maze_settings_.floor_color.y, maze_settings_.floor_color.z,
 
-      (floor_width + wall_thickness / 2),  (floor_height + wall_thickness / 2),
-      maze_start_position.z - 0.5f,        maze_settings_.floor_color.x,
-      maze_settings_.floor_color.y,        maze_settings_.floor_color.z,
+      floor_vertex_x,  floor_vertex_y, maze_start_position.z - 0.5f,
+      maze_settings_.floor_color.x, maze_settings_.floor_color.y, maze_settings_.floor_color.z,
 
-      (floor_width + wall_thickness / 2),  -(floor_height + wall_thickness / 2),
-      maze_start_position.z - 0.5f,        maze_settings_.floor_color.x,
-      maze_settings_.floor_color.y,        maze_settings_.floor_color.z,
+      floor_vertex_x,  -floor_vertex_y, maze_start_position.z - 0.5f,
+      maze_settings_.floor_color.x, maze_settings_.floor_color.y, maze_settings_.floor_color.z,
 
   };
   std::vector<GLuint> floor_indices = {0, 1, 2, 0, 3, 2};
   floor_ = std::make_unique<SolidFigure>(floor_vertices, floor_indices,
-                                         glm::vec3{0.0f, 0.0f, 0.0f},
+                                         move_map_down,
                                          glm::vec3{0.0f, 0.0f, 0.0f});
 }
