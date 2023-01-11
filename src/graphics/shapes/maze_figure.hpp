@@ -22,7 +22,12 @@ class MazeFigure : public DynamicSolidFigure {
   @return Vector of coordinates of walls that maze is made of.
   */
   static std::vector<glm::vec2> Layout2VecOfWalls(const maze::Layout* maze);
-
+  static DynamicSolidFigure VectorToMapFigureConvert(
+    const std::vector<glm::vec2>& maze_walls,
+    GLfloat height,
+    glm::vec3 posi,
+    glm::vec3 pos,
+    GLfloat side_of_a_base = 1.0f);
  protected:
   GLfloat height_;
   glm::vec3 start_position_;
