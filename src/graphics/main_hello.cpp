@@ -61,6 +61,7 @@ int main(int argc, char* argv[]) {
     // Generate a new maze
     const auto result = game->GetGameState();
     game->OnGameFinished(result);
+    game_window.InitFigures(*game->layout(), game->position());
     // Reset game screen to display new maze
   }
   return 0;

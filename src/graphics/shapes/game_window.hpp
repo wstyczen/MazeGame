@@ -23,13 +23,13 @@ class GameWindow {
   ~GameWindow();
   bool WindowShouldClose() const { return glfwWindowShouldClose(window_); }
   int GetKeyState(const int& key) const { return glfwGetKey(window_, key); }
+  void InitFigures(const maze::Layout& maze, const maze::Cell& cube_position);
 
  private:
   void WaitForMazeMoveToComplete();
   void InitGLFW();
   glm::vec3 GetMazePosition(const maze::Layout& maze);
   glm::vec3 GetAsVec(const maze::Layout& maze, const maze::Cell& position);
-  void InitFigures(const maze::Layout& maze, const maze::Cell& cube_position);
 
   std::unique_ptr<Shader> shader_;
   struct DisplaySolution {

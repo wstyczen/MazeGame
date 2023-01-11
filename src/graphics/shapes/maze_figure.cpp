@@ -12,6 +12,27 @@ std::vector<glm::vec2> MazeFigure::Layout2VecOfWalls(const maze::Layout* maze) {
   }
   return maze_walls;
 }
+
+std::vector<glm::vec2> Path2Vec2(const maze::Layout* maze,
+                                 const std::vector<maze::Cell> path) {
+  const auto& [maze_height, maze_width] = maze->size();
+  std::vector<glm::vec2> as_vec_2;
+  const maze::Cell* previous = nullptr;
+  for (const maze::Cell& cell : path) {
+    if (!previous) {
+      as_vec_2.push_back({cell.col, maze_height - 1 - cell.row});
+      previous = &cell;
+      continue;
+    }
+    maze::Edge edge = maze::Edge::FromTwoCells(*previous, cell);
+    const maze::Cell halfway = *edge.To(1);
+    as_vec_2.push_back({halfway.col, maze_height - 1 - halfway.row});
+    as_vec_2.push_back({cell.col, maze_height - 1 - cell.row});
+    previous = &cell;
+  }
+  return as_vec_2;
+}
+
 DynamicSolidFigure MazeFigure::VectorToMapFigureConvert(
     const std::vector<glm::vec2>& maze_walls,
     GLfloat height,

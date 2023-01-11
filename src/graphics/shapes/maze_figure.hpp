@@ -3,6 +3,8 @@
 #include "graphics/shapes/dynamic_solid_figure.hpp"
 #include "maze/layout.hpp"
 
+std::vector<glm::vec2> Path2Vec2(const maze::Layout* maze,
+
 class MazeFigure : public DynamicSolidFigure {
  public:
   enum FigureState { appear, disappear, steady };

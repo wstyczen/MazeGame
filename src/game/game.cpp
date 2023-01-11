@@ -89,6 +89,10 @@ maze::Cell Game::position() const {
   return maze_.position();
 }
 
+const maze::Path* Game::path() const {
+  return maze_.path();
+}
+
 uint16_t Game::time_limit() const {
   return time_limit_;
 }
