@@ -20,6 +20,7 @@ class Maze {
   const maze::Layout* layout() const;
   const maze::Path* path() const;
   maze::Cell position() const;
+  maze::Cell goal() const;
 
   uint16_t GetMovesMade() const;
   maze::CellSize GetNextCellSize(const uint16_t& increment) const;

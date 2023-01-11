@@ -42,6 +42,10 @@ maze::Cell Maze::position() const {
   return position_;
 }
 
+maze::Cell Maze::goal() const {
+  return goal_;
+}
+
 uint16_t Maze::GetMovesMade() const {
   return path_taken_.size() - 1;
 }

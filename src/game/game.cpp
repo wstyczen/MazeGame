@@ -98,6 +98,10 @@ const maze::Path* Game::path() const {
   return maze_.path();
 }
 
+const maze::Path* Game::solution() const {
+  solver_->Solve(layout(), maze_.position(), maze_.goal());
+}
+
 uint16_t Game::time_limit() const {
   return time_limit_;
 }
