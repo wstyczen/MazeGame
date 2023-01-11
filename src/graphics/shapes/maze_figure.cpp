@@ -12,12 +12,13 @@ std::vector<glm::vec2> MazeFigure::Layout2VecOfWalls(const maze::Layout* maze) {
   }
   return maze_walls;
 }
-DynamicSolidFigure VectorToMapFigureConvert(
+DynamicSolidFigure MazeFigure::VectorToMapFigureConvert(
     const std::vector<glm::vec2>& maze_walls,
     GLfloat height,
     glm::vec3 posi,
-    glm::vec3 pos) {
-  const GLfloat side_of_a_base = 1.0f;  // should be same as side of a cube
+    glm::vec3 pos,
+    GLfloat side_of_a_base) {
+  //const GLfloat side_of_a_base = 1.0f;  // should be same as side of a cube
                                         // Pawn!
   const GLfloat half_of_side = side_of_a_base / 2.0f;
   const glm::vec3 celing_color{0.8f, 0.8f, 0.8f};  // Color of celing in maze
@@ -84,18 +85,20 @@ DynamicSolidFigure VectorToMapFigureConvert(
   const size_t maze_wall_verices_size = vertices_template.size() * 6;
   /*Number of indices that connects vertices in each maze wall*/
   const size_t maze_wall_indices_size = indices_template.size() * 5;
+  const uint32_t vert_size = maze_walls.size() * maze_wall_verices_size;
   /*Size of vertex array is desribed by:
    -number of walls in maze,
    -number of vertices in each wall block (in this case 20, 4 for each side),
    -each vertex is described by 6 floats: coordinates and color.*/
+  GLfloat vertices[vert_size];
 
-  GLfloat vertices[maze_walls.size() * maze_wall_verices_size];
+  const uint32_t indi_size = maze_walls.size() * maze_wall_indices_size;
   /*Size of array is described by number of walls in maze.
   Each wall is made of 5 rectangle walls.
   To create rectangle there are 6 indices needed. Rectangle is made
   of two triangles, each triangle contains 3 vertices which are connected by
   indices.*/
-  GLuint indices[maze_walls.size() * maze_wall_indices_size];
+  GLuint indices[indi_size];
 
   for (size_t wall = 0; wall != maze_walls.size(); ++wall) {
     // filling vertices array

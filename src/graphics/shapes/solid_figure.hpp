@@ -100,8 +100,8 @@ class SolidFigure {
    * -lenght of vector isn't divisible by 6, @n
    * -any of indices reffers to vertex with index out of vector.
    */
-  static void CheckDataFormat(const std::vector<GLfloat>& vertices,
-                              const std::vector<GLuint>& indices){};
+  // static void CheckDataFormat(const std::vector<GLfloat>& vertices,
+  //                             const std::vector<GLuint>& indices){};
 };
 
 #endif

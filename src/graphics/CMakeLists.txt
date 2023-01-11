@@ -7,6 +7,7 @@ add_library(graphics
   shapes/dynamic_solid_figure.cpp
   shapes/complex_cube.cpp
   shapes/maze_figure.cpp
+  shapes/digit_figure.cpp
   shapes/game_window.cpp
 )
 
