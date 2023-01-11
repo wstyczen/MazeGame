@@ -1,5 +1,27 @@
 #include "graphics/shapes/complex_cube.hpp"
+
 #include <vector>
+
+#include "game/game.hpp"
+#include "maze/utility.hpp"
+
+namespace {
+
+maze::Direction GetAsMazeDirection(ComplexCube::FigureState direction) {
+  switch (direction) {
+    case ComplexCube::FigureState::move_north:
+      return maze::Direction::UP;
+    case ComplexCube::FigureState::move_south:
+      return maze::Direction::DOWN;
+    case ComplexCube::FigureState::move_east:
+      return maze::Direction::RIGHT;
+    case ComplexCube::FigureState::move_west:
+      return maze::Direction::LEFT;
+  }
+  throw std::invalid_argument("Invalid direction");
+}
+
+}  // namespace
 
 ComplexCube::ComplexCube(const glm::vec3& posi,
                          const glm::vec3& pos,
@@ -40,7 +62,8 @@ void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
 }
 
 bool ComplexCube::MakeMove(ComplexCube::FigureState direction) {
-  if (move_state == steady) {
+  game::Game* game = game::Game::GetInstance();
+  if (move_state == steady && game->Move(GetAsMazeDirection(direction))) {
     move_state = direction;
     if (direction == move_north) {
       ang_vel.x = -move_settings.start_velocity;
@@ -55,6 +78,7 @@ bool ComplexCube::MakeMove(ComplexCube::FigureState direction) {
       ang_vel.y = -move_settings.start_velocity;
       Roll({0.0f, ang_vel.y}, 1.0f);
     }
+    game->StartTimerIfNotAlreadyRunning();
     return true;
   } else
     return false;

@@ -3,6 +3,7 @@
 #include "graphics/shapes/complex_cube.hpp"
 #include "graphics/shapes/maze_figure.hpp"
 
+#include "game/game.hpp"
 #include "maze/generators/generator.hpp"
 #include "maze/generators/generator_factory.hpp"
 #include "maze/layout.hpp"

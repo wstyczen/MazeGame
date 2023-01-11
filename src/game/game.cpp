@@ -2,10 +2,23 @@
 
 #include <tuple>
 
+#include "game/settings.hpp"
 #include "maze/paths.hpp"
 
 namespace game {
-using namespace std::chrono;
+
+namespace {
+
+double GetTimeElapsed(
+    std::chrono::time_point<std::chrono::high_resolution_clock> time) {
+  return std::chrono::duration<double>(
+             std::chrono::high_resolution_clock::now() - time)
+      .count();
+}
+
+}  // namespace
+
+Game* Game::instance_ = nullptr;
 
 Game::Game(const Settings& settings)
     : settings_{settings},
@@ -13,11 +26,24 @@ Game::Game(const Settings& settings)
           settings.generator_type)},
       solver_{
           maze::SolverFactory::GetInstance()->GetSolver(settings.solver_type)},
-      maze_{generator_->Get(settings.starting_size), settings.path_type} {
+      maze_{generator_->Get(settings.starting_size), settings.path_type},
+      mazes_completed_{} {
   CalculateLimits();
 }
 
 Game::~Game() = default;
+
+void Game::Init(const Settings& settings) {
+  if (!instance_) {
+    instance_ = new Game(settings);
+  }
+}
+Game* Game::GetInstance() {
+  if (!instance_) {
+    instance_ = new Game(GetDefaultFlags());
+  }
+  return instance_;
+}
 
 void Game::CalculateLimits() {
   const uint16_t minimal_moves_required =
@@ -32,10 +58,27 @@ void Game::GenerateNewMaze(const maze::CellSize& maze_size,
   CalculateLimits();
 }
 
-void Game::OnGameFinished() {
-  GenerateNewMaze(
-      maze_.GetNextCellSize(GetMazeGrowthPerDifficulty(settings_.difficulty)),
-      settings_.path_type);
+GameState Game::GetGameState() const {
+  if (GoalReached())
+    return GameState::WON;
+  if (MoveLimitReached() || TimeLimitReached())
+    return GameState::LOST;
+  return GameState::UNDECIDED;
+}
+
+void Game::OnGameFinished(const GameState& game_result) {
+  if (game_result == GameState::WON) {
+    GenerateNewMaze(
+        maze_.GetNextCellSize(GetMazeGrowthPerDifficulty(settings_.difficulty)),
+        settings_.path_type);
+    ++mazes_completed_;
+    return;
+  }
+  if (game_result == GameState::LOST) {
+    GenerateNewMaze(settings_.starting_size, settings_.path_type);
+    mazes_completed_ = 0;
+    return;
+  }
 }
 
 const maze::Layout* Game::layout() const {
@@ -57,6 +100,9 @@ uint16_t Game::move_limit() const {
 uint16_t Game::GetMovesMade() const {
   return maze_.GetMovesMade();
 }
+uint16_t Game::MovesLeft() const {
+  return move_limit_ - maze_.GetMovesMade();
+}
 
 bool Game::GoalReached() const {
   return maze_.GoalReached();
@@ -70,15 +116,17 @@ bool Game::MoveLimitReached() const {
   return GetMovesMade() >= move_limit_;
 }
 
-void Game::StartTimer() {
-  game_start_time_ = std::chrono::high_resolution_clock::now();
+void Game::StartTimerIfNotAlreadyRunning() {
+  if (!game_start_time_)
+    game_start_time_ = std::chrono::high_resolution_clock::now();
 }
-double Game::TimeElapsed() const {
-  auto now = std::chrono::high_resolution_clock::now();
-  return std::chrono::duration<double>(now - game_start_time_).count();
+double Game::TimeLeft() const {
+  if (!game_start_time_)
+    return -1;
+  return static_cast<double>(time_limit_) - GetTimeElapsed(*game_start_time_);
 }
 bool Game::TimeLimitReached() const {
-  return TimeElapsed() >= time_limit_;
+  return game_start_time_ && TimeLeft() <= 0;
 }
 
 }  // namespace game

@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <memory>
+#include <optional>
 
 #include "game/difficulty.hpp"
 #include "game/maze.hpp"
@@ -14,10 +15,17 @@
 
 namespace game {
 
+enum class GameState {
+  UNDECIDED,
+  LOST,
+  WON,
+};
+
 class Game {
  public:
-  Game(const Settings& settings);
   ~Game();
+  static void Init(const Settings& settings);
+  static Game* GetInstance();
 
   const maze::Layout* layout() const;
   maze::Cell position() const;
@@ -28,15 +36,19 @@ class Game {
   bool Move(const maze::Direction& direction);
 
   uint16_t GetMovesMade() const;
+  uint16_t MovesLeft() const;
   bool MoveLimitReached() const;
 
-  void StartTimer();
-  double TimeElapsed() const;
+  void StartTimerIfNotAlreadyRunning();
+  double TimeLeft() const;
   bool TimeLimitReached() const;
 
-  void OnGameFinished();
+  GameState GetGameState() const;
+  void NewMaze();
+  void OnGameFinished(const GameState& game_result);
 
  private:
+  Game(const Settings& settings);
   void GenerateNewMaze(const maze::CellSize& maze_size,
                        const maze::PathType& path_type);
   void CalculateLimits();
@@ -50,8 +62,11 @@ class Game {
   uint16_t move_limit_;
   uint16_t time_limit_;
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> game_start_time_;
+  std::optional<std::chrono::time_point<std::chrono::high_resolution_clock>>
+      game_start_time_;
   uint16_t mazes_completed_;
+
+  static Game* instance_;
 };
 
 }  // namespace game

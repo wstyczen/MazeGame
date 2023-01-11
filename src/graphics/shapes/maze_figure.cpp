@@ -6,7 +6,7 @@ std::vector<glm::vec2> MazeFigure::Layout2VecOfWalls(const maze::Layout* maze) {
   for (uint16_t row = 0; row != map_height; ++row) {
     for (uint16_t column = 0; column != map_width; ++column) {
       if (maze->IsBlocked({row, column})) {
-        maze_walls.push_back({column, row});
+        maze_walls.push_back({column, map_height - 1 - row});
       }
     }
   }
