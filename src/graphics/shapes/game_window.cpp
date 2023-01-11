@@ -45,14 +45,31 @@ void GameWindow::Show() {
   glfwPollEvents();
 }
 
+void GameWindow::WaitForMazeMoveToComplete() {
+  while (maze_->IsMoving()) {
+    Show();
+    Act();
+  }
+}
 void GameWindow::LiftMaze() {
   maze_->Appear();
+  WaitForMazeMoveToComplete();
+}
+void GameWindow::DropMaze() {
+  maze_->Disappear();
+  WaitForMazeMoveToComplete();
 }
 bool GameWindow::MoveCube(const ComplexCube::FigureState& direction) {
   return cube_->MakeMove(direction);
 }
 bool GameWindow::IsCubeMoving() const {
   return cube_->IsMoving();
+}
+void GameWindow::WaitForCubeMoveToComplete() {
+  while (cube_->IsMoving()) {
+    Show();
+    Act();
+  }
 }
 
 GameWindow::~GameWindow() {

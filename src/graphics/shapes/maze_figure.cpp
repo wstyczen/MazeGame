@@ -18,8 +18,8 @@ DynamicSolidFigure MazeFigure::VectorToMapFigureConvert(
     glm::vec3 posi,
     glm::vec3 pos,
     GLfloat side_of_a_base) {
-  //const GLfloat side_of_a_base = 1.0f;  // should be same as side of a cube
-                                        // Pawn!
+  // const GLfloat side_of_a_base = 1.0f;  // should be same as side of a cube
+  //  Pawn!
   const GLfloat half_of_side = side_of_a_base / 2.0f;
   const glm::vec3 celing_color{0.8f, 0.8f, 0.8f};  // Color of celing in maze
   const glm::vec3 south_color{0.6f, 0.6f, 0.6f};   // Color of south walls in
@@ -151,10 +151,28 @@ void MazeFigure::Appear() {
   lin_vel_.z = move_settings_.start_velocity;
 }
 
+void MazeFigure::Disappear() {
+  move_state_ = disappear;
+  lin_vel_.z = -move_settings_.start_velocity;
+}
+
+bool MazeFigure::IsMoving() {
+  return move_state_ != steady;
+}
+
 void MazeFigure::Act() {
   if (move_state_ == appear) {
     if (position_.z <= start_position_.z) {
       lin_vel_.z += move_settings_.acceleration;
+      Move(glm::vec3{0.0f, 0.0f, lin_vel_.z});
+    } else {
+      move_state_ = steady;
+      SetPosition(glm::vec3{position_.x, position_.y, start_position_.z});
+    }
+  }
+  if (move_state_ == disappear) {
+    if (position_.z >= start_position_.z - height_ * 1.5f) {
+      lin_vel_.z -= move_settings_.acceleration;
       Move(glm::vec3{0.0f, 0.0f, lin_vel_.z});
     } else {
       move_state_ = steady;

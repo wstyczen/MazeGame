@@ -16,13 +16,16 @@ class GameWindow {
   void Act();
   void Show();
   void LiftMaze();
+  void DropMaze();
   bool IsCubeMoving() const;
+  void WaitForCubeMoveToComplete();
   bool MoveCube(const ComplexCube::FigureState& direction);
   ~GameWindow();
   bool WindowShouldClose() const { return glfwWindowShouldClose(window_); }
   int GetKeyState(const int& key) const { return glfwGetKey(window_, key); }
 
  private:
+  void WaitForMazeMoveToComplete();
   void InitGLFW();
   glm::vec3 GetMazePosition(const maze::Layout& maze);
   glm::vec3 GetAsVec(const maze::Layout& maze, const maze::Cell& position);

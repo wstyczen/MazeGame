@@ -48,8 +48,7 @@ int main(int argc, char* argv[]) {
   game_window.LiftMaze();
   while (!game_window.WindowShouldClose()) {
     // Solving maze instance
-    while (game->GetGameState() == game::GameState::UNDECIDED ||
-           (game->GoalReached() && game_window.IsCubeMoving())) {
+    while (game->GetGameState() == game::GameState::UNDECIDED) {
       print_time_and_moves_left(game);
 
       HandleKeyPress(game_window);
@@ -57,6 +56,8 @@ int main(int argc, char* argv[]) {
       game_window.Show();
       game_window.Act();
     }
+    game_window.WaitForCubeMoveToComplete();
+    game_window.DropMaze();
     // Generate a new maze
     const auto result = game->GetGameState();
     game->OnGameFinished(result);

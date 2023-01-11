@@ -5,7 +5,7 @@
 
 class MazeFigure : public DynamicSolidFigure {
  public:
-  enum FigureState { appear, steady };
+  enum FigureState { appear, disappear, steady };
   struct MoveSettings {
     float acceleration;
     float start_velocity;
@@ -16,6 +16,8 @@ class MazeFigure : public DynamicSolidFigure {
              glm::vec3 posi = {0.0f, 0.0f, 0.0f},
              glm::vec3 pos = {0.0f, 0.0f, 0.0f});
   void Appear();
+  void Disappear();
+  bool IsMoving();
   void Act();
   /*! @brief Converts maze as Layout to a vector of mazes walls coordinates
   @param[in] maze Pointer to a maze being converted.
@@ -23,11 +25,12 @@ class MazeFigure : public DynamicSolidFigure {
   */
   static std::vector<glm::vec2> Layout2VecOfWalls(const maze::Layout* maze);
   static DynamicSolidFigure VectorToMapFigureConvert(
-    const std::vector<glm::vec2>& maze_walls,
-    GLfloat height,
-    glm::vec3 posi,
-    glm::vec3 pos,
-    GLfloat side_of_a_base = 1.0f);
+      const std::vector<glm::vec2>& maze_walls,
+      GLfloat height,
+      glm::vec3 posi,
+      glm::vec3 pos,
+      GLfloat side_of_a_base = 1.0f);
+
  protected:
   GLfloat height_;
   glm::vec3 start_position_;
