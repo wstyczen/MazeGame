@@ -16,6 +16,7 @@ class ComplexCube : public DynamicSolidFigure {
               const glm::vec3& inner_color);
   ComplexCube(const DynamicSolidFigure& cube)
       : DynamicSolidFigure(cube), start_position(cube.GetPosition()){};
+  bool IsMoving() const;
   bool MakeMove(ComplexCube::FigureState direction);
   void Act();
   static DynamicSolidFigure MakeCubeFigure(const GLfloat& side,

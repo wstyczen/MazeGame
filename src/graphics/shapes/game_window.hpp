@@ -16,6 +16,7 @@ class GameWindow {
   void Act();
   void Show();
   void LiftMaze();
+  bool IsCubeMoving() const;
   bool MoveCube(const ComplexCube::FigureState& direction);
   ~GameWindow();
   bool WindowShouldClose() const { return glfwWindowShouldClose(window_); }

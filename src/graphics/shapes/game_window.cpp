@@ -51,6 +51,9 @@ void GameWindow::LiftMaze() {
 bool GameWindow::MoveCube(const ComplexCube::FigureState& direction) {
   return cube_->MakeMove(direction);
 }
+bool GameWindow::IsCubeMoving() const {
+  return cube_->IsMoving();
+}
 
 GameWindow::~GameWindow() {
   shader_->Delete();

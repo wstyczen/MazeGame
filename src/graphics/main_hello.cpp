@@ -5,8 +5,6 @@
 #include <list>
 #include <vector>
 
-#include <chrono>
-#include <thread>
 #include "game/game.hpp"
 #include "game/settings.hpp"
 #include "graphics/shapes/game_window.hpp"
@@ -49,7 +47,9 @@ int main(int argc, char* argv[]) {
   GameWindow game_window(*game->layout(), game->position());
   game_window.LiftMaze();
   while (!game_window.WindowShouldClose()) {
-    while (game->GetGameState() == game::GameState::UNDECIDED) {
+    // Solving maze instance
+    while (game->GetGameState() == game::GameState::UNDECIDED ||
+           (game->GoalReached() && game_window.IsCubeMoving())) {
       print_time_and_moves_left(game);
 
       HandleKeyPress(game_window);
@@ -57,12 +57,9 @@ int main(int argc, char* argv[]) {
       game_window.Show();
       game_window.Act();
     }
-
     // Generate a new maze
-    // std::this_thread::sleep_for(std::chrono::seconds(2));
     const auto result = game->GetGameState();
     game->OnGameFinished(result);
-
     // Reset game screen to display new maze
   }
   return 0;

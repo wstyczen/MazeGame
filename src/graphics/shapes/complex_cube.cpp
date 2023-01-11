@@ -61,6 +61,10 @@ void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
   Move(glm::vec3(move_x, move_y, move_z));
 }
 
+bool ComplexCube::IsMoving() const {
+  return move_state != steady;
+}
+
 bool ComplexCube::MakeMove(ComplexCube::FigureState direction) {
   game::Game* game = game::Game::GetInstance();
   if (move_state == steady && game->Move(GetAsMazeDirection(direction))) {
@@ -90,7 +94,6 @@ void ComplexCube::Act() {
       Roll({ang_vel.x, 0.0f}, move_settings.distance);
       ang_vel.x -= cos((pose_.x - floor(pose_.x / 90) * 90.0f) * 3.1415 / 180) *
                    move_settings.acceleration;
-
     } else {
       SetPose({0.0f, 0.0f, 0.0f});
       DiscretizatePosition();
