@@ -39,7 +39,8 @@ int main(int argc, char* argv[]) {
   game::Game::Init(settings);
 
   game::Game* game = game::Game::GetInstance();
-  GameWindow game_window(*game->layout(), game->position());
+  GameWindow game_window(*game->layout(), game->position(), game->goal());
+  game_window.LiftMaze();
   while (!game_window.WindowShouldClose()) {
     // checking that statement is connected with
     // reaction for pushing window close button
@@ -58,8 +59,7 @@ int main(int argc, char* argv[]) {
     // Generate a new maze
     const auto result = game->GetGameState();
     game->OnGameFinished(result);
-    game_window.InitFigures(*game->layout(), game->position());
-
+    game_window.InitFigures(*game->layout(), game->position(), game->goal());
     // Reset game screen to display new maze
   }
   return 0;
