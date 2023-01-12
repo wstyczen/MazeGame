@@ -17,10 +17,10 @@ class GameWindow {
              const maze::Cell& cube_position,
              const maze::Cell& goal);
   void Act();
-  void Show();
+  void Show() const;
   void LiftMaze();
   void DropMaze();
-  void LiftSolvingPath();
+  void ShowSolvingPath(const std::vector<glm::vec2>& path) const;
   bool IsCubeMoving() const;
   void WaitForCubeMoveToComplete();
   bool MoveCube(const ComplexCube::FigureState& direction);
@@ -58,11 +58,22 @@ class GameWindow {
   double last_action_time;
 
   const struct MazeSettings {
-    float maze_height;
-    float maze_scale;
+    GLfloat maze_height;
+    GLfloat cell_size;
+    GLfloat wall_size;
+    GLfloat maze_scale;
+    glm::vec3 maze_color;
+    glm::vec2 shading;
     glm::vec3 floor_color;
-    float move_map_down;
-  } maze_settings_ = {1.5f, 1.5f, {0.1f, 0.1f, 0.0f}, 0.03f};
+    GLfloat move_map_down;
+  } maze_settings_ = {1.5f,
+                      1.0f,
+                      0.95f,
+                      1.5f,
+                      {0.8f, 0.8f, 0.8f},
+                      {0.7f, 0.0f},
+                      {0.1f, 0.1f, 0.0f},
+                      0.03f};
   const struct CubeSettings {
     glm::vec3 vertex_color;
     glm::vec3 inner_color;
@@ -71,6 +82,14 @@ class GameWindow {
     std::vector<float> ClearColor;
   } Window_settings_ = {{0.07f, 0.13f, 0.17f, 0.5f}};
   glm::vec3 maze_position_;
+
+  const struct SolvingPathSettings {
+    GLfloat height;
+    GLfloat size_of_a_cube;
+    glm::vec3 color;
+    glm::vec2 shading;
+  } solving_path_settings_ = {0.5f, 0.5f, glm::vec3{0.7f, 0.1f, 0.5f},
+                              glm::vec2{0.7f, 0.1f}};
 };
 
 }  // namespace graphics

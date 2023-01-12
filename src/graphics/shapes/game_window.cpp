@@ -36,7 +36,7 @@ void GameWindow::Act() {
     last_action_time = glfwGetTime();
   }
 }
-void GameWindow::Show() {
+void GameWindow::Show() const {
   glClearColor(Window_settings_.ClearColor[0], Window_settings_.ClearColor[1],
                Window_settings_.ClearColor[2], Window_settings_.ClearColor[3]);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -62,6 +62,9 @@ void GameWindow::DropMaze() {
   maze_->Disappear();
   WaitForMazeMoveToComplete();
 }
+
+void GameWindow::ShowSolvingPath(const std::vector<glm::vec2>& path) const {}
+
 bool GameWindow::MoveCube(const ComplexCube::FigureState& direction) {
   return cube_->MakeMove(direction);
 }
@@ -152,9 +155,12 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   maze_position_ += move_map_down;
 
   glm::vec3 cube_start_position = GetAsVec(maze, cube_position);
-  maze_ = std::make_unique<MazeFigure>(MazeFigure{
-      MazeFigure::Layout2VecOfWalls(&maze), maze_settings_.maze_height,
-      maze_position_, glm::vec3{0.0f, 0.0f, 0.0f}, 1.0f, 1.0f});
+  glm::vec3 maze_pos = {0.0f, 0.0f, 0.0f};
+  maze_ = std::make_unique<MazeFigure>(
+      MazeFigure{MazeFigure::Layout2VecOfWalls(&maze),
+                 maze_settings_.maze_height, maze_position_, maze_pos,
+                 maze_settings_.wall_size, maze_settings_.cell_size,
+                 maze_settings_.maze_color, maze_settings_.shading});
   cube_ =
       std::make_unique<ComplexCube>(ComplexCube{cube_start_position,
                                                 {0.0f, 0.0f, 0.0f},

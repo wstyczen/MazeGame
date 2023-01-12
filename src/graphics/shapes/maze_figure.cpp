@@ -257,12 +257,14 @@ MazeFigure::MazeFigure(const std::vector<glm::vec2>& maze,
   start_position_ = posi;
 }
 MazeFigure::MazeFigure(const std::vector<glm::vec2>& maze,
-                       GLfloat height,
-                       glm::vec3 posi,
-                       glm::vec3 pos,
-                       GLfloat side_of_a_base,
-                       GLfloat cell_size)
-   : DynamicSolidFigure(VectorToMapFigure(maze, GetWallTemplate(height, side_of_a_base, glm::vec3{0.7f, 0.7f, 0.7f}, glm::vec2{0.6, 0.1}), posi, pos, cell_size)) {
+             const GLfloat &height,
+             const glm::vec3 &posi,
+             const glm::vec3 &pos,
+             const GLfloat &side_of_a_base,
+             const GLfloat &cell_size,
+             const glm::vec3 &color,
+             const glm::vec2 &shading)
+   : DynamicSolidFigure(VectorToMapFigure(maze, GetWallTemplate(height, side_of_a_base, color, shading), posi, pos, cell_size)) {
   height_ = height;
   start_position_ = posi;
 }

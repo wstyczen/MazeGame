@@ -31,11 +31,13 @@ class MazeFigure : public DynamicSolidFigure {
              GLfloat side_of_a_base);
 
   MazeFigure(const std::vector<glm::vec2>& maze,
-             GLfloat height,
-             glm::vec3 posi,
-             glm::vec3 pos,
-             GLfloat side_of_a_base,
-             GLfloat cell_size);
+             const GLfloat &height,
+             const glm::vec3 &posi,
+             const glm::vec3 &pos,
+             const GLfloat &side_of_a_base,
+             const GLfloat &cell_size,
+             const glm::vec3 &color,
+             const glm::vec2 &shading);
 
 
   void Appear();
