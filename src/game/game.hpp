@@ -29,6 +29,7 @@ class Game {
 
   const maze::Layout* layout() const;
   maze::Cell position() const;
+  maze::Cell goal() const;
   const maze::Path* path() const;
   const maze::Path* solution() const;
   uint16_t time_limit() const;

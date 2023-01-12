@@ -89,6 +89,10 @@ maze::Cell Game::position() const {
   return maze_.position();
 }
 
+maze::Cell Game::goal() const {
+  return maze_.goal();
+}
+
 const maze::Path* Game::path() const {
   return maze_.path();
 }
