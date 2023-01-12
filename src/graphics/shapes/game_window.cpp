@@ -169,7 +169,7 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   glm::vec3 cube_start_position = GetAsVec(maze, cube_position);
   maze_ = std::make_unique<MazeFigure>(
       MazeFigure{MazeFigure::Layout2VecOfWalls(&maze),
-                 maze_settings_.maze_height, maze_position_});
+                 maze_settings_.maze_height, maze_position_, glm::vec3{0.0f, 0.0f, 0.0f}, 1.0f});
   cube_ =
       std::make_unique<ComplexCube>(ComplexCube{cube_start_position,
                                                 {0.0f, 0.0f, 0.0f},
@@ -181,7 +181,7 @@ void GameWindow::InitFigures(const maze::Layout& maze,
     CreateRectFromCoord(maze_height, maze_width, floor_position, maze_settings_.floor_color));
 
   glm::vec3 destinate_position = maze_position_ + glm::vec3{maze_width - 2.0f, maze_height - 2.0f, 0.0f};
-  destinate_position.z = floor_->GetPosition().z + 0.01; //must be a little above floor
+  destinate_position.z = floor_->GetPosition().z + 0.03; //must be a little above floor
   destinate_position_ = std::make_unique<SolidFigure>(
     CreateRectFromCoord(1.0f, 1.0f, destinate_position, glm::vec3{1.0f, 0.4f, 0.0f}));
   // set propper projectrion matrix due to resize rendering space

@@ -31,8 +31,8 @@ SolidFigure::SolidFigure(GLfloat* vertices,
   mvp_.proj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
 }
 
-SolidFigure::SolidFigure(const std::vector<GLfloat>& vertices,
-                         const std::vector<GLuint>& indices,
+SolidFigure::SolidFigure(std::vector<GLfloat> vertices,
+                         std::vector<GLuint> indices,
                          const glm::vec3& posi,
                          const glm::vec3& pos) {
   GLfloat vertices_array[vertices.size()];

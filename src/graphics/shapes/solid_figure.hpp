@@ -46,8 +46,8 @@ class SolidFigure {
    * @param[in] pos pose of a figure (Euler angle), {0.0f, 0.0f, 0.0f} by
    * default.
    */
-  SolidFigure(const std::vector<GLfloat>& vertices,
-              const std::vector<GLuint>& indices,
+  SolidFigure(std::vector<GLfloat> vertices,
+              std::vector<GLuint> indices,
               const glm::vec3& posi,
               const glm::vec3& pos);
   /*! @brief SolidFigure copy constructor
