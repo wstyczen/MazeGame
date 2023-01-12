@@ -20,8 +20,8 @@ class Layout {
   static Layout FromString(const std::string& string_format,
                            const char blocked = '#',
                            const char unblocked = ' ');
-
   LayoutSize size() const;
+  CellSize cell_size() const;
   uint16_t middle_row() const;
   uint16_t bottom_row() const;
   uint16_t middle_col() const;

@@ -12,7 +12,9 @@
 
 class GameWindow {
  public:
-  GameWindow(const maze::Layout& maze, const maze::Cell& cube_position);
+  GameWindow(const maze::Layout& maze,
+             const maze::Cell& cube_position,
+             const maze::Cell& goal);
   void Act();
   void Show();
   void LiftMaze();
@@ -23,15 +25,21 @@ class GameWindow {
   ~GameWindow();
   bool WindowShouldClose() const { return glfwWindowShouldClose(window_); }
   int GetKeyState(const int& key) const { return glfwGetKey(window_, key); }
-  void InitFigures(const maze::Layout& maze, const maze::Cell& cube_position);
+  void InitFigures(const maze::Layout& maze,
+                   const maze::Cell& cube_position,
+                   const maze::Cell& goal);
 
  private:
   void WaitForMazeMoveToComplete();
   void InitGLFW();
   glm::vec3 GetMazePosition(const maze::Layout& maze) const;
-  glm::vec3 GetAsVec(const maze::Layout& maze, const maze::Cell& position) const;
+  glm::vec3 GetAsVec(const maze::Layout& maze,
+                     const maze::Cell& position) const;
   GLfloat GetMazeBiggerDimension(const maze::Layout& maze) const;
-  SolidFigure CreateRectFromCoord(const GLfloat &height, const GLfloat &width, const glm::vec3 &position, const glm::vec3 &color) const;
+  SolidFigure CreateRectFromCoord(const GLfloat& height,
+                                  const GLfloat& width,
+                                  const glm::vec3& position,
+                                  const glm::vec3& color) const;
   void FixRenderingRange(const maze::Layout& maze);
   std::unique_ptr<Shader> shader_;
   struct DisplaySolution {
@@ -42,7 +50,7 @@ class GameWindow {
   std::unique_ptr<MazeFigure> maze_;
   std::unique_ptr<ComplexCube> cube_;
   std::unique_ptr<SolidFigure> floor_;
-  std::unique_ptr<SolidFigure> destinate_position_;
+  std::unique_ptr<SolidFigure> destination_;
 
   double last_action_time;
 

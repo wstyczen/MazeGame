@@ -1,4 +1,4 @@
-#include <optional>
+#include <iostream>
 
 #include "game/difficulty.hpp"
 #include "maze/generators/generator_factory.hpp"
@@ -13,6 +13,8 @@ namespace game {
 // Can be provided via command line switches
 // Usage: --<switch>=<value>
 struct Settings {
+  friend std::ostream& operator<<(std::ostream& os, const Settings& settings);
+
   maze::GeneratorType generator_type;  // --generator, --generator_type
   maze::SolverType solver_type;        // --solver, --solver_type
   maze::PathType path_type;            // --path, --path_type

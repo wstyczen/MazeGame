@@ -1,10 +1,11 @@
 #include "game/game.hpp"
 
+#include <iostream>
+#include <stdexcept>
 #include <tuple>
 
 #include "game/settings.hpp"
 #include "maze/paths.hpp"
-#include<iostream>
 
 namespace game {
 
@@ -66,14 +67,10 @@ GameState Game::GetGameState() const {
     return GameState::LOST;
   return GameState::UNDECIDED;
 }
-void Game::NewMaze(){
-
-}
 void Game::OnGameFinished(const GameState& game_result) {
   if (game_result == GameState::WON) {
-    GenerateNewMaze(
-        maze_.GetNextCellSize(GetMazeGrowthPerDifficulty(settings_.difficulty)),
-        settings_.path_type);
+    GenerateNewMaze(maze_.GetNextCellSize(settings_.difficulty),
+                    settings_.path_type);
     ++mazes_completed_;
     return;
   }
@@ -83,7 +80,6 @@ void Game::OnGameFinished(const GameState& game_result) {
     mazes_completed_ = 0;
     return;
   }
-
 }
 
 const maze::Layout* Game::layout() const {
@@ -94,8 +90,20 @@ maze::Cell Game::position() const {
   return maze_.position();
 }
 
+maze::Cell Game::goal() const {
+  return maze_.goal();
+}
+
 const maze::Path* Game::path() const {
   return maze_.path();
+}
+
+maze::Path Game::solution() const {
+  std::optional<maze::Path> solution =
+      solver_->Solve(layout(), maze_.position(), maze_.goal());
+  if (!solution)
+    throw std::invalid_argument("Maze should always have a solution");
+  return *solution;
 }
 
 uint16_t Game::time_limit() const {
@@ -126,13 +134,13 @@ bool Game::MoveLimitReached() const {
 }
 
 void Game::StartTimerIfNotAlreadyRunning() {
-  if (!game_start_time_){
+  if (!game_start_time_) {
     game_start_time_ = std::chrono::high_resolution_clock::now();
   }
 }
 double Game::TimeLeft() const {
-  if (!game_start_time_){
-        return -1;
+  if (!game_start_time_) {
+    return -1;
   }
   return static_cast<double>(time_limit_) - GetTimeElapsed(*game_start_time_);
 }

@@ -29,7 +29,9 @@ class Game {
 
   const maze::Layout* layout() const;
   maze::Cell position() const;
+  maze::Cell goal() const;
   const maze::Path* path() const;
+  maze::Path solution() const;
   uint16_t time_limit() const;
   uint16_t move_limit() const;
 
@@ -45,7 +47,6 @@ class Game {
   bool TimeLimitReached() const;
 
   GameState GetGameState() const;
-  void NewMaze();
   void OnGameFinished(const GameState& game_result);
 
  private:

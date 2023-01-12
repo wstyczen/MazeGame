@@ -1,24 +1,17 @@
 #include <cmath>
-#include <filesystem>
 #include <iostream>
-#include <iterator>
-#include <list>
-#include <vector>
 
 #include "game/game.hpp"
 #include "game/settings.hpp"
 #include "graphics/shapes/game_window.hpp"
-#include "maze/generators/generator.hpp"
-#include "maze/generators/generator_factory.hpp"
-#include "maze/layout.hpp"
-#include "maze/solvers/solver.hpp"
-#include "maze/solvers/solver_factory.hpp"
 
 void print_time_and_moves_left(game::Game* game) {
-  std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-            << "Time left:\t\t\t" << game->TimeLeft() << "\n"
-            << "Moves left:\t\t\t" << game->MovesLeft() << "\n"
-            << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  if (game->TimeLeft() != -1)
+    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+              << "Time left:\t\t\t" << static_cast<int>(game->TimeLeft())
+              << "\n"
+              << "Moves left:\t\t\t" << game->MovesLeft() << "\n"
+              << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
 }
 
 void HandleKeyPress(GameWindow& game_window) {
@@ -41,20 +34,18 @@ void HandleKeyPress(GameWindow& game_window) {
 }
 
 int main(int argc, char* argv[]) {
-  game::Game::Init(game::ReadFlags(argc, argv));
-  game::Game* game = game::Game::GetInstance();
+  const game::Settings settings = game::ReadFlags(argc, argv);
+  std::cout << settings;
+  game::Game::Init(settings);
 
-  GameWindow game_window(*game->layout(), game->position());
+  game::Game* game = game::Game::GetInstance();
+  GameWindow game_window(*game->layout(), game->position(), game->goal());
   while (!game_window.WindowShouldClose()) {
-    //checking that statement is connected with
-    //reaction for pushing window close button
     game_window.LiftMaze();
     // Solving maze instance
     while (game->GetGameState() == game::GameState::UNDECIDED &&
-     !game_window.WindowShouldClose() ) {
-
+           !game_window.WindowShouldClose()) {
       print_time_and_moves_left(game);
-
       HandleKeyPress(game_window);
 
       game_window.Show();
@@ -65,9 +56,8 @@ int main(int argc, char* argv[]) {
     // Generate a new maze
     const auto result = game->GetGameState();
     game->OnGameFinished(result);
-    game_window.InitFigures(*game->layout(), game->position());
-
     // Reset game screen to display new maze
+    game_window.InitFigures(*game->layout(), game->position(), game->goal());
   }
   return 0;
 }

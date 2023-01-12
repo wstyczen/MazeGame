@@ -164,8 +164,19 @@ void InterpretFlag(Flags& flags, const std::string& cmd_arg) {
 }
 }  // namespace
 
+std::ostream& operator<<(std::ostream& os, const Settings& settings) {
+  os << "Settings:"
+     << "\n- Generator type:\t" << to_string(settings.generator_type)
+     << "\n- Solver type:\t\t" << to_string(settings.solver_type)
+     << "\n- Path type:\t\t" << to_string(settings.path_type)
+     << "\n- Difficulty:\t\t" << to_string(settings.difficulty)
+     << "\n- Starting size:\t{" << settings.starting_size.rows << ", "
+     << settings.starting_size.cols << "}\n";
+  return os;
+}
+
 Flags GetDefaultFlags() {
-  return {maze::GeneratorType::ALDOUS_BRODER, maze::SolverType::A_STAR,
+  return {maze::GeneratorType::RECURSIVE_BACKTRACKING, maze::SolverType::A_STAR,
           maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, DifficultyLevel::NORMAL,
           maze::CellSize(5, 5)};
 }

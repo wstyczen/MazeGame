@@ -42,14 +42,19 @@ maze::Cell Maze::position() const {
   return position_;
 }
 
+maze::Cell Maze::goal() const {
+  return goal_;
+}
+
 uint16_t Maze::GetMovesMade() const {
   return path_taken_.size() - 1;
 }
 
-maze::CellSize Maze::GetNextCellSize(const uint16_t& increment) const {
-  const auto& [rows, cols] = layout_->size();
-  return {static_cast<uint16_t>(rows + increment),
-          static_cast<uint16_t>(cols + increment)};
+maze::CellSize Maze::GetNextCellSize(const DifficultyLevel& difficulty) const {
+  const uint16_t size_increment = GetMazeGrowthPerDifficulty(difficulty);
+  const auto& [rows, cols] = layout_->cell_size();
+  return {static_cast<uint16_t>(rows + size_increment),
+          static_cast<uint16_t>(cols + size_increment)};
 }
 
 bool Maze::Move(const maze::Direction& direction) {

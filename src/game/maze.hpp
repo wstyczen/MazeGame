@@ -4,6 +4,7 @@
 #include <chrono>
 #include <memory>
 
+#include "game/difficulty.hpp"
 #include "maze/layout.hpp"
 #include "maze/paths.hpp"
 #include "maze/utility.hpp"
@@ -20,9 +21,10 @@ class Maze {
   const maze::Layout* layout() const;
   const maze::Path* path() const;
   maze::Cell position() const;
+  maze::Cell goal() const;
 
   uint16_t GetMovesMade() const;
-  maze::CellSize GetNextCellSize(const uint16_t& increment) const;
+  maze::CellSize GetNextCellSize(const DifficultyLevel& difficulty) const;
 
   bool Move(const maze::Direction& direction);
   bool GoalReached() const;
