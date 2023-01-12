@@ -4,6 +4,7 @@
 #include "maze/layout.hpp"
 
 std::vector<glm::vec2> Path2Vec2(const maze::Layout* maze,
+                                 const std::vector<maze::Cell> path);
 
 class MazeFigure : public DynamicSolidFigure {
  public:

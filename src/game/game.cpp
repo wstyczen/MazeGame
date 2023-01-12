@@ -4,6 +4,7 @@
 
 #include "game/settings.hpp"
 #include "maze/paths.hpp"
+#include<iostream>
 
 namespace game {
 
@@ -65,7 +66,9 @@ GameState Game::GetGameState() const {
     return GameState::LOST;
   return GameState::UNDECIDED;
 }
+void Game::NewMaze(){
 
+}
 void Game::OnGameFinished(const GameState& game_result) {
   if (game_result == GameState::WON) {
     GenerateNewMaze(
@@ -76,9 +79,11 @@ void Game::OnGameFinished(const GameState& game_result) {
   }
   if (game_result == GameState::LOST) {
     GenerateNewMaze(settings_.starting_size, settings_.path_type);
+    game_start_time_.reset();
     mazes_completed_ = 0;
     return;
   }
+
 }
 
 const maze::Layout* Game::layout() const {
@@ -121,12 +126,14 @@ bool Game::MoveLimitReached() const {
 }
 
 void Game::StartTimerIfNotAlreadyRunning() {
-  if (!game_start_time_)
+  if (!game_start_time_){
     game_start_time_ = std::chrono::high_resolution_clock::now();
+  }
 }
 double Game::TimeLeft() const {
-  if (!game_start_time_)
-    return -1;
+  if (!game_start_time_){
+        return -1;
+  }
   return static_cast<double>(time_limit_) - GetTimeElapsed(*game_start_time_);
 }
 bool Game::TimeLimitReached() const {

@@ -47,8 +47,13 @@ int main(int argc, char* argv[]) {
   GameWindow game_window(*game->layout(), game->position());
   game_window.LiftMaze();
   while (!game_window.WindowShouldClose()) {
+    //checking that statement is connected with
+    //reaction for pushing window close button
+
     // Solving maze instance
-    while (game->GetGameState() == game::GameState::UNDECIDED) {
+    while (game->GetGameState() == game::GameState::UNDECIDED &&
+     !game_window.WindowShouldClose() ) {
+
       print_time_and_moves_left(game);
 
       HandleKeyPress(game_window);

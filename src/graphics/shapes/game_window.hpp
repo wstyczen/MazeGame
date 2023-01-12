@@ -40,6 +40,7 @@ class GameWindow {
   std::unique_ptr<MazeFigure> maze_;
   std::unique_ptr<ComplexCube> cube_;
   std::unique_ptr<SolidFigure> floor_;
+
   double last_action_time;
 
   const struct MazeSettings {
