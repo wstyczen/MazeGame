@@ -28,9 +28,11 @@ class GameWindow {
  private:
   void WaitForMazeMoveToComplete();
   void InitGLFW();
-  glm::vec3 GetMazePosition(const maze::Layout& maze);
-  glm::vec3 GetAsVec(const maze::Layout& maze, const maze::Cell& position);
-
+  glm::vec3 GetMazePosition(const maze::Layout& maze) const;
+  glm::vec3 GetAsVec(const maze::Layout& maze, const maze::Cell& position) const;
+  GLfloat GetMazeBiggerDimension(const maze::Layout& maze) const;
+  SolidFigure CreateRectFromCoord(const GLfloat &height, const GLfloat &width, const glm::vec3 &position, const glm::vec3 &color) const;
+  void FixRenderingRange(const maze::Layout& maze);
   std::unique_ptr<Shader> shader_;
   struct DisplaySolution {
     int width;
@@ -40,6 +42,7 @@ class GameWindow {
   std::unique_ptr<MazeFigure> maze_;
   std::unique_ptr<ComplexCube> cube_;
   std::unique_ptr<SolidFigure> floor_;
+  std::unique_ptr<SolidFigure> destinate_position_;
 
   double last_action_time;
 

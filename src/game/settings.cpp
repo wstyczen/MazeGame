@@ -165,7 +165,7 @@ void InterpretFlag(Flags& flags, const std::string& cmd_arg) {
 }  // namespace
 
 Flags GetDefaultFlags() {
-  return {maze::GeneratorType::GROWING_TREE, maze::SolverType::A_STAR,
+  return {maze::GeneratorType::ALDOUS_BRODER, maze::SolverType::A_STAR,
           maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, DifficultyLevel::NORMAL,
           maze::CellSize(5, 5)};
 }
