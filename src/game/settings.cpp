@@ -176,7 +176,7 @@ std::ostream& operator<<(std::ostream& os, const Settings& settings) {
 }
 
 Flags GetDefaultFlags() {
-  return {maze::GeneratorType::ALDOUS_BRODER, maze::SolverType::A_STAR,
+  return {maze::GeneratorType::RECURSIVE_BACKTRACKING, maze::SolverType::A_STAR,
           maze::PathType::TOP_LEFT_TO_BOTTOM_RIGHT, DifficultyLevel::NORMAL,
           maze::CellSize(5, 5)};
 }

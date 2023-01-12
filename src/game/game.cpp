@@ -1,8 +1,9 @@
 #include "game/game.hpp"
 
+#include <iostream>
+#include <stdexcept>
 #include <tuple>
 
-#include <iostream>
 #include "game/settings.hpp"
 #include "maze/paths.hpp"
 
@@ -97,8 +98,12 @@ const maze::Path* Game::path() const {
   return maze_.path();
 }
 
-const maze::Path* Game::solution() const {
-  solver_->Solve(layout(), maze_.position(), maze_.goal());
+maze::Path Game::solution() const {
+  std::optional<maze::Path> solution =
+      solver_->Solve(layout(), maze_.position(), maze_.goal());
+  if (!solution)
+    throw std::invalid_argument("Maze should always have a solution");
+  return *solution;
 }
 
 uint16_t Game::time_limit() const {
