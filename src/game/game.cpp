@@ -2,9 +2,9 @@
 
 #include <tuple>
 
+#include <iostream>
 #include "game/settings.hpp"
 #include "maze/paths.hpp"
-#include<iostream>
 
 namespace game {
 
@@ -66,14 +66,10 @@ GameState Game::GetGameState() const {
     return GameState::LOST;
   return GameState::UNDECIDED;
 }
-void Game::NewMaze(){
-
-}
 void Game::OnGameFinished(const GameState& game_result) {
   if (game_result == GameState::WON) {
-    GenerateNewMaze(
-        maze_.GetNextCellSize(GetMazeGrowthPerDifficulty(settings_.difficulty)),
-        settings_.path_type);
+    GenerateNewMaze(maze_.GetNextCellSize(settings_.difficulty),
+                    settings_.path_type);
     ++mazes_completed_;
     return;
   }
@@ -83,7 +79,6 @@ void Game::OnGameFinished(const GameState& game_result) {
     mazes_completed_ = 0;
     return;
   }
-
 }
 
 const maze::Layout* Game::layout() const {
@@ -130,13 +125,13 @@ bool Game::MoveLimitReached() const {
 }
 
 void Game::StartTimerIfNotAlreadyRunning() {
-  if (!game_start_time_){
+  if (!game_start_time_) {
     game_start_time_ = std::chrono::high_resolution_clock::now();
   }
 }
 double Game::TimeLeft() const {
-  if (!game_start_time_){
-        return -1;
+  if (!game_start_time_) {
+    return -1;
   }
   return static_cast<double>(time_limit_) - GetTimeElapsed(*game_start_time_);
 }

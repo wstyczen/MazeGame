@@ -46,7 +46,6 @@ class Game {
   bool TimeLimitReached() const;
 
   GameState GetGameState() const;
-  void NewMaze();
   void OnGameFinished(const GameState& game_result);
 
  private:
