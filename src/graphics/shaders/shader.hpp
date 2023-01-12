@@ -13,7 +13,7 @@ class Shader {
 
   // Constructor that build the Shader Program from 2 different shaders
   Shader();
-  GLuint const GetId() { return ID; }
+  GLuint GetId() const { return ID; }
   // Activates the Shader Program
   void Activate();
   // Deletes the Shader Program

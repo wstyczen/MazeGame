@@ -6,6 +6,7 @@ glm::vec3 FromTopLeftCorner(const maze::Cell& position) {
 }
 }  // namespace
 
+namespace graphics {
 GameWindow::GameWindow(const maze::Layout& maze,
                        const maze::Cell& cube_position,
                        const maze::Cell& goal) {
@@ -153,7 +154,7 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   glm::vec3 cube_start_position = GetAsVec(maze, cube_position);
   maze_ = std::make_unique<MazeFigure>(MazeFigure{
       MazeFigure::Layout2VecOfWalls(&maze), maze_settings_.maze_height,
-      maze_position_, glm::vec3{0.0f, 0.0f, 0.0f}, 1.0f});
+      maze_position_, glm::vec3{0.0f, 0.0f, 0.0f}, 1.0f, 1.0f});
   cube_ =
       std::make_unique<ComplexCube>(ComplexCube{cube_start_position,
                                                 {0.0f, 0.0f, 0.0f},
@@ -173,3 +174,5 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   // set propper projectrion matrix due to resize rendering space
   FixRenderingRange(maze);
 }
+
+}  // namespace graphics

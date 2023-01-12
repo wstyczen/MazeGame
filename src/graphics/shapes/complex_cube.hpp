@@ -2,6 +2,8 @@
 #define COMPLEX_CUBE_HPP_
 #include "graphics/shapes/dynamic_solid_figure.hpp"
 
+namespace graphics{
+
 class ComplexCube : public DynamicSolidFigure {
  public:
   enum FigureState { move_north, move_east, move_south, move_west, steady };
@@ -36,4 +38,6 @@ class ComplexCube : public DynamicSolidFigure {
   ComplexCube::FigureState move_state = steady;
   const ComplexCube::MoveSettings move_settings = {0.2f, 2.0f, 2};
 };
+
+}
 #endif

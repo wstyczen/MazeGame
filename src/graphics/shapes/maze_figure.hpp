@@ -3,6 +3,15 @@
 #include "graphics/shapes/dynamic_solid_figure.hpp"
 #include "maze/layout.hpp"
 
+namespace graphics{
+
+struct FigureVertexData{
+    std::vector<GLfloat> vertices;
+    std::vector<GLuint> indices;
+  };
+
+FigureVertexData GetCellTemplate(const GLfloat &side_of_a_base, const glm::vec3 &color);
+
 std::vector<glm::vec2> Path2Vec2(const maze::Layout* maze,
                                  const std::vector<maze::Cell> path);
 
@@ -13,16 +22,21 @@ class MazeFigure : public DynamicSolidFigure {
     float acceleration;
     float start_velocity;
   };
-  struct FigureVertexData{
-    std::vector<GLfloat> vertices;
-    std::vector<GLuint> indices;
-  };
+
 
   MazeFigure(const std::vector<glm::vec2>& maze,
-             GLfloat height = 1.5f,
-             glm::vec3 posi = {0.0f, 0.0f, 0.0f},
-             glm::vec3 pos = {0.0f, 0.0f, 0.0f},
-             GLfloat side_of_a_base = 1.0f);
+             GLfloat height,
+             glm::vec3 posi,
+             glm::vec3 pos,
+             GLfloat side_of_a_base);
+
+  MazeFigure(const std::vector<glm::vec2>& maze,
+             GLfloat height,
+             glm::vec3 posi,
+             glm::vec3 pos,
+             GLfloat side_of_a_base,
+             GLfloat cell_size);
+
 
   void Appear();
   void Disappear();
@@ -33,12 +47,12 @@ class MazeFigure : public DynamicSolidFigure {
   @return Vector of coordinates of walls that maze is made of.
   */
   static std::vector<glm::vec2> Layout2VecOfWalls(const maze::Layout* maze);
-  static DynamicSolidFigure VectorToMapFigure(
-      const std::vector<glm::vec2>& maze_walls,
-      GLfloat height,
-      glm::vec3 posi,
-      glm::vec3 pos,
-      GLfloat side_of_a_base);
+  // static DynamicSolidFigure VectorToMapFigure(
+  //     const std::vector<glm::vec2>& maze_walls,
+  //     GLfloat height,
+  //     glm::vec3 posi,
+  //     glm::vec3 pos,
+  //     GLfloat side_of_a_base);
   static DynamicSolidFigure VectorToMapFigure(
     const std::vector<glm::vec2>& maze_walls,
       const FigureVertexData &wall_model,
@@ -57,4 +71,7 @@ class MazeFigure : public DynamicSolidFigure {
   MazeFigure::FigureState move_state_ = steady;
   MazeFigure::MoveSettings move_settings_ = {0.0f, 0.008f};
 };
+}
 #endif
+
+

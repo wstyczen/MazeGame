@@ -9,6 +9,7 @@ add_library(graphics
   shapes/maze_figure.cpp
   shapes/digit_figure.cpp
   shapes/game_window.cpp
+  shapes/path_figure.cpp
 )
 
 if (LINUX)

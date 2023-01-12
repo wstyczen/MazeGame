@@ -7,22 +7,22 @@
 
 namespace {
 
-maze::Direction GetAsMazeDirection(ComplexCube::FigureState direction) {
+maze::Direction GetAsMazeDirection(graphics::ComplexCube::FigureState direction) {
   switch (direction) {
-    case ComplexCube::FigureState::move_north:
+    case graphics::ComplexCube::FigureState::move_north:
       return maze::Direction::UP;
-    case ComplexCube::FigureState::move_south:
+    case graphics::ComplexCube::FigureState::move_south:
       return maze::Direction::DOWN;
-    case ComplexCube::FigureState::move_east:
+    case graphics::ComplexCube::FigureState::move_east:
       return maze::Direction::RIGHT;
-    case ComplexCube::FigureState::move_west:
+    case graphics::ComplexCube::FigureState::move_west:
       return maze::Direction::LEFT;
   }
   throw std::invalid_argument("Invalid direction");
 }
 
 }  // namespace
-
+namespace graphics{
 ComplexCube::ComplexCube(const glm::vec3& posi,
                          const glm::vec3& pos,
                          const glm::vec3& vertex_color,
@@ -220,4 +220,7 @@ DynamicSolidFigure ComplexCube::MakeCubeFigure(const GLfloat& side,
       0, 4, 13, 4, 7, 13, 7, 3, 13, 3, 0, 13};
   DynamicSolidFigure cube(vertices, indices, posi, pos);
   return cube;
+}
+
+
 }

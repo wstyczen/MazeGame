@@ -1,5 +1,8 @@
 #include "graphics/shapes/dynamic_solid_figure.hpp"
 
+namespace graphics{
+
+
 void DynamicSolidFigure::Move(const glm::vec3& move_vec) {
   glm::vec3 new_position = position_ + move_vec;
   SetPosition(new_position);
@@ -28,4 +31,6 @@ void DynamicSolidFigure::SetPose(const glm::vec3& new_pose) {
                            glm::vec3(0.0f, 1.0f, 0.0f));
   mvp_.model = glm::rotate(mvp_.model, glm::radians(pose_.z),
                            glm::vec3(0.0f, 0.0f, 1.0f));
+}
+
 }

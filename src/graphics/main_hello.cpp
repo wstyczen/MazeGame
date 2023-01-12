@@ -14,22 +14,22 @@ void print_time_and_moves_left(game::Game* game) {
               << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
 }
 
-void HandleKeyPress(GameWindow& game_window) {
+void HandleKeyPress(graphics::GameWindow& game_window) {
   // Move forward
   if (game_window.GetKeyState(GLFW_KEY_UP) == GLFW_PRESS) {
-    game_window.MoveCube(ComplexCube::FigureState::move_north);
+    game_window.MoveCube(graphics::ComplexCube::FigureState::move_north);
   }
   // Move backward
   if (game_window.GetKeyState(GLFW_KEY_DOWN) == GLFW_PRESS) {
-    game_window.MoveCube(ComplexCube::FigureState::move_south);
+    game_window.MoveCube(graphics::ComplexCube::FigureState::move_south);
   }
   // Strafe right
   if (game_window.GetKeyState(GLFW_KEY_RIGHT) == GLFW_PRESS) {
-    game_window.MoveCube(ComplexCube::FigureState::move_east);
+    game_window.MoveCube(graphics::ComplexCube::FigureState::move_east);
   }
   // Strafe left
   if (game_window.GetKeyState(GLFW_KEY_LEFT) == GLFW_PRESS) {
-    game_window.MoveCube(ComplexCube::FigureState::move_west);
+    game_window.MoveCube(graphics::ComplexCube::FigureState::move_west);
   }
 }
 

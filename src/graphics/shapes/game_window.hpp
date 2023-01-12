@@ -9,6 +9,7 @@
 #include "maze/layout.hpp"
 #include "maze/solvers/solver.hpp"
 #include "maze/solvers/solver_factory.hpp"
+namespace graphics {
 
 class GameWindow {
  public:
@@ -19,6 +20,7 @@ class GameWindow {
   void Show();
   void LiftMaze();
   void DropMaze();
+  void LiftSolvingPath();
   bool IsCubeMoving() const;
   void WaitForCubeMoveToComplete();
   bool MoveCube(const ComplexCube::FigureState& direction);
@@ -51,6 +53,7 @@ class GameWindow {
   std::unique_ptr<ComplexCube> cube_;
   std::unique_ptr<SolidFigure> floor_;
   std::unique_ptr<SolidFigure> destination_;
+  std::unique_ptr<MazeFigure> solving_path_;
 
   double last_action_time;
 
@@ -69,4 +72,6 @@ class GameWindow {
   } Window_settings_ = {{0.07f, 0.13f, 0.17f, 0.5f}};
   glm::vec3 maze_position_;
 };
+
+}  // namespace graphics
 #endif

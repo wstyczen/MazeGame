@@ -1,5 +1,7 @@
 #include "graphics/shapes/solid_figure.hpp"
 
+namespace graphics{
+
 SolidFigure::SolidFigure(GLfloat* vertices,
                          unsigned int vert_size,
                          GLuint* indices,
@@ -93,4 +95,6 @@ void SolidFigure::Show(const GLuint& shader_id) const {
   glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(mvp_.proj));
   vao_->Bind();
   glDrawElements(GL_TRIANGLES, ebo_->GetCount(), GL_UNSIGNED_INT, 0);
+}
+
 }

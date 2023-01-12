@@ -13,6 +13,9 @@
 #include "graphics/shapes/data_buffers/EBO.hpp"
 #include "graphics/shapes/data_buffers/VAO.hpp"
 
+
+namespace graphics{
+
 /*! @brief Describes a solid figure that can be displayed in a GLFWwindow.
  */
 class SolidFigure {
@@ -103,5 +106,5 @@ class SolidFigure {
   // static void CheckDataFormat(const std::vector<GLfloat>& vertices,
   //                             const std::vector<GLuint>& indices){};
 };
-
+}
 #endif

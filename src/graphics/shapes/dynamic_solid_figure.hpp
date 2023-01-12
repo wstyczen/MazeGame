@@ -2,6 +2,8 @@
 #define DYNAMIC_SOLID_FIGURE_HPP_
 
 #include "graphics/shapes/solid_figure.hpp"
+namespace graphics{
+
 
 class DynamicSolidFigure : public SolidFigure {
  public:
@@ -15,5 +17,5 @@ class DynamicSolidFigure : public SolidFigure {
   void SetPosition(const glm::vec3& new_position);
   void SetPose(const glm::vec3& new_pose);
 };
-
+}
 #endif
