@@ -50,8 +50,9 @@ Game* Game::GetInstance() {
 void Game::CalculateLimits() {
   const uint16_t minimal_moves_required =
       solver_->Solve(maze_.layout())->size() - 1;
-  move_limit_ = GetMaxMoves(settings_.difficulty, minimal_moves_required);
-  time_limit_ = GetMaxTimeInSecs(settings_.difficulty, minimal_moves_required);
+  move_limit_ = GetMoveLimit(settings_.difficulty, minimal_moves_required);
+  time_limit_ =
+      GetTimeLimitInSecs(settings_.difficulty, minimal_moves_required);
 }
 
 void Game::GenerateNewMaze(const maze::CellSize& maze_size,

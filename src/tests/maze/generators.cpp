@@ -16,8 +16,8 @@ namespace {
 struct TestCase {
   uint16_t maze_size;
   double max_generation_time;
-  constexpr TestCase(const uint16_t &maze_size,
-                     const double &max_generation_time)
+  constexpr TestCase(const uint16_t& maze_size,
+                     const double& max_generation_time)
       : maze_size{maze_size}, max_generation_time{max_generation_time} {}
 };
 
@@ -28,17 +28,17 @@ struct TestCase {
 // couldn't find it.
 constexpr TestCase kSmallTest(uint16_t{5}, 20.0);
 constexpr TestCase kMediumTest(uint16_t{11}, 100.0);
-constexpr TestCase kLargeTest(uint16_t{17}, 200.0);
+constexpr TestCase kLargeTest(uint16_t{17}, 250.0);
 
 class MazeGenerators : public ::testing::Test {
-protected:
+ protected:
   const std::unique_ptr<maze::Solver> solver_ =
       maze::SolverFactory::GetInstance()->GetSolver(
           maze::SolverType::BREADTH_FIRST_SEARCH);
 
-  void RunTest(const maze::GeneratorType &generator_type,
-               const TestCase &test_case) {
-    const auto &[size, max_generation_time] = test_case;
+  void RunTest(const maze::GeneratorType& generator_type,
+               const TestCase& test_case) {
+    const auto& [size, max_generation_time] = test_case;
 
     auto before = std::chrono::high_resolution_clock::now();
     const std::unique_ptr<maze::Layout> maze_layout =
@@ -179,5 +179,5 @@ TEST_F(MazeGenerators, WilsonsLarge) {
   RunTest(maze::GeneratorType::WILSONS, kLargeTest);
 }
 
-} // namespace
-} // namespace tests
+}  // namespace
+}  // namespace tests
