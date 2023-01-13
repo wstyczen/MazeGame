@@ -39,7 +39,8 @@ int main(int argc, char* argv[]) {
   game::Game::Init(settings);
 
   game::Game* game = game::Game::GetInstance();
-  GameWindow game_window(*game->layout(), game->position(), game->goal());
+  graphics::GameWindow game_window(*game->layout(), game->position(),
+                                   game->goal());
   while (!game_window.WindowShouldClose()) {
     // checking that statement is connected with
     // reaction for pushing window close button

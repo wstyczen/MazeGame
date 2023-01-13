@@ -50,7 +50,7 @@ void GameWindow::Show() const {
   floor_->Show(shader_->GetId());
   if (solving_path_)
     solving_path_->Show(shader_->GetId());
-  destinate_position_->Show(shader_->GetId());
+  destination_->Show(shader_->GetId());
   glfwSwapBuffers(window_);
   glfwPollEvents();
 }
@@ -72,10 +72,6 @@ void GameWindow::DropMaze() {
 
 void GameWindow::ShowSolvingPath() {
   solving_path_->Appear();
-  while (solving_path_->IsMoving() && !WindowShouldClose()) {
-    solving_path_->Show(shader_->GetId());
-    solving_path_->Act();
-  }
 }
 
 bool GameWindow::MoveCube(const ComplexCube::FigureState& direction) {
@@ -198,5 +194,7 @@ void GameWindow::AddSolvingPath(const std::vector<glm::vec2>& path) {
       maze_->GetPose(), solving_path_settings_.size_of_a_cube,
       maze_settings_.cell_size, solving_path_settings_.color,
       solving_path_settings_.shading);
+  solving_path_->SetProjMatrix(maze_->GetProjMatrix());
 }
+
 }  // namespace graphics
