@@ -33,6 +33,8 @@ void GameWindow::Act() {
   if (glfwGetTime() - last_action_time > 0.01) {
     cube_->Act();
     maze_->Act();
+    if (solving_path_)
+      solving_path_->Act();
     last_action_time = glfwGetTime();
   }
 }
@@ -43,13 +45,15 @@ void GameWindow::Show() const {
   cube_->Show(shader_->GetId());
   maze_->Show(shader_->GetId());
   floor_->Show(shader_->GetId());
-  destination_->Show(shader_->GetId());
+  if (solving_path_)
+    solving_path_->Show(shader_->GetId());
+  destinate_position_->Show(shader_->GetId());
   glfwSwapBuffers(window_);
   glfwPollEvents();
 }
 
 void GameWindow::WaitForMazeMoveToComplete() {
-  while (maze_->IsMoving()) {
+  while (maze_->IsMoving() && !WindowShouldClose()) {
     Show();
     Act();
   }
@@ -63,7 +67,13 @@ void GameWindow::DropMaze() {
   WaitForMazeMoveToComplete();
 }
 
-void GameWindow::ShowSolvingPath(const std::vector<glm::vec2>& path) const {}
+void GameWindow::ShowSolvingPath() {
+  solving_path_->Appear();
+  while (solving_path_->IsMoving() && !WindowShouldClose()) {
+    solving_path_->Show(shader_->GetId());
+    solving_path_->Act();
+  }
+}
 
 bool GameWindow::MoveCube(const ComplexCube::FigureState& direction) {
   return cube_->MakeMove(direction);
@@ -157,15 +167,13 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   glm::vec3 cube_start_position = GetAsVec(maze, cube_position);
   glm::vec3 maze_pos = {0.0f, 0.0f, 0.0f};
   maze_ = std::make_unique<MazeFigure>(
-      MazeFigure{MazeFigure::Layout2VecOfWalls(&maze),
-                 maze_settings_.maze_height, maze_position_, maze_pos,
-                 maze_settings_.wall_size, maze_settings_.cell_size,
-                 maze_settings_.maze_color, maze_settings_.shading});
-  cube_ =
-      std::make_unique<ComplexCube>(ComplexCube{cube_start_position,
-                                                {0.0f, 0.0f, 0.0f},
-                                                cube_settings_.vertex_color,
-                                                cube_settings_.inner_color});
+      MazeFigure::Layout2VecOfWalls(&maze), maze_settings_.maze_height,
+      maze_position_, maze_pos, maze_settings_.wall_size,
+      maze_settings_.cell_size, maze_settings_.maze_color,
+      maze_settings_.shading);
+  cube_ = std::make_unique<ComplexCube>(cube_start_position, maze_pos,
+                                        cube_settings_.vertex_color,
+                                        cube_settings_.inner_color);
 
   glm::vec3 floor_position =
       glm::vec3{0.0f, 0.0f, -0.5f + maze_position_.z} + move_map_down;
@@ -181,4 +189,11 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   FixRenderingRange(maze);
 }
 
+void GameWindow::AddSolvingPath(const std::vector<glm::vec2>& path) {
+  solving_path_ = std::make_unique<MazeFigure>(
+      path, solving_path_settings_.height, maze_->GetPosition(),
+      maze_->GetPose(), solving_path_settings_.size_of_a_cube,
+      maze_settings_.cell_size, solving_path_settings_.color,
+      solving_path_settings_.shading);
+}
 }  // namespace graphics
