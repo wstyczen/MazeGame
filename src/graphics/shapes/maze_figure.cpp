@@ -255,6 +255,8 @@ MazeFigure::MazeFigure(const std::vector<glm::vec2>& maze,
       // : DynamicSolidFigure(VectorToMapFigure(maze, height, posi, pos, side_of_a_base)){
   height_ = height;
   start_position_ = posi;
+  cell_size_ = 1.0f;
+
 }
 MazeFigure::MazeFigure(const std::vector<glm::vec2>& maze,
              const GLfloat &height,
@@ -267,10 +269,11 @@ MazeFigure::MazeFigure(const std::vector<glm::vec2>& maze,
    : DynamicSolidFigure(VectorToMapFigure(maze, GetWallTemplate(height, side_of_a_base, color, shading), posi, pos, cell_size)) {
   height_ = height;
   start_position_ = posi;
+  cell_size_ = cell_size;
 }
 
 void MazeFigure::Appear() {
-  Move(glm::vec3({0.0f, 0.0f, -height_ * 1.5f}));
+  Move(glm::vec3({0.0f, 0.0f, -height_ *(1+cell_size_)}));
   move_state_ = appear;
   lin_vel_.z = move_settings_.start_velocity;
 }
@@ -288,16 +291,16 @@ void MazeFigure::Act() {
   if (move_state_ == appear) {
     if (position_.z <= start_position_.z) {
       lin_vel_.z += move_settings_.acceleration;
-      Move(glm::vec3{0.0f, 0.0f, lin_vel_.z});
+      Move(glm::vec3{0.0f, 0.0f, lin_vel_.z * height_});
     } else {
       move_state_ = steady;
       SetPosition(glm::vec3{position_.x, position_.y, start_position_.z});
     }
   }
   if (move_state_ == disappear) {
-    if (position_.z >= start_position_.z - height_ * 1.5f) {
+    if (position_.z >= start_position_.z -height_ *(1+cell_size_)) {
       lin_vel_.z -= move_settings_.acceleration;
-      Move(glm::vec3{0.0f, 0.0f, lin_vel_.z});
+      Move(glm::vec3{0.0f, 0.0f, lin_vel_.z * height_});
     } else {
       move_state_ = steady;
       SetPosition(glm::vec3{position_.x, position_.y, start_position_.z});

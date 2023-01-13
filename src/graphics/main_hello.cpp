@@ -41,6 +41,15 @@ int main(int argc, char* argv[]) {
   game::Game* game = game::Game::GetInstance();
   GameWindow game_window(*game->layout(), game->position(), game->goal());
   while (!game_window.WindowShouldClose()) {
+    // checking that statement is connected with
+    // reaction for pushing window close button
+    game_window.AddSolvingPath({{1.0f, 1.0f},
+                                {3.0f, 3.0f},
+                                {5.0f, 5.0f},
+                                {7.0f, 7.0f},
+                                {9.0f, 9.0f},
+                                {11.0f, 11.0f}});
+    game_window.ShowSolvingPath();
     game_window.LiftMaze();
     // Solving maze instance
     while (game->GetGameState() == game::GameState::UNDECIDED &&
@@ -52,6 +61,7 @@ int main(int argc, char* argv[]) {
       game_window.Act();
     }
     game_window.WaitForCubeMoveToComplete();
+    game_window.DropSolvingPath();
     game_window.DropMaze();
     // Generate a new maze
     const auto result = game->GetGameState();

@@ -76,6 +76,7 @@ class SolidFigure {
   is using glm::perspective() method.
   */
   void SetProjMatrix(const glm::mat4& proj_mat) { mvp_.proj = proj_mat; }
+  glm::mat4 GetProjMatrix() const {return mvp_.proj;}
   /*! @brief SolidFigure destructor
    */
   ~SolidFigure(){};

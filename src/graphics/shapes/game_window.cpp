@@ -33,8 +33,11 @@ void GameWindow::Act() {
   if (glfwGetTime() - last_action_time > 0.01) {
     cube_->Act();
     maze_->Act();
-    if (solving_path_)
+    if (solving_path_) {
       solving_path_->Act();
+      std::cout << "maze: " << maze_->GetPosition().z
+                << " path: " << solving_path_->GetPosition().z << std::endl;
+    }
     last_action_time = glfwGetTime();
   }
 }

@@ -20,7 +20,8 @@ class GameWindow {
   void Show() const;
   void LiftMaze();
   void DropMaze();
-  void ShowSolvingPath(const std::vector<glm::vec2>& path) const;
+  void ShowSolvingPath();
+  void DropSolvingPath() { solving_path_->Disappear(); }
   bool IsCubeMoving() const;
   void WaitForCubeMoveToComplete();
   bool MoveCube(const ComplexCube::FigureState& direction);
