@@ -33,11 +33,10 @@ void GameWindow::Act() {
   if (glfwGetTime() - last_action_time > 0.01) {
     cube_->Act();
     maze_->Act();
-    if (solving_path_) {
+    if (taken_path_)
+      taken_path_->Act();
+    if (solving_path_)
       solving_path_->Act();
-      std::cout << "maze: " << maze_->GetPosition().z
-                << " path: " << solving_path_->GetPosition().z << std::endl;
-    }
     last_action_time = glfwGetTime();
   }
 }
@@ -50,7 +49,10 @@ void GameWindow::Show() const {
   floor_->Show(shader_->GetId());
   if (solving_path_)
     solving_path_->Show(shader_->GetId());
-  destination_->Show(shader_->GetId());
+  if (taken_path_)
+    taken_path_->Show(shader_->GetId());
+  if (destination_)
+    destination_->Show(shader_->GetId());
   glfwSwapBuffers(window_);
   glfwPollEvents();
 }
@@ -67,11 +69,47 @@ void GameWindow::LiftMaze() {
 }
 void GameWindow::DropMaze() {
   maze_->Disappear();
+  DropTakenPath();
+  DropSolvingPath();
+  // Remove destination ???
   WaitForMazeMoveToComplete();
+  ResetTakenPath();
+  ResetSolvingPath();
 }
 
-void GameWindow::ShowSolvingPath() {
-  solving_path_->Appear();
+void GameWindow::AddTakenPath(const maze::Layout& maze,
+                              const std::vector<maze::Position>& taken_path) {
+  const static auto color_red = glm::vec3{0.7f, 0.1f, 0.5f};
+  taken_path_ = std::make_unique<MazeFigure>(
+      MazeFigure::Path2Vec(maze, taken_path), path_settings_.height,
+      maze_->GetPosition(), maze_->GetPose(), path_settings_.size_of_a_cube,
+      maze_settings_.cell_size, color_red, path_settings_.shading);
+  taken_path_->SetProjMatrix(maze_->GetProjMatrix());
+}
+void GameWindow::DropTakenPath() {
+  if (taken_path_)
+    taken_path_->Disappear();
+}
+void GameWindow::ResetTakenPath() {
+  if (taken_path_)
+    taken_path_.reset();
+}
+void GameWindow::AddSolvingPath(const maze::Layout& maze,
+                                const std::vector<maze::Position>& solution) {
+  const static auto color_green = glm::vec3{0.0f, 0.5f, 0.0f};
+  solving_path_ = std::make_unique<MazeFigure>(
+      MazeFigure::Path2Vec(maze, solution), path_settings_.height,
+      maze_->GetPosition(), maze_->GetPose(), path_settings_.size_of_a_cube,
+      maze_settings_.cell_size, color_green, path_settings_.shading);
+  solving_path_->SetProjMatrix(maze_->GetProjMatrix());
+}
+void GameWindow::DropSolvingPath() {
+  if (solving_path_)
+    solving_path_->Disappear();
+}
+void GameWindow::ResetSolvingPath() {
+  if (solving_path_)
+    solving_path_.reset();
 }
 
 bool GameWindow::MoveCube(const ComplexCube::FigureState& direction) {
@@ -182,19 +220,11 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   glm::vec3 destination = GetAsVec(maze, goal);
   destination.z =
       floor_->GetPosition().z + 0.01;  // must be a little above floor
-  destination_ = std::make_unique<SolidFigure>(CreateRectFromCoord(
-      1.0f, 1.0f, destination, glm::vec3{1.0f, 0.4f, 0.0f}));
+  const auto color_green = glm::vec3{0.0f, 0.5f, 0.0f};
+  destination_ = std::make_unique<SolidFigure>(
+      CreateRectFromCoord(1.0f, 1.0f, destination, color_green));
   // set propper projectrion matrix due to resize rendering space
   FixRenderingRange(maze);
-}
-
-void GameWindow::AddSolvingPath(const std::vector<glm::vec2>& path) {
-  solving_path_ = std::make_unique<MazeFigure>(
-      path, solving_path_settings_.height, maze_->GetPosition(),
-      maze_->GetPose(), solving_path_settings_.size_of_a_cube,
-      maze_settings_.cell_size, solving_path_settings_.color,
-      solving_path_settings_.shading);
-  solving_path_->SetProjMatrix(maze_->GetProjMatrix());
 }
 
 }  // namespace graphics

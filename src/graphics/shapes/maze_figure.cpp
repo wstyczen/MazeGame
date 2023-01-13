@@ -31,9 +31,9 @@ std::vector<glm::vec2> MazeFigure::Layout2VecOfWalls(const maze::Layout* maze) {
 }
 
 std::vector<glm::vec2> MazeFigure::Path2Vec(
-    const maze::Layout* maze,
+    const maze::Layout& maze,
     const std::vector<maze::Cell> path) {
-  const auto& [maze_height, maze_width] = maze->size();
+  const auto& [maze_height, maze_width] = maze.size();
   std::vector<glm::vec2> as_vec_2;
   const maze::Cell* previous = nullptr;
   for (const maze::Cell& cell : path) {

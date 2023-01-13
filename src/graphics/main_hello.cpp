@@ -1,5 +1,7 @@
+#include <chrono>
 #include <cmath>
 #include <iostream>
+#include <thread>
 
 #include "game/game.hpp"
 #include "game/settings.hpp"
@@ -14,23 +16,19 @@ void print_time_and_moves_left(game::Game* game) {
               << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
 }
 
-void HandleKeyPress(graphics::GameWindow& game_window) {
-  // Move forward
+void HandleKeyPress(graphics::GameWindow& game_window, const game::Game* game) {
   if (game_window.GetKeyState(GLFW_KEY_UP) == GLFW_PRESS) {
     game_window.MoveCube(graphics::ComplexCube::FigureState::move_north);
-  }
-  // Move backward
-  if (game_window.GetKeyState(GLFW_KEY_DOWN) == GLFW_PRESS) {
+  } else if (game_window.GetKeyState(GLFW_KEY_DOWN) == GLFW_PRESS) {
     game_window.MoveCube(graphics::ComplexCube::FigureState::move_south);
-  }
-  // Strafe right
-  if (game_window.GetKeyState(GLFW_KEY_RIGHT) == GLFW_PRESS) {
+  } else if (game_window.GetKeyState(GLFW_KEY_RIGHT) == GLFW_PRESS) {
     game_window.MoveCube(graphics::ComplexCube::FigureState::move_east);
-  }
-  // Strafe left
-  if (game_window.GetKeyState(GLFW_KEY_LEFT) == GLFW_PRESS) {
+  } else if (game_window.GetKeyState(GLFW_KEY_LEFT) == GLFW_PRESS) {
     game_window.MoveCube(graphics::ComplexCube::FigureState::move_west);
+  } else {
+    return;
   }
+  game_window.AddTakenPath(*game->layout(), *game->path());
 }
 
 int main(int argc, char* argv[]) {
@@ -42,30 +40,26 @@ int main(int argc, char* argv[]) {
   graphics::GameWindow game_window(*game->layout(), game->position(),
                                    game->goal());
   while (!game_window.WindowShouldClose()) {
-    // checking that statement is connected with
-    // reaction for pushing window close button
-    game_window.AddSolvingPath({{1.0f, 1.0f},
-                                {3.0f, 3.0f},
-                                {5.0f, 5.0f},
-                                {7.0f, 7.0f},
-                                {9.0f, 9.0f},
-                                {11.0f, 11.0f}});
-    game_window.ShowSolvingPath();
     game_window.LiftMaze();
     // Solving maze instance
     while (game->GetGameState() == game::GameState::UNDECIDED &&
            !game_window.WindowShouldClose()) {
       print_time_and_moves_left(game);
-      HandleKeyPress(game_window);
+      HandleKeyPress(game_window, game);
 
       game_window.Show();
       game_window.Act();
     }
     game_window.WaitForCubeMoveToComplete();
-    game_window.DropSolvingPath();
+    const auto result = game->GetGameState();
+    if (result == game::GameState::LOST) {
+      using namespace std::chrono_literals;
+      game_window.AddSolvingPath(*game->layout(), game->solution());
+      game_window.Show();
+      std::this_thread::sleep_for(5s);
+    }
     game_window.DropMaze();
     // Generate a new maze
-    const auto result = game->GetGameState();
     game->OnGameFinished(result);
     // Reset game screen to display new maze
     game_window.InitFigures(*game->layout(), game->position(), game->goal());

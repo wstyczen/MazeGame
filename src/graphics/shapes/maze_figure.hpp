@@ -40,8 +40,8 @@ class MazeFigure : public DynamicSolidFigure {
   void Disappear();
   bool IsMoving();
   void Act();
-  std::vector<glm::vec2> Path2Vec(const maze::Layout* maze,
-                                  const std::vector<maze::Cell> path);
+  static std::vector<glm::vec2> Path2Vec(const maze::Layout& maze,
+                                         const std::vector<maze::Cell> path);
   /*! @brief Converts maze as Layout to a vector of mazes walls coordinates
   @param[in] maze Pointer to a maze being converted.
   @return Vector of coordinates of walls that maze is made of.

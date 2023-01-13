@@ -20,9 +20,16 @@ class GameWindow {
   void Show() const;
   void LiftMaze();
   void DropMaze();
-  void AddSolvingPath(const std::vector<glm::vec2>& path);
-  void ShowSolvingPath();
-  void DropSolvingPath() { solving_path_->Disappear(); }
+
+  void AddTakenPath(const maze::Layout& maze,
+                    const std::vector<maze::Position>& solution);
+  void DropTakenPath();
+  void ResetTakenPath();
+  void AddSolvingPath(const maze::Layout& maze,
+                      const std::vector<maze::Position>& solution);
+  void DropSolvingPath();
+  void ResetSolvingPath();
+
   bool IsCubeMoving() const;
   void WaitForCubeMoveToComplete();
   bool MoveCube(const ComplexCube::FigureState& direction);
@@ -45,6 +52,7 @@ class GameWindow {
                                   const glm::vec3& position,
                                   const glm::vec3& color) const;
   void FixRenderingRange(const maze::Layout& maze);
+
   std::unique_ptr<Shader> shader_;
   struct DisplaySolution {
     int width;
@@ -56,6 +64,7 @@ class GameWindow {
   std::unique_ptr<SolidFigure> floor_;
   std::unique_ptr<SolidFigure> destination_;
   std::unique_ptr<MazeFigure> solving_path_;
+  std::unique_ptr<MazeFigure> taken_path_;
 
   double last_action_time;
 
@@ -70,7 +79,7 @@ class GameWindow {
     GLfloat move_map_down;
   } maze_settings_ = {1.5f,
                       1.0f,
-                      0.95f,
+                      1.0f,
                       1.5f,
                       {0.8f, 0.8f, 0.8f},
                       {0.7f, 0.0f},
@@ -85,13 +94,11 @@ class GameWindow {
   } Window_settings_ = {{0.07f, 0.13f, 0.17f, 0.5f}};
   glm::vec3 maze_position_;
 
-  const struct SolvingPathSettings {
+  const struct PathSettings {
     GLfloat height;
     GLfloat size_of_a_cube;
-    glm::vec3 color;
     glm::vec2 shading;
-  } solving_path_settings_ = {0.5f, 0.5f, glm::vec3{0.7f, 0.1f, 0.5f},
-                              glm::vec2{0.7f, 0.1f}};
+  } path_settings_ = {0.5f, 1.0f, glm::vec2{0.7f, 0.1f}};
 };
 
 }  // namespace graphics
