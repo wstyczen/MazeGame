@@ -10,9 +10,6 @@ struct FigureVertexData {
   std::vector<GLuint> indices;
 };
 
-FigureVertexData GetCellTemplate(const GLfloat& side_of_a_base,
-                                 const glm::vec3& color);
-
 class MazeFigure : public DynamicSolidFigure {
  public:
   enum FigureState { appear, disappear, steady };
@@ -20,21 +17,23 @@ class MazeFigure : public DynamicSolidFigure {
     float acceleration;
     float start_velocity;
   };
+  struct MazeSettings{
+    GLfloat height;
+    GLfloat cell_size;
+    GLfloat side_of_a_base;
+    glm::vec3 color;
+    glm::vec2 shading;
+    MoveSettings move_settings;
+  };
 
   MazeFigure(const std::vector<glm::vec2>& maze,
-             GLfloat height,
-             glm::vec3 posi,
-             glm::vec3 pos,
-             GLfloat side_of_a_base);
+            const glm::vec3 &posi,
+            const glm::vec3 &pos,
+            const MazeSettings &maze_settings);
 
-  MazeFigure(const std::vector<glm::vec2>& maze,
-             const GLfloat& height,
-             const glm::vec3& posi,
-             const glm::vec3& pos,
-             const GLfloat& side_of_a_base,
-             const GLfloat& cell_size,
-             const glm::vec3& color,
-             const glm::vec2& shading);
+  MazeFigure(const DynamicSolidFigure &maze_figure,
+              const MazeSettings &maze_settings);
+
 
   void Appear();
   void Disappear();
@@ -47,18 +46,13 @@ class MazeFigure : public DynamicSolidFigure {
   @return Vector of coordinates of walls that maze is made of.
   */
   static std::vector<glm::vec2> Layout2VecOfWalls(const maze::Layout* maze);
-  // static DynamicSolidFigure VectorToMapFigure(
-  //     const std::vector<glm::vec2>& maze_walls,
-  //     GLfloat height,
-  //     glm::vec3 posi,
-  //     glm::vec3 pos,
-  //     GLfloat side_of_a_base);
+
   static DynamicSolidFigure VectorToMapFigure(
       const std::vector<glm::vec2>& maze_walls,
       const FigureVertexData& wall_model,
       const glm::vec3& posi,
       const glm::vec3& pos,
-      const GLfloat& side_of_a_base);
+      const GLfloat& cell_size);
 
   static FigureVertexData GetWallTemplate(const GLfloat& height,
                                           const GLfloat& side_of_a_base,
@@ -66,13 +60,11 @@ class MazeFigure : public DynamicSolidFigure {
                                           const glm::vec2& wall_shading);
 
  protected:
-  GLfloat cell_size_;
-  GLfloat height_;
+  MazeSettings maze_settings_;
   glm::vec3 start_position_;
   glm::vec3 ang_vel_ = {0.0f, 0.0f, 0.0f};
   glm::vec3 lin_vel_ = {0.0f, 0.0f, 0.0f};
   MazeFigure::FigureState move_state_ = steady;
-  MazeFigure::MoveSettings move_settings_ = {0.0f, 0.008f};
 };
 }  // namespace graphics
 #endif

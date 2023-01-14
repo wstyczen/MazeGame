@@ -2,6 +2,7 @@
 #define GAME_WINDOW_HPP_
 #include "graphics/shapes/complex_cube.hpp"
 #include "graphics/shapes/maze_figure.hpp"
+#include "graphics/shapes/path_figure.hpp"
 
 #include "game/game.hpp"
 #include "maze/generators/generator.hpp"
@@ -65,30 +66,23 @@ class GameWindow {
   std::unique_ptr<SolidFigure> destination_;
   std::unique_ptr<MazeFigure> solving_path_;
   std::unique_ptr<MazeFigure> taken_path_;
+  std::unique_ptr<PathFigure> path_;
 
   double last_action_time;
 
   const struct MazeSettings {
-    GLfloat maze_height;
-    GLfloat cell_size;
-    GLfloat wall_size;
+    MazeFigure::MazeSettings maze_settings;
     GLfloat maze_scale;
-    glm::vec3 maze_color;
-    glm::vec2 shading;
     glm::vec3 floor_color;
     GLfloat move_map_down;
-  } maze_settings_ = {1.5f,
-                      1.0f,
-                      1.0f,
-                      1.5f,
-                      {0.8f, 0.8f, 0.8f},
-                      {0.7f, 0.0f},
-                      {0.1f, 0.1f, 0.0f},
-                      0.03f};
+  } maze_settings_ = {{1.5f, 1.0f, 0.95, {0.8, 0.8, 0.8}, {0.7, 0.1}, {0.0f, 0.0001f}},
+                      1.5f, {0.1f, 0.1f, 0.0f}, 0.03f};
   const struct CubeSettings {
+    ComplexCube::MoveSettings move_settings;
     glm::vec3 vertex_color;
     glm::vec3 inner_color;
-  } cube_settings_ = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}};
+    GLfloat cube_size;
+  } cube_settings_ = {{0.2f, 2.0f, 2}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 1.0f};
   const struct WindowSettings {
     std::vector<float> ClearColor;
   } Window_settings_ = {{0.07f, 0.13f, 0.17f, 0.5f}};
@@ -97,8 +91,10 @@ class GameWindow {
   const struct PathSettings {
     GLfloat height;
     GLfloat size_of_a_cube;
-    glm::vec2 shading;
-  } path_settings_ = {0.5f, 1.0f, glm::vec2{0.7f, 0.1f}};
+    glm::vec3 color_a;
+    glm::vec3 color_b;
+  } path_settings_ = {0.5f, 0.8f, glm::vec3{1.0f, 0.1f, 0.1f}, glm::vec3{0.0f, 1.0f, 0.1f}};
+  PathFigure::PathSettings test_settings_ = {1.0f, 0.7f, {1.0f, 0.0f, 0.3f}};
 };
 
 }  // namespace graphics
