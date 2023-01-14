@@ -72,6 +72,7 @@ GameState Game::GetGameState() const {
 }
 
 void Game::OnGameFinished(const GameState& game_result) {
+  game_start_time_.reset();
   if (game_result == GameState::WON) {
     GenerateNewMaze(maze_.GetNextCellSize(settings_.difficulty),
                     settings_.path_type);
