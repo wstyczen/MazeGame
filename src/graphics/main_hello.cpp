@@ -8,12 +8,12 @@
 #include "graphics/shapes/game_window.hpp"
 
 void print_time_and_moves_left(game::Game* game) {
-  if (game->TimeLeft() != -1)
-    std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-              << "Time left:\t\t\t" << static_cast<int>(game->TimeLeft())
-              << "\n"
-              << "Moves left:\t\t\t" << game->MovesLeft() << "\n"
-              << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  if (game->TimeLeft() != -1){}
+    // std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
+    //           << "Time left:\t\t\t" << static_cast<int>(game->TimeLeft())
+    //           << "\n"
+    //           << "Moves left:\t\t\t" << game->MovesLeft() << "\n"
+    //           << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
 }
 
 void HandleKeyPress(graphics::GameWindow& game_window, const game::Game* game) {

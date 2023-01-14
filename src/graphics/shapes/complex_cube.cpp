@@ -32,7 +32,10 @@ ComplexCube::ComplexCube(const glm::vec3& posi,
                          const ComplexCube::MoveSettings &move_settings)
     : DynamicSolidFigure(
           MakeCubeFigure(cube_size, posi, pos, vertex_color, inner_color)),
-      start_position(posi), size_(cube_size), move_settings_(move_settings) {}
+      start_position(posi), size_(cube_size), move_settings_(move_settings) {
+  if(!CheckMoveSettings(move_settings))throw std::invalid_argument("Invalid argument: move_settings");
+  if(cube_size <= 0)throw std::invalid_argument("Invalid argument: cube_size. Must be a positive value.");
+}
 
 void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
   float prev_pose_x, prev_pose_y, move_x, move_y, prev_position_z, position_z,
@@ -65,25 +68,31 @@ void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
 }
 
 bool ComplexCube::IsMoving() const {
-  return move_state != steady;
+  return move_state_ != steady;
 }
 
 bool ComplexCube::MakeMove(ComplexCube::FigureState direction) {
   game::Game* game = game::Game::GetInstance();
-  if (move_state == steady && game->Move(GetAsMazeDirection(direction))) {
-    move_state = direction;
-    if (direction == move_north) {
+  if (move_state_ == steady && game->Move(GetAsMazeDirection(direction))) {
+    move_state_ = direction;
+
+    switch(move_state_){
+    case(move_north):
       ang_vel.x = -move_settings_.start_velocity;
       Roll({ang_vel.x, 0.0f}, 1.0f);
-    } else if (direction == move_south) {
+    break;
+    case(move_south):
       ang_vel.x = move_settings_.start_velocity;
       Roll({ang_vel.x, 0.0f}, 1.0f);
-    } else if (direction == move_east) {
+    break;
+    case(move_east):
       ang_vel.y = move_settings_.start_velocity;
       Roll({0.0f, ang_vel.y}, 1.0f);
-    } else if (direction == move_west) {
+    break;
+    case(move_west):
       ang_vel.y = -move_settings_.start_velocity;
       Roll({0.0f, ang_vel.y}, 1.0f);
+    break;
     }
     game->StartTimerIfNotAlreadyRunning();
     return true;
@@ -92,7 +101,8 @@ bool ComplexCube::MakeMove(ComplexCube::FigureState direction) {
 }
 
 void ComplexCube::Act() {
-  if (move_state == ComplexCube::FigureState::move_north) {
+  switch(move_state_){
+  case(ComplexCube::FigureState::move_north):
     if ((pose_.x - FLOORto90(pose_.x)) >= -ang_vel.x) {
       Roll({ang_vel.x, 0.0f}, move_settings_.distance);
       ang_vel.x -= cos((pose_.x - FLOORto90(pose_.x)) * DEG2RAD) *
@@ -101,10 +111,10 @@ void ComplexCube::Act() {
       SetPose({0.0f, 0.0f, 0.0f});
       DiscretizatePosition();
       ang_vel.x = 0.0f;
-      move_state = steady;
+      move_state_ = steady;
     }
-
-  } else if (move_state == ComplexCube::FigureState::move_east) {
+  break;
+  case(ComplexCube::FigureState::move_east):
     if ((pose_.y - FLOORto90(pose_.y)) >= ang_vel.y) {
       Roll({0.0f, ang_vel.y}, move_settings_.distance);
       ang_vel.y += sin((pose_.y - FLOORto90(pose_.y)) * DEG2RAD) *
@@ -114,9 +124,10 @@ void ComplexCube::Act() {
       SetPose({0.0f, 0.0f, 0.0f});
       DiscretizatePosition();
       ang_vel.y = 0.0f;
-      move_state = steady;
+      move_state_ = steady;
     }
-  } else if (move_state == ComplexCube::FigureState::move_south) {
+  break;
+  case(ComplexCube::FigureState::move_south):
     if ((pose_.x - FLOORto90(pose_.x)) >= ang_vel.x) {
       Roll({ang_vel.x, 0.0f}, move_settings_.distance);
       ang_vel.x += sin((pose_.x - FLOORto90(pose_.x)) * DEG2RAD) *
@@ -126,9 +137,10 @@ void ComplexCube::Act() {
       SetPose({0.0f, 0.0f, 0.0f});
       DiscretizatePosition();
       ang_vel.x = 0.0f;
-      move_state = steady;
+      move_state_ = steady;
     }
-  } else if (move_state == ComplexCube::FigureState::move_west) {
+  break;
+  case(ComplexCube::FigureState::move_west):
     if ((pose_.y - FLOORto90(pose_.y)) >= -ang_vel.y) {
       Roll({0.0f, ang_vel.y}, move_settings_.distance);
       ang_vel.y -= cos((pose_.y - FLOORto90(pose_.y)) * DEG2RAD) *
@@ -138,8 +150,9 @@ void ComplexCube::Act() {
       SetPose({0.0f, 0.0f, 0.0f});
       DiscretizatePosition();
       ang_vel.y = 0.0f;
-      move_state = steady;
+      move_state_ = steady;
     }
+  break;
   }
 }
 
@@ -225,5 +238,15 @@ DynamicSolidFigure ComplexCube::MakeCubeFigure(const GLfloat& side,
   return cube;
 }
 
+bool ComplexCube::CheckMoveSettings(const MoveSettings &move_settings){
+  if(move_settings.acceleration < 0 || move_settings.start_velocity < 0 || move_settings.start_velocity > 20 || move_settings.acceleration > 5)
+    return false;
+  if(move_settings.distance == 0)
+    return false;
+  if(move_settings.acceleration == 0 && move_settings.start_velocity == 0)
+    return false;
+
+  return true;
+}
 
 }

@@ -31,7 +31,8 @@ GameWindow::GameWindow(const maze::Layout& maze,
 }
 
 void GameWindow::Act() {
-  if (glfwGetTime() - last_action_time > 0.01) {
+ // if (glfwGetTime() - last_action_time > 0.01)
+ {
     cube_->Act();
     maze_->Act();
     if (taken_path_)
@@ -48,7 +49,6 @@ void GameWindow::Show() const {
   cube_->Show(shader_->GetId());
   maze_->Show(shader_->GetId());
   floor_->Show(shader_->GetId());
-  path_->Show(shader_->GetId());
 
   if (solving_path_)
     solving_path_->Show(shader_->GetId());
@@ -72,30 +72,22 @@ void GameWindow::LiftMaze() {
 }
 void GameWindow::DropMaze() {
   maze_->Disappear();
-  DropTakenPath();
-  DropSolvingPath();
-  // Remove destination ???
-  destination_.release();
-  WaitForMazeMoveToComplete();
   ResetTakenPath();
   ResetSolvingPath();
+  ResetDestination();
+  WaitForMazeMoveToComplete();
+
 }
 
 void GameWindow::AddTakenPath(const maze::Layout& maze,
                               const std::vector<maze::Position>& taken_path) {
   auto path_position = maze_->GetPosition() + glm::vec3{0.0f, 0.0f, -0.48f};
-  taken_path_ = std::make_unique<MazeFigure>(MazeFigure::VectorToMapFigure(MazeFigure::Path2Vec(maze, taken_path),GetCellTemplate(path_settings_.size_of_a_cube, path_settings_.color_b),path_position, maze_->GetPose(), maze_settings_.maze_settings.cell_size), maze_settings_.maze_settings);
+  taken_path_ = std::make_unique<DynamicSolidFigure>(MazeFigure::VectorToMapFigure(MazeFigure::Path2Vec(maze, taken_path),GetCellTemplate(path_settings_.size_of_a_cube, path_settings_.color_b),path_position, maze_->GetPose(), maze_settings_.maze_settings.cell_size));
   taken_path_->SetProjMatrix(maze_->GetProjMatrix());
 
 }
-void GameWindow::DropTakenPath() {
-  if (taken_path_)
-    taken_path_->Disappear();
-}
-void GameWindow::ResetTakenPath() {
-  if (taken_path_)
-    taken_path_.reset();
-}
+
+
 void GameWindow::AddSolvingPath(const maze::Layout& maze,
                                 const std::vector<maze::Position>& solution) {
   // const static auto color_green = glm::vec3{0.0f, 0.0f, 1.0f};
@@ -105,17 +97,10 @@ void GameWindow::AddSolvingPath(const maze::Layout& maze,
   //     maze_settings_.maze_settings.cell_size, color_green, path_settings_.shading);
   // solving_path_->SetProjMatrix(maze_->GetProjMatrix());
   auto path_position = maze_->GetPosition() + glm::vec3{0.0f, 0.0f, -0.47f};
-  solving_path_ = std::make_unique<MazeFigure>(MazeFigure::VectorToMapFigure(MazeFigure::Path2Vec(maze, solution),GetCellTemplate(path_settings_.size_of_a_cube, path_settings_.color_a),path_position, maze_->GetPose(), maze_settings_.maze_settings.cell_size), maze_settings_.maze_settings);
+  solving_path_ = std::make_unique<DynamicSolidFigure>(MazeFigure::VectorToMapFigure(MazeFigure::Path2Vec(maze, solution),GetCellTemplate(path_settings_.size_of_a_cube, path_settings_.color_a),path_position, maze_->GetPose(), maze_settings_.maze_settings.cell_size));
   solving_path_->SetProjMatrix(maze_->GetProjMatrix());
 }
-void GameWindow::DropSolvingPath() {
-  if (solving_path_)
-    solving_path_->Disappear();
-}
-void GameWindow::ResetSolvingPath() {
-  if (solving_path_)
-    solving_path_.reset();
-}
+
 
 bool GameWindow::MoveCube(const ComplexCube::FigureState& direction) {
   return cube_->MakeMove(direction);
@@ -196,7 +181,6 @@ void GameWindow::FixRenderingRange(const maze::Layout& maze) {
   cube_->SetProjMatrix(proj_matrix);
   floor_->SetProjMatrix(proj_matrix);
   destination_->SetProjMatrix(proj_matrix);
-  path_->SetProjMatrix(proj_matrix);
 }
 void GameWindow::InitFigures(const maze::Layout& maze,
                              const maze::Cell& cube_position,
@@ -232,7 +216,6 @@ void GameWindow::InitFigures(const maze::Layout& maze,
   destination_ = std::make_unique<SolidFigure>(
       CreateRectFromCoord(1.0f, 1.0f, destination, color_green));
   auto path_position = maze_->GetPosition() + glm::vec3{0.0f, 0.0f, 0.01};
-  path_ = std::make_unique<PathFigure>(maze, path_position, maze_->GetPose(), test_settings_);
   // set propper projectrion matrix due to resize rendering space
   FixRenderingRange(maze);
 }

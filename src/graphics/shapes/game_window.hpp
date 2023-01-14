@@ -24,12 +24,11 @@ class GameWindow {
 
   void AddTakenPath(const maze::Layout& maze,
                     const std::vector<maze::Position>& solution);
-  void DropTakenPath();
-  void ResetTakenPath();
+  void ResetTakenPath(){if(taken_path_)taken_path_.reset();}
   void AddSolvingPath(const maze::Layout& maze,
                       const std::vector<maze::Position>& solution);
-  void DropSolvingPath();
-  void ResetSolvingPath();
+  void ResetSolvingPath(){if(solving_path_)solving_path_.reset();}
+  void ResetDestination(){if(destination_)destination_.reset();}
 
   bool IsCubeMoving() const;
   void WaitForCubeMoveToComplete();
@@ -64,9 +63,8 @@ class GameWindow {
   std::unique_ptr<ComplexCube> cube_;
   std::unique_ptr<SolidFigure> floor_;
   std::unique_ptr<SolidFigure> destination_;
-  std::unique_ptr<MazeFigure> solving_path_;
-  std::unique_ptr<MazeFigure> taken_path_;
-  std::unique_ptr<PathFigure> path_;
+  std::unique_ptr<DynamicSolidFigure> solving_path_;
+  std::unique_ptr<DynamicSolidFigure> taken_path_;
 
   double last_action_time;
 

@@ -13,7 +13,7 @@ class ComplexCube : public DynamicSolidFigure {
   struct MoveSettings {
     float acceleration;
     float start_velocity;
-    int distance;
+    unsigned int distance;
   };
   ComplexCube(const glm::vec3& posi,
               const glm::vec3& pos,
@@ -23,6 +23,7 @@ class ComplexCube : public DynamicSolidFigure {
               const MoveSettings &move_settings);
   bool IsMoving() const;
   bool MakeMove(ComplexCube::FigureState direction);
+  bool CheckMoveSettings(const MoveSettings &move_settings);
   void Act();
   static DynamicSolidFigure MakeCubeFigure(const GLfloat& side,
                                            const glm::vec3& posi,
@@ -37,7 +38,7 @@ class ComplexCube : public DynamicSolidFigure {
   const glm::vec3 start_position;
   glm::vec3 ang_vel = {0.0f, 0.0f, 0.0f};
   glm::vec3 lin_vel = {0.0f, 0.0f, 0.0f};
-  ComplexCube::FigureState move_state = steady;
+  ComplexCube::FigureState move_state_ = steady;
   const ComplexCube::MoveSettings move_settings_;
 
 };

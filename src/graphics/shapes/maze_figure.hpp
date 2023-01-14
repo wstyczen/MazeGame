@@ -52,7 +52,7 @@ class MazeFigure : public DynamicSolidFigure {
       const FigureVertexData& wall_model,
       const glm::vec3& posi,
       const glm::vec3& pos,
-      const GLfloat& cell_size);
+      const GLfloat& side_of_a_base);
 
   static FigureVertexData GetWallTemplate(const GLfloat& height,
                                           const GLfloat& side_of_a_base,
