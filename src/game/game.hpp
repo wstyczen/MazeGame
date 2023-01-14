@@ -25,6 +25,7 @@ class Game {
  public:
   ~Game();
   static void Init(const Settings& settings);
+  static void NewInstance(const Settings& settings);
   static Game* GetInstance();
 
   const maze::Layout* layout() const;
@@ -34,6 +35,7 @@ class Game {
   maze::Path solution() const;
   uint16_t time_limit() const;
   uint16_t move_limit() const;
+  uint16_t mazes_completed() const;
 
   bool GoalReached() const;
   bool Move(const maze::Direction& direction);
@@ -48,6 +50,9 @@ class Game {
 
   GameState GetGameState() const;
   void OnGameFinished(const GameState& game_result);
+
+  // Testing
+  void Test_SetMaze(Maze& maze);
 
  private:
   Game(const Settings& settings);

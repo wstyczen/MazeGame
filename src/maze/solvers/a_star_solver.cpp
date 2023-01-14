@@ -19,6 +19,7 @@ AStarSolver::~AStarSolver() = default;
 std::optional<Path> AStarSolver::Solve(const Layout* const layout,
                                        const Cell& start,
                                        const Cell& goal) {
+  predecessors_.clear();
   SetParameters(layout, start, goal);
   g_values_.clear();
 

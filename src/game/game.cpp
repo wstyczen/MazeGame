@@ -36,9 +36,11 @@ Game::Game(const Settings& settings)
 Game::~Game() = default;
 
 void Game::Init(const Settings& settings) {
-  if (!instance_) {
+  if (!instance_)
     instance_ = new Game(settings);
-  }
+}
+void Game::NewInstance(const Settings& settings) {
+  instance_ = new Game(settings);
 }
 Game* Game::GetInstance() {
   if (!instance_) {
@@ -68,6 +70,7 @@ GameState Game::GetGameState() const {
     return GameState::LOST;
   return GameState::UNDECIDED;
 }
+
 void Game::OnGameFinished(const GameState& game_result) {
   if (game_result == GameState::WON) {
     GenerateNewMaze(maze_.GetNextCellSize(settings_.difficulty),
@@ -115,6 +118,10 @@ uint16_t Game::move_limit() const {
   return move_limit_;
 }
 
+uint16_t Game::mazes_completed() const {
+  return mazes_completed_;
+}
+
 uint16_t Game::GetMovesMade() const {
   return maze_.GetMovesMade();
 }
@@ -147,6 +154,11 @@ double Game::TimeLeft() const {
 }
 bool Game::TimeLimitReached() const {
   return game_start_time_ && TimeLeft() <= 0;
+}
+
+void Game::Test_SetMaze(Maze& maze) {
+  maze_ = std::move(maze);
+  CalculateLimits();
 }
 
 }  // namespace game

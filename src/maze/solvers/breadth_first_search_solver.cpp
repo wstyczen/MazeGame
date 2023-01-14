@@ -20,6 +20,7 @@ std::optional<Path> BreadthFirstSearchSolver::Solve(const Layout* const layout,
                                                     const Cell& goal) {
   static const auto directions = GetValidMoveDirections();
 
+  predecessors_.clear();
   SetParameters(layout, start, goal);
 
   std::queue<Cell> to_visit;

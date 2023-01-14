@@ -8,6 +8,7 @@ add_executable(tests
   game/difficulty.cpp
   game/settings.cpp
   game/maze.cpp
+  game/game.cpp
 )
 
 target_link_libraries(tests
