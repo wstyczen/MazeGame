@@ -6,6 +6,8 @@ add_executable(tests
   maze/solvers.cpp
   maze/generators.cpp
   game/difficulty.cpp
+  game/settings.cpp
+  game/maze.cpp
 )
 
 target_link_libraries(tests
