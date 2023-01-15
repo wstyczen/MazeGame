@@ -5,10 +5,15 @@ add_executable(tests
   maze/paths.cpp
   maze/solvers.cpp
   maze/generators.cpp
+  game/difficulty.cpp
+  game/settings.cpp
+  game/maze.cpp
+  game/game.cpp
 )
 
 target_link_libraries(tests
   maze
+  game
   gtest
   gmock
 )

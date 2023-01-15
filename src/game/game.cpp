@@ -36,9 +36,11 @@ Game::Game(const Settings& settings)
 Game::~Game() = default;
 
 void Game::Init(const Settings& settings) {
-  if (!instance_) {
+  if (!instance_)
     instance_ = new Game(settings);
-  }
+}
+void Game::NewInstance(const Settings& settings) {
+  instance_ = new Game(settings);
 }
 Game* Game::GetInstance() {
   if (!instance_) {
@@ -50,8 +52,9 @@ Game* Game::GetInstance() {
 void Game::CalculateLimits() {
   const uint16_t minimal_moves_required =
       solver_->Solve(maze_.layout())->size() - 1;
-  move_limit_ = GetMaxMoves(settings_.difficulty, minimal_moves_required);
-  time_limit_ = GetMaxTimeInSecs(settings_.difficulty, minimal_moves_required);
+  move_limit_ = GetMoveLimit(settings_.difficulty, minimal_moves_required);
+  time_limit_ =
+      GetTimeLimitInSecs(settings_.difficulty, minimal_moves_required);
 }
 
 void Game::GenerateNewMaze(const maze::CellSize& maze_size,
@@ -67,7 +70,9 @@ GameState Game::GetGameState() const {
     return GameState::LOST;
   return GameState::UNDECIDED;
 }
+
 void Game::OnGameFinished(const GameState& game_result) {
+  game_start_time_.reset();
   if (game_result == GameState::WON) {
     GenerateNewMaze(maze_.GetNextCellSize(settings_.difficulty),
                     settings_.path_type);
@@ -114,6 +119,10 @@ uint16_t Game::move_limit() const {
   return move_limit_;
 }
 
+uint16_t Game::mazes_completed() const {
+  return mazes_completed_;
+}
+
 uint16_t Game::GetMovesMade() const {
   return maze_.GetMovesMade();
 }
@@ -146,6 +155,11 @@ double Game::TimeLeft() const {
 }
 bool Game::TimeLimitReached() const {
   return game_start_time_ && TimeLeft() <= 0;
+}
+
+void Game::Test_SetMaze(Maze& maze) {
+  maze_ = std::move(maze);
+  CalculateLimits();
 }
 
 }  // namespace game

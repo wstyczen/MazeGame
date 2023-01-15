@@ -11,7 +11,7 @@ std::unique_ptr<Layout> HuntAndKillGenerator::Get(const CellSize& cell_size) {
   auto layout = std::make_unique<Layout>(cell_size);
   InitializeUnvisited(layout->size());
 
-  static const MoveGeneralValidityCheck validity_check =
+  const MoveGeneralValidityCheck validity_check =
       [this, &layout](const Cell& origin, const Direction& direction) {
         const Cell destination = *Edge(origin, direction).To();
         return layout->IsWithin(destination) &&

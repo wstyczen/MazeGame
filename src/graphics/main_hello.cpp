@@ -41,6 +41,7 @@ int main(int argc, char* argv[]) {
                                    game->goal());
   while (!game_window.WindowShouldClose()) {
     game_window.LiftMaze();
+    game->StartTimerIfNotAlreadyRunning();
     // Solving maze instance
     while (game->GetGameState() == game::GameState::UNDECIDED &&
            !game_window.WindowShouldClose()) {
