@@ -15,7 +15,9 @@
     - [Inne](#inne)
   - [Proces budowania](#proces-budowania)
   - [Fakty dotyczące projektu](#fakty-dotyczące-projektu)
+    - [Czas poświęcony na projekt:](#czas-poświęcony-na-projekt)
     - [Liczba linii kodu](#liczba-linii-kodu)
+    - [Testy](#testy)
     - [Napotkane problemy](#napotkane-problemy)
 
 ## Krótki opis
@@ -96,14 +98,14 @@
 
 ### Frontend - _src/maze/graphics/_
 
- - Do wyświetlania kształtów zostały wykorzystane poniższe biblioteki: GLAD, GLFW3, GLM, które posłużyły zarówno do gospodarowania danymi jak ich przekształcania oraz ostatecznie publikowania obrazów na ekranie, dodatkowo klasy gospodarujące danymi takie jak VBO, VAO, EBO czy Shader zostały skopiowane z kursu OpenGL (https://github.com/VictorGordan/opengl-tutorials)
- - Każda złożona figura geometryczna dziedziczy po klasie bazowej SolidFigure, która udostępnia potrzebne metody do wyświetlania obiektów, to ona odpowiada za komunikację z klasami VBO, VAO, EBO, dlatego posiada ona wskaźniki na ich obiekty. Klasa SolidFigure posiada również macierze Model, View, Projection (MVP) 4x4 (klasa glm::mat4) odpowiadające za translacje wierzchołków brył w przestrzeni. Aby niepotrzebnie nie tworzyć głębokiej kopii obiektów klasy SolidFigure za każdym razem gdy zostaje użyty konstruktor kopiujący, zostały zastosowane sprytne wskaźniki std::shared_ptr, które dbają o czas życia danych kryjących się za obiekatmi VAO, VBO, EBO, pozwala to na wielokrotne wykorzystanie tych samych wierzchołków, które po przekształceniu przez macierze MVP skutkują różnymi figurami wyświetlanymi na ekranie.
- - Klasa DynamicSolidFigure stanowi rozszerenie funkcjonalne klasy SolidFigure o metody umożliwiające poruszanie bryłą, a w praktyce modyfikacje macierzy MVP.
- - Klasy MazeFigure oraz ComplexCube dziedziczą publicznie po klasie DynamicSolidFigure. Prezentują one odpowiednio labirynt oraz pionek w postaci kostki. Oferują one między innymi swoje specyficzne animacje, które zostały użyte w rozgrywce MazeGame.
- - Ostateczną klasą jest GameWindow, która łączy ze sobą wszystkie figury oraz obiekty potrzebne do wyświetlania ich na ekranie, dodatkowo posiada ona ustawienia, które odpowiadają za m.in. kolory figur i ich rozmiary.
+- Do wyświetlania kształtów zostały wykorzystane poniższe biblioteki: GLAD, GLFW3, GLM, które posłużyły zarówno do gospodarowania danymi jak ich przekształcania oraz ostatecznie publikowania obrazów na ekranie, dodatkowo klasy gospodarujące danymi takie jak VBO, VAO, EBO czy Shader zostały skopiowane z kursu OpenGL (https://github.com/VictorGordan/opengl-tutorials)
+- Każda złożona figura geometryczna dziedziczy po klasie bazowej SolidFigure, która udostępnia potrzebne metody do wyświetlania obiektów, to ona odpowiada za komunikację z klasami VBO, VAO, EBO, dlatego posiada ona wskaźniki na ich obiekty. Klasa SolidFigure posiada również macierze Model, View, Projection (MVP) 4x4 (klasa glm::mat4) odpowiadające za translacje wierzchołków brył w przestrzeni. Aby niepotrzebnie nie tworzyć głębokiej kopii obiektów klasy SolidFigure za każdym razem gdy zostaje użyty konstruktor kopiujący, zostały zastosowane sprytne wskaźniki std::shared_ptr, które dbają o czas życia danych kryjących się za obiekatmi VAO, VBO, EBO, pozwala to na wielokrotne wykorzystanie tych samych wierzchołków, które po przekształceniu przez macierze MVP skutkują różnymi figurami wyświetlanymi na ekranie.
+- Klasa DynamicSolidFigure stanowi rozszerenie funkcjonalne klasy SolidFigure o metody umożliwiające poruszanie bryłą, a w praktyce modyfikacje macierzy MVP.
+- Klasy MazeFigure oraz ComplexCube dziedziczą publicznie po klasie DynamicSolidFigure. Prezentują one odpowiednio labirynt oraz pionek w postaci kostki. Oferują one między innymi swoje specyficzne animacje, które zostały użyte w rozgrywce MazeGame.
+- Ostateczną klasą jest GameWindow, która łączy ze sobą wszystkie figury oraz obiekty potrzebne do wyświetlania ich na ekranie, dodatkowo posiada ona ustawienia, które odpowiadają za m.in. kolory figur i ich rozmiary.
 
 ## Wykorzystane technologie
-- GLAD, GLFW3, GLM
+
 ### Zależności - konieczne to zbudowania projektu
 
 - Wymagana wcześniejsza instalacja
@@ -113,7 +115,7 @@
   - Kompilator [**GCC**](https://www.mingw-w64.org/downloads/#mingw-builds)
   - [**VCPKG**](https://vcpkg.io/en/getting-started.html)
 - Instalacja przed budowaniem
-  - Biblioteki do [**OpenGL**](https://www.opengl.org)
+  - Biblioteki do [**OpenGL**](https://www.opengl.org) - _GLAD_, _GLFW3_, _GLM_
     > Instalacja opisana w [proces budowania](#proces-budowania)
   - Testing [**GoogleTest**](https://github.com/google/googletest) - jako submodule git
 
@@ -127,7 +129,7 @@
 
 ## Proces budowania
 
-1. Sprawdzanie czy zainstalowane są wszystkie [zależności](#zależności---konieczne-do-zbudowania-projektu)
+1. Sprawdzanie czy zainstalowane są wszystkie [zależności](#zależności---konieczne-to-zbudowania-projektu)
 2. Sklonowanie i przejście do repozytorium
 
    ```bash
@@ -160,7 +162,7 @@
 5. Odpalenie programu
 
    ```sh
-     ./build/release/src/game.exe [flagi]
+     ./build/release/src/lauch_game.exe [flagi]
    ```
 
    Gdzie do zadania opcji rozgrywki można wykorzystać flagi (_command line arguments_)
@@ -180,10 +182,12 @@
    - `--size={rows, cols}`
 
 ## Fakty dotyczące projektu
-  - czas poświęcony na projekt:
-    - frontend: 200h,
-    - backend: 150h.
-  
+
+### Czas poświęcony na projekt:
+
+- frontend: 200h
+- backend: 150h
+
 ### Liczba linii kodu
 
 > Wyznaczana za pomocą komendy _bash_
@@ -191,8 +195,16 @@
 ```sh
   find <dir> | grep '.*.cpp\|.*.hpp' | xargs wc -l
 ```
-- Liczba linii kodu: 5813
+
+- Liczba linii kodu w projekcie: 5813
+
+### Testy
+
+Do całości backendu zostały napisane testy jednostkowe _tests/_.
 
 ### Napotkane problemy
-  - Bazując na nabytych doświadczeniach OpenGL nie stanowi zbyt przyjaznego środowiska dla początkujących. Aby zobaczyć pierwsze efekty przyswajania wiedzy dotyczącej graficznej biblioteki należało poświęcić wiele godzin, a same klasy figur z pewnością odbiegają od standardów tworzenia silników graficznych.
-  - Dużym błędem dotyczącym części graficznej projektu było tworzenie zbyt złożonych metod, co znacząco utrudniało testowanie poprawności działania oraz obniżyło czytelność kodu.
+
+- Bazując na nabytych doświadczeniach OpenGL nie stanowi zbyt przyjaznego środowiska dla początkujących. Aby zobaczyć pierwsze efekty przyswajania wiedzy dotyczącej graficznej biblioteki należało poświęcić wiele godzin, a same klasy figur z pewnością odbiegają od standardów tworzenia silników graficznych.
+- Dużym błędem dotyczącym części graficznej projektu było tworzenie zbyt złożonych metod, co znacząco utrudniało testowanie poprawności działania oraz obniżyło czytelność kodu.
+- Praca z CMake też sprawiała na początku pewne problemy. W szczególności w kwestiach takich jak linkowanie bibliotek oraz udostępnianie folderów (_target_link_directories_).
+- Opracowanie jednolitego systemu utrzymywania zależności do paczek też zajął nam sporo czasu - ostatecznie zdecydowaliśmy się na użycie VCPkg, chociaż to rozwiązanie też wymaga pewnych modyfikacji ze strony użytkownika.
