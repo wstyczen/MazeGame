@@ -9,7 +9,7 @@ class EBO {
   GLuint ID;
   unsigned int count;
   // Constructor that generates a Elements Buffer Object and links it to indices
-  EBO(GLuint* indices, GLsizeiptr size);
+  EBO(GLuint const* indices, const GLsizeiptr &size);
 
   // Binds the EBO
   void Bind();

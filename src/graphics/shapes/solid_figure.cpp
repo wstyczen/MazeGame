@@ -5,22 +5,17 @@ namespace graphics{
 
 SolidFigure::SolidFigure(const std::vector<GLfloat> &vertices,
                          const std::vector<GLuint> &indices,
-                         const glm::vec3& posi,
-                         const glm::vec3& pos) {
+                         const glm::vec3& position,
+                         const glm::vec3& pose) {
+  //check if vertices and indices data is correct
   CheckVerticesData(vertices, indices);
-  const size_t vert_size = vertices.size();
-  const size_t indi_size = indices.size();
-  GLfloat vertices_array[vert_size];
-  std::copy(vertices.cbegin(), vertices.cend(), vertices_array);
-  GLuint indices_array[indi_size];
-  std::copy(indices.cbegin(), indices.cend(), indices_array);
-
-  position_ = posi;
-  pose_ = pos;
+  position_ = position;
+  pose_ = pose;
+  //Create VAO, VBO, EBO objects
   vao_ = std::make_shared<VAO>();
   vao_->Bind();
-  vbo_ = std::shared_ptr<VBO>(new VBO(vertices_array, vertices.size() * sizeof(GLfloat))); //WHY CANT I USE std::make_shared here?
-  ebo_ = std::shared_ptr<EBO>(new EBO(indices_array, indices.size() * sizeof(GLuint)));
+  vbo_ = std::make_shared<VBO>(vertices.data(), vertices.size() * sizeof(GLfloat));
+  ebo_ = std::make_shared<EBO>(indices.data(), indices.size() * sizeof(GLuint));
   vao_->LinkAttrib(*vbo_, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
   vao_->LinkAttrib(*vbo_, 1, 3, GL_FLOAT, 6 * sizeof(float),
                    (void*)(3 * sizeof(float)));
@@ -28,6 +23,7 @@ SolidFigure::SolidFigure(const std::vector<GLfloat> &vertices,
   vbo_->Unbind();
   ebo_->Unbind();
 
+  //Sets MVP matrices based on given position and pose
   mvp_.model = glm::rotate(glm::mat4(1.0f), glm::radians(pose_.x),
                            glm::vec3(1.0f, 0.0f, 0.0f));
   mvp_.model = glm::rotate(mvp_.model, glm::radians(pose_.y),
