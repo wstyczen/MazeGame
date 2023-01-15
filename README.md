@@ -183,6 +183,7 @@
   - czas poświęcony na projekt:
     - frontend: 200h,
     - backend: 150h.
+  - Ilość linijek kodu: 5813
 ### Liczba linii kodu
 
 > Wyznaczana za pomocą komendy _bash_
