@@ -5,35 +5,43 @@
 #include <string>
 
 namespace {
-// Reads a text file and outputs a string with everything in the text file
-std::string get_file_contents(const std::string& filename) {
-  std::ifstream in(filename, std::ios::binary);
-  if (in) {
-    std::string contents;
-    in.seekg(0, std::ios::end);
-    contents.resize(in.tellg());
-    in.seekg(0, std::ios::beg);
-    in.read(&contents[0], contents.size());
-    in.close();
-    return (contents);
-  }
-  throw std::invalid_argument("No such file.");
+inline const char* get_vertex_code() {
+  return "#version 330 core\n"
+         ""
+         "layout(location = 0) in vec3 aPos;\n"
+         "layout(location = 1) in vec3 aColor;\n"
+         ""
+         "out vec3 color;\n"
+         "uniform float scale;\n"
+         ""
+         "uniform mat4 model;\n"
+         "uniform mat4 view;\n"
+         "uniform mat4 proj;\n"
+         ""
+         "void main() {\n"
+         "  gl_Position = proj * view * model * vec4(aPos, 1.0);\n"
+         "  color = aColor;\n"
+         "}\n";
+}
+
+inline const char* get_fragment_code() {
+  return "#version 330 core\n"
+         ""
+         "out vec4 FragColor;\n"
+         "in vec3 color;\n"
+         ""
+         "void main()\n"
+         "{\n"
+         "  FragColor = vec4(color, 1.0f);\n"
+         "}\n";
 }
 }  // namespace
 
 // Constructor that build the Shader Program from 2 different shaders
 Shader::Shader() {
-  const std::string vertex_file =
-      std::filesystem::absolute("../files/default.vert").string();
-  const std::string fragment_file =
-      std::filesystem::absolute("../files/default.frag").string();
-  // Read vertexFile and fragmentFile and store the strings
-  std::string vertexCode = get_file_contents(vertex_file);
-  std::string fragmentCode = get_file_contents(fragment_file);
-
   // Convert the shader source strings into character arrays
-  const char* vertexSource = vertexCode.c_str();
-  const char* fragmentSource = fragmentCode.c_str();
+  const char* vertexSource = get_vertex_code();
+  const char* fragmentSource = get_fragment_code();
 
   // Create Vertex Shader Object and get its reference
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);

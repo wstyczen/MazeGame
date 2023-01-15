@@ -1,15 +1,15 @@
 add_library(graphics
   shaders/shader.cpp
-  shapes/data_buffers/EBO.cpp
-  shapes/data_buffers/VBO.cpp
-  shapes/data_buffers/VAO.cpp
-  shapes/solid_figure.cpp
-  shapes/dynamic_solid_figure.cpp
   shapes/complex_cube.cpp
-  shapes/maze_figure.cpp
+  shapes/data_buffers/EBO.cpp
+  shapes/data_buffers/VAO.cpp
+  shapes/data_buffers/VBO.cpp
   shapes/digit_figure.cpp
+  shapes/dynamic_solid_figure.cpp
   shapes/game_window.cpp
+  shapes/maze_figure.cpp
   shapes/path_figure.cpp
+  shapes/solid_figure.cpp
 )
 
 if (LINUX)
