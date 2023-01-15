@@ -96,8 +96,8 @@
 
 ### Frontend - _src/maze/graphics/_
 
- -### Do wyświetlania kształtów zostały wykorzystane poniższe biblioteki: GLAD, GLFW3, GLM, które posłużyły zarówno do gospodarowania danymi jak ich przekształcania oraz ostatecznie publikowania obrazów na ekranie.
- -### Każda figura geometryczna 
+ - Do wyświetlania kształtów zostały wykorzystane poniższe biblioteki: GLAD, GLFW3, GLM, które posłużyły zarówno do gospodarowania danymi jak ich przekształcania oraz ostatecznie publikowania obrazów na ekranie, dodatkowo klasy gospodarujące danymi takie jak VBO, VAO, EBO czy Shader zostały skopiowane z kursu OpenGL (https://github.com/VictorGordan/opengl-tutorials)
+ - Każda złożona figura geometryczna dziedziczy po klasie bazowej SolidFigure, która udostępnia potrzebne metody do wyświetlania Obiektów
 
 ## Wykorzystane technologie
 
