@@ -21,5 +21,7 @@ class VBO {
   void Unbind();
   // Deletes the VBO
   void Delete();
+  ~VBO(){Unbind(); Delete();}
+
 };
 #endif
