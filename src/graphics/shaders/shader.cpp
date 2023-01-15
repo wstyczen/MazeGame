@@ -1,3 +1,4 @@
+//source: https://github.com/VictorGordan/opengl-tutorials.git
 #include "graphics/shaders/shader.hpp"
 
 #include <filesystem>
