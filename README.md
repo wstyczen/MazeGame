@@ -183,7 +183,7 @@
   - czas poświęcony na projekt:
     - frontend: 200h,
     - backend: 150h.
-  - Ilość linijek kodu: 5813
+  
 ### Liczba linii kodu
 
 > Wyznaczana za pomocą komendy _bash_
@@ -191,6 +191,7 @@
 ```sh
   find <dir> | grep '.*.cpp\|.*.hpp' | xargs wc -l
 ```
+- Ilość linijek kodu: 5813
 
 ### Napotkane problemy
   -Bazując na nabytych doświadczeniach OpenGL nie stanowi zbyt przyjaznego środowiska dla początkujących. Aby zobaczyć pierwsze efekty przyswajania wiedzy dotyczącej graficznej biblioteki należało poświęcić wiele godzin.
