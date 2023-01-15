@@ -38,12 +38,3 @@ endif()
 target_link_libraries(graphics
   PUBLIC game
 )
-
-add_executable(graphics_main_hello
-  main_hello.cpp
-)
-target_link_libraries(graphics_main_hello
-  graphics
-  maze
-  game
-)

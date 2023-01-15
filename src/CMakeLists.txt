@@ -14,3 +14,12 @@ target_include_directories(tests
   PUBLIC .
   PUBLIC ../external/google_test/googletest/include
   PUBLIC ../external/google_test/googlemock/include)
+
+add_executable(launch_game
+  launch.cpp
+)
+target_link_libraries(launch_game
+  graphics
+  maze
+  game
+)
