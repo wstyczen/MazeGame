@@ -26,7 +26,7 @@
 
 ### Rozgrywka
 
-- Poruszanie się za kostką za pomocą WSAD po wygenerowanym labiryncie
+- Poruszanie się za kostką za pomocą strzałek po wygenerowanym labiryncie
 - Labirynt zwiększa swoje rozmiary oraz nakłada surowsze ograniczenia wraz z każdym rozwiązaniem
 - Poziom trudności
   > Obliczany na podstawie najmniejszej liczby ruchów potrzebnych na rozwiązanie labiryntu (wyliczonych przez solver)
@@ -56,9 +56,9 @@
   > Planowaliśmy zaimplementować interfejs użytkownika (_GUI_) - ie. w postaci przycisków do zmiany opcji rozgrywki.\
   > Główny powód - biblioteki, które wykorzystaliśmy wcześniej do wyświetlenia okienka nie dostarczają funkcjonalności do tworzenia _GUI_
 - Wyświetlanie pozostałych ruchów i czasu w okienku gry\
-  Biblioteki, które wykorzystaliśmy wcześniej do wyświetlenia okienka nie dostarczają prostej funkcjonalności do wyświetlania tekstu.\
+  Biblioteki, które wykorzystaliśmy wcześniej do wyświetlenia okienka (GLFW) nie dostarczają prostej funkcjonalności do wyświetlania tekstu.\
   Próbowaliśmy wykorzystać do tego bibliotekę _Freetype_, ale nie było to proste
-- Inne awatary - została zaimplementowana jedynie kostka\
+- Inne awatary - została zaimplementowana jedynie kostka o dowolnym kolorze\
   Implementacja ruchu dla zupełnie innego obiektu była dosyć skomplikowana
 
 > Głównym powodem braku realizacji powyższych założeń był oczywiście brak czasu.
@@ -96,7 +96,8 @@
 
 ### Frontend - _src/maze/graphics/_
 
----
+ -### Do wyświetlania kształtów zostały wykorzystane poniższe biblioteki: GLAD, GLFW3, GLM, które posłużyły zarówno do gospodarowania danymi jak ich przekształcania oraz ostatecznie publikowania obrazów na ekranie.
+ -### Każda figura geometryczna 
 
 ## Wykorzystane technologie
 
