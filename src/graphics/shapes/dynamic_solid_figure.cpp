@@ -10,10 +10,6 @@ void DynamicSolidFigure::Move(const glm::vec3& move_vec) {
 
 void DynamicSolidFigure::Turn(const glm::vec3& turn_vec) {
   pose_+= turn_vec;
-  if(pose_.x > 360 || pose_.y > 360 || pose_.z > 360)
-  pose_ = glm::vec3(pose_.x - floor((pose_.x / 360)) * 360.0f,
-                    pose_.y - floor((pose_.y / 360)) * 360.0f,
-                    pose_.z - floor(pose_.z / 360) * 360.0f);
   mvp_.model = glm::rotate(mvp_.model, glm::radians(turn_vec.x),
                            glm::vec3(1.0f, 0.0f, 0.0f));
   mvp_.model = glm::rotate(mvp_.model, glm::radians(turn_vec.y),
@@ -24,12 +20,13 @@ void DynamicSolidFigure::Turn(const glm::vec3& turn_vec) {
 
 void DynamicSolidFigure::SetPosition(const glm::vec3& new_position) {
   position_ = new_position;
+  //Translate matrix describing {0.0f, 0.0f, 0.0f} position
   mvp_.view = glm::translate(glm::mat4(1.0f), position_);
 }
 
 void DynamicSolidFigure::SetPose(const glm::vec3& new_pose) {
   pose_ = new_pose;
-  mvp_.model = glm::mat4(1.0f);
+  //model matrix is calculated from empty one describing {0.0f, 0.0f, 0.0f} pose.
   mvp_.model = glm::rotate(glm::mat4(1.0f), glm::radians(pose_.x),
                            glm::vec3(1.0f, 0.0f, 0.0f));
   mvp_.model = glm::rotate(mvp_.model, glm::radians(pose_.y),
