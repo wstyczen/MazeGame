@@ -166,7 +166,6 @@ void ComplexCube::DiscretizatePosition() {
                (move_settings_.distance);
   SetPosition({start_position.x + discrete_x, start_position.y + discrete_y,
                start_position.z});
-  start_position = position_;
 }
 
 DynamicSolidFigure ComplexCube::MakeCubeFigure(const GLfloat& side,
