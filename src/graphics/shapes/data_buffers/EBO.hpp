@@ -1,3 +1,4 @@
+//source: https://github.com/VictorGordan/opengl-tutorials.git
 #ifndef EBO_CLASS_HPP_
 #define EBO_CLASS_HPP_
 
