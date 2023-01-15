@@ -21,14 +21,9 @@ struct TestCase {
       : maze_size{maze_size}, max_generation_time{max_generation_time} {}
 };
 
-// Google tests severely limit the maze size that the test case can handle -
-// it runs out of memory / exceeds recursion depth - for some generators more
-// than others.
-// There might be a GoogleTest setting that allows to change that, but I
-// couldn't find it.
 constexpr TestCase kSmallTest(uint16_t{5}, 20.0);
-constexpr TestCase kMediumTest(uint16_t{11}, 100.0);
-constexpr TestCase kLargeTest(uint16_t{17}, 250.0);
+constexpr TestCase kMediumTest(uint16_t{11}, 200.0);
+constexpr TestCase kLargeTest(uint16_t{33}, 500.0);
 
 class MazeGenerators : public ::testing::Test {
  protected:
@@ -87,25 +82,25 @@ TEST_F(MazeGenerators, GrowingTreeSmall) {
   RunTest(maze::GeneratorType::GROWING_TREE, kSmallTest);
 }
 
-// TEST_F(MazeGenerators, GrowingTreeMedium) {
-//   RunTest(maze::GeneratorType::GROWING_TREE, kMediumTest);
-// }
+TEST_F(MazeGenerators, GrowingTreeMedium) {
+  RunTest(maze::GeneratorType::GROWING_TREE, kMediumTest);
+}
 
-// TEST_F(MazeGenerators, GrowingTreeLarge) {
-//   RunTest(maze::GeneratorType::GROWING_TREE, kLargeTest);
-// }
+TEST_F(MazeGenerators, GrowingTreeLarge) {
+  RunTest(maze::GeneratorType::GROWING_TREE, kLargeTest);
+}
 
 TEST_F(MazeGenerators, HuntAndKillSmall) {
   RunTest(maze::GeneratorType::HUNT_AND_KILL, kSmallTest);
 }
 
-// TEST_F(MazeGenerators, HuntAndKillMedium) {
-//   RunTest(maze::GeneratorType::HUNT_AND_KILL, kMediumTest);
-// }
+TEST_F(MazeGenerators, HuntAndKillMedium) {
+  RunTest(maze::GeneratorType::HUNT_AND_KILL, kMediumTest);
+}
 
-// TEST_F(MazeGenerators, HuntAndKillLarge) {
-//   RunTest(maze::GeneratorType::HUNT_AND_KILL, kLargeTest);
-// }
+TEST_F(MazeGenerators, HuntAndKillLarge) {
+  RunTest(maze::GeneratorType::HUNT_AND_KILL, kLargeTest);
+}
 
 TEST_F(MazeGenerators, KruskalsSmall) {
   RunTest(maze::GeneratorType::KRUSKALS, kSmallTest);
