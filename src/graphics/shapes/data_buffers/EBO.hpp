@@ -18,6 +18,7 @@ class EBO {
   // Deletes the EBO
   void Delete();
   unsigned int GetCount();
+  ~EBO(){Unbind(); Delete();}
 };
 
 #endif

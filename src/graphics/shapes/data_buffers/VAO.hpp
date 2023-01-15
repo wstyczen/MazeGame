@@ -24,6 +24,7 @@ class VAO {
   void Unbind();
   // Deletes the VAO
   void Delete();
+  ~VAO(){Unbind(); Delete();}
 };
 
 #endif

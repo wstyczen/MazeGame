@@ -116,6 +116,13 @@ void GameWindow::WaitForCubeMoveToComplete() {
 }
 
 GameWindow::~GameWindow() {
+  glfwMakeContextCurrent(window_);
+  maze_.reset();
+  cube_.reset();
+  floor_.reset();
+  destination_.reset();
+  solving_path_.reset();
+  taken_path_.reset();
   shader_->Delete();
   glfwDestroyWindow(window_);
   glfwTerminate();
