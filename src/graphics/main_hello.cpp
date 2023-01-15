@@ -2,18 +2,30 @@
 #include <cmath>
 #include <iostream>
 #include <thread>
+#include <utility>
 
 #include "game/game.hpp"
 #include "game/settings.hpp"
 #include "graphics/shapes/game_window.hpp"
 
 void print_time_and_moves_left(game::Game* game) {
-  if (game->TimeLeft() != -1){}
-    // std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"
-    //           << "Time left:\t\t\t" << static_cast<int>(game->TimeLeft())
-    //           << "\n"
-    //           << "Moves left:\t\t\t" << game->MovesLeft() << "\n"
-    //           << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+  struct TimeAndMoves {
+    int seconds_left;
+    uint16_t moves_left;
+    bool operator==(const TimeAndMoves& other) {
+      return seconds_left == other.seconds_left &&
+             moves_left == other.moves_left;
+    }
+  };
+  static TimeAndMoves current, previous = {-1, 0};
+  current = {static_cast<int>(game->TimeLeft()), game->MovesLeft()};
+  if (current.seconds_left != -1 && current != previous) {
+    std::cout << "--------------------------------------------------\n"
+              << "Time left:\t\t\t" << current.seconds_left << "\n"
+              << "Moves left:\t\t\t" << current.moves_left << "\n"
+              << "--------------------------------------------------\n";
+  }
+  previous = current;
 }
 
 void HandleKeyPress(graphics::GameWindow& game_window, const game::Game* game) {
