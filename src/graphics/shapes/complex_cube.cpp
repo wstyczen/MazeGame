@@ -32,25 +32,29 @@ ComplexCube::ComplexCube(const glm::vec3& posi,
                          const ComplexCube::MoveSettings &move_settings)
     : DynamicSolidFigure(
           MakeCubeFigure(cube_size, posi, pos, vertex_color, inner_color)),
-      start_position(posi), size_(cube_size), move_settings_(move_settings) {
+       size_(cube_size), start_position_(posi), move_settings_(move_settings) {
   if(!CheckMoveSettings(move_settings))throw std::invalid_argument("Invalid argument: move_settings");
   if(cube_size <= 0)throw std::invalid_argument("Invalid argument: cube_size. Must be a positive value.");
 }
 
 void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
   if(fabs(turn_vec.x) > 15 || fabs(turn_vec.y) > 15)throw std::invalid_argument("Invalid argumnt: angle must be in (-15, 15)");
+
   float prev_pose_x, prev_pose_y, move_x, move_y, prev_position_z, position_z,
       move_z, pose_x, pose_y;
+  //Need to store previous pose in order to calculate vector by which cube will be moved.
   prev_pose_x = pose_.x - FLOORto90(pose_.x);
   prev_pose_y = pose_.y - FLOORto90(pose_.y);
   Turn({turn_vec.x, turn_vec.y, 0.0f});
   pose_x = pose_.x - FLOORto90(pose_.x);
   pose_y = pose_.y - FLOORto90(pose_.y);
+  //Prevents issues with translating angle, when prev_pose has been cut by FLOORto90 but pose not
   if (fabs(prev_pose_x - pose_x) > 2 * fabs(turn_vec.x))
     prev_pose_x = pose_x;
   if (fabs(prev_pose_y - pose_y) > 2 * fabs(turn_vec.y))
     prev_pose_y = pose_y;
 
+  //distance is a difference of position of a cube if it was after making move and before.
   move_x = (cos(float(-pose_y + 135.0f) * DEG2RAD) -
             cos(float(-prev_pose_y + 135) * DEG2RAD)) *
            scale * size_ / sqrt(2);
@@ -64,7 +68,7 @@ void ComplexCube::Roll(const glm::vec2& turn_vec, GLfloat scale) {
                     cos((pose_x - 45.0f) * DEG2RAD)) /
                sqrt(2);
   move_z = position_z - prev_position_z;
-
+  //move cube by calculated vector
   Move(glm::vec3(move_x, move_y, move_z));
 }
 
@@ -76,6 +80,8 @@ bool ComplexCube::MakeMove(ComplexCube::FigureState direction) {
   game::Game* game = game::Game::GetInstance();
   if (move_state_ == steady && game->Move(GetAsMazeDirection(direction))) {
     move_state_ = direction;
+    //Depending on the direction, trigger cube to make Act() method work properly.
+    //In order to do that cube needs to be rolled from laying flat.
     switch(move_state_){
     case(move_north):
       ang_vel.x = -move_settings_.start_velocity;
@@ -102,6 +108,12 @@ bool ComplexCube::MakeMove(ComplexCube::FigureState direction) {
 
 void ComplexCube::Act() {
   switch(move_state_){
+  //In each case pose of cube is checked if isn't near multiple of 90deg,
+  //if yes - cube's pose and state values are set as it was laying flat,
+  //position is rounded to match the grid pattern
+  //(if cube is rolling it can lay in discrete positions).
+  //
+  //If not - cube is rolled by a specific angle equal to current angular speed.
   case(ComplexCube::FigureState::move_north):
     if ((pose_.x - FLOORto90(pose_.x)) >= -ang_vel.x) {
       Roll({ang_vel.x, 0.0f}, move_settings_.distance);
@@ -158,14 +170,14 @@ void ComplexCube::Act() {
 
 void ComplexCube::DiscretizatePosition() {
   float discrete_x, discrete_y;
-  discrete_x = roundf((position_.x - start_position.x) /
+  discrete_x = roundf((position_.x - start_position_.x) /
                       (move_settings_.distance )) *
                (move_settings_.distance);
-  discrete_y = roundf((position_.y - start_position.y) /
+  discrete_y = roundf((position_.y - start_position_.y) /
                       (move_settings_.distance)) *
                (move_settings_.distance);
-  SetPosition({start_position.x + discrete_x, start_position.y + discrete_y,
-               start_position.z});
+  SetPosition({start_position_.x + discrete_x, start_position_.y + discrete_y,
+               start_position_.z});
 }
 
 DynamicSolidFigure ComplexCube::MakeCubeFigure(const GLfloat& side,
@@ -173,6 +185,8 @@ DynamicSolidFigure ComplexCube::MakeCubeFigure(const GLfloat& side,
                                                const glm::vec3& pos,
                                                const glm::vec3& vertex_color,
                                                const glm::vec3& inner_color) {
+  if(side < 0) throw std::invalid_argument("Invalid_argument: Cube side must be a positive value.");
+  //vertices of cube shape extended by some details
   std::vector<GLfloat> vertices{
       //               EACH TWO ROWS REPRESENT ONE VERTEX
       // FRONT SIDE
@@ -222,7 +236,8 @@ DynamicSolidFigure ComplexCube::MakeCubeFigure(const GLfloat& side,
   };
 
   std::vector<GLuint> indices{
-
+    //each three indices creates triangle,
+    //eahc side of a ComplexCube is made of four recangles
       0, 1, 8,  1, 2, 8,  2, 3, 8,  3, 0, 8,
 
       0, 1, 9,  1, 5, 9,  5, 4, 9,  4, 0, 9,
