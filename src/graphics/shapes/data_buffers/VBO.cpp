@@ -1,3 +1,4 @@
+//source: https://github.com/VictorGordan/opengl-tutorials.git
 #include "graphics/shapes/data_buffers/VBO.hpp"
 
 // Constructor that generates a Vertex Buffer Object and links it to vertices
