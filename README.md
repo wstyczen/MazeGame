@@ -191,8 +191,8 @@
 ```sh
   find <dir> | grep '.*.cpp\|.*.hpp' | xargs wc -l
 ```
-- Ilość linijek kodu: 5813
+- Liczba linii kodu: 5813
 
 ### Napotkane problemy
-  -Bazując na nabytych doświadczeniach OpenGL nie stanowi zbyt przyjaznego środowiska dla początkujących. Aby zobaczyć pierwsze efekty przyswajania wiedzy dotyczącej graficznej biblioteki należało poświęcić wiele godzin.
+  -Bazując na nabytych doświadczeniach OpenGL nie stanowi zbyt przyjaznego środowiska dla początkujących. Aby zobaczyć pierwsze efekty przyswajania wiedzy dotyczącej graficznej biblioteki należało poświęcić wiele godzin, a same klasy figur z pewnością odbiegają od standardów tworzenia silników graficznych.
   - Dużym błędem dotyczącym części graficznej projektu było tworzenie zbyt złożonych metod, co znacząco utrudniało testowanie poprawności działania oraz obniżyło czytelność kodu.
