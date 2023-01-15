@@ -97,10 +97,13 @@
 ### Frontend - _src/maze/graphics/_
 
  - Do wyświetlania kształtów zostały wykorzystane poniższe biblioteki: GLAD, GLFW3, GLM, które posłużyły zarówno do gospodarowania danymi jak ich przekształcania oraz ostatecznie publikowania obrazów na ekranie, dodatkowo klasy gospodarujące danymi takie jak VBO, VAO, EBO czy Shader zostały skopiowane z kursu OpenGL (https://github.com/VictorGordan/opengl-tutorials)
- - Każda złożona figura geometryczna dziedziczy po klasie bazowej SolidFigure, która udostępnia potrzebne metody do wyświetlania Obiektów
+ - Każda złożona figura geometryczna dziedziczy po klasie bazowej SolidFigure, która udostępnia potrzebne metody do wyświetlania obiektów, to ona odpowiada za komunikację z klasami VBO, VAO, EBO, dlatego posiada ona wskaźniki na ich obiekty. Klasa SolidFigure posiada również macierze Model, View, Projection (MVP) 4x4 (klasa glm::mat4) odpowiadające za translacje wierzchołków brył w przestrzeni. Aby niepotrzebnie nie tworzyć głębokiej kopii obiektów klasy SolidFigure za każdym razem gdy zostaje użyty konstruktor kopiujący, zostały zastosowane sprytne wskaźniki std::shared_ptr, które dbają o czas życia danych kryjących się za obiekatmi VAO, VBO, EBO, pozwala to na wielokrotne wykorzystanie tych samych wierzchołków, które po przekształceniu przez macierze MVP skutkują różnymi figurami wyświetlanymi na ekranie.
+ - Klasa DynamicSolidFigure stanowi rozszerenie funkcjonalne klasy SolidFigure o metody umożliwiające poruszanie bryłą, a w praktyce modyfikacje macierzy MVP.
+ - Klasy MazeFigure oraz ComplexCube dziedziczą publicznie po klasie DynamicSolidFigure. Prezentują one odpowiednio labirynt oraz pionek w postaci kostki. Oferują one między innymi swoje specyficzne animacje, które zostały użyte w rozgrywce MazeGame.
+ - Ostateczną klasą jest GameWindow, która łączy ze sobą wszystkie figury oraz obiekty potrzebne do wyświetlania ich na ekranie, dodatkowo posiada ona ustawienia, które odpowiadają za m.in. kolory figur i ich rozmiary.
 
 ## Wykorzystane technologie
-
+- GLAD, GLFW3, GLM
 ### Zależności - konieczne to zbudowania projektu
 
 - Wymagana wcześniejsza instalacja
@@ -124,7 +127,7 @@
 
 ## Proces budowania
 
-1. Sprawdzanie czy zainstalowane są wszystkie [zależności](#zależności---konieczne-to-zbudowania-projektu)
+1. Sprawdzanie czy zainstalowane są wszystkie [zależności](#zależności---konieczne-do-zbudowania-projektu)
 2. Sklonowanie i przejście do repozytorium
 
    ```bash
@@ -177,7 +180,9 @@
    - `--size={rows, cols}`
 
 ## Fakty dotyczące projektu
-
+  - czas poświęcony na projekt:
+    - frontend: 200h,
+    - backend: 150h.
 ### Liczba linii kodu
 
 > Wyznaczana za pomocą komendy _bash_
@@ -187,3 +192,5 @@
 ```
 
 ### Napotkane problemy
+  -Bazując na nabytych doświadczeniach OpenGL nie stanowi zbyt przyjaznego środowiska dla początkujących. Aby zobaczyć pierwsze efekty przyswajania wiedzy dotyczącej graficznej biblioteki należało poświęcić wiele godzin.
+  - Dużym błędem dotyczącym części graficznej projektu było tworzenie zbyt złożonych metod, co znacząco utrudniało testowanie poprawności działania oraz obniżyło czytelność kodu.
