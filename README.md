@@ -195,4 +195,4 @@
 
 ### Napotkane problemy
   -Bazując na nabytych doświadczeniach OpenGL nie stanowi zbyt przyjaznego środowiska dla początkujących. Aby zobaczyć pierwsze efekty przyswajania wiedzy dotyczącej graficznej biblioteki należało poświęcić wiele godzin, a same klasy figur z pewnością odbiegają od standardów tworzenia silników graficznych.
-  - Dużym błędem dotyczącym części graficznej projektu było tworzenie zbyt złożonych metod, co znacząco utrudniało testowanie poprawności działania oraz obniżyło czytelność kodu.
+  -Dużym błędem dotyczącym części graficznej projektu było tworzenie zbyt złożonych metod, co znacząco utrudniało testowanie poprawności działania oraz obniżyło czytelność kodu.
